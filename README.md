@@ -19,14 +19,14 @@ How do you spend your limited time now?
  * Fixing bugs?
  * Do you take the time to implement new features knowing it will mean you'll have to redesign the GUI?
  * Give up and work on a different project, open source it and let someone else update it if they care...
- * Not even bother and just create a command line version, maybe a GUI will be made by *someone else* with the same or better experience with this specific language and it's GUI libraries.
+ * Not even bother and just create a command line version, maybe a GUI will be made by *someone else* with the same or better experience with this specific language and its GUI libraries.
 
 I don't like these options, I see a lot of problems here.
 
 **TLDR:**
 
 1. Takes too much experience in one language and it's libraries to make GUIs.
-2. GUI's are language specific and aren't easily portable to other languages of OS's.
+2. GUI's are language specific and aren't easily portable to other languages or OS's.
 3. Hard to compartmentalize the project to allow designers to actually help.
 4. Developers spend time doing design work they're not good at while **not** doing the developing they **are** good at.
 
@@ -57,13 +57,13 @@ To make this as easy as possible I've created a list of how to use and get start
 2. Download a UGUI template file (Soon to be posted, many to come).
 3. Add the switches from your command line application to the index.html file and apply appropriate UI elements for them (checkboxes, dropdowns, etc.).
 4. Test your project in Node-Webkit.
-5. Zip up your project and rename it from `.zip` to `.nw`. Tell those who download your app to open it in node-webkit. (You're done, everything beyond this point is optional)
-6. Follow [this tutorial](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps) to create a stand alone version that will open your desired platform.
+5. Zip up your project and rename it from `.zip` to `.nw`. Tell those who download your app to open it in Node-Webkit. (You're done, everything beyond this point is optional)
+6. Follow [this tutorial](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps) to create a standalone version that will open on your desired platform.
 7. If you have CLI versions for Lin/Win/Mac and they use the same switches, put them all in the root and package them like in step 5. One .nw file will work on all three (theoretically, still need to test)
-8. Produce .nw and stand alone versions for each OS.
-9. Optimize all images and minifiy/concat your code before packaging to .nw and standalone version.
+8. Produce .nw and stand aloneversions for each OS.
+9. Optimize all images and minify/concat your code before packaging to .nw and standalone version.
 
-Tutorial video coming soon once we get all the steps in this process complete.
+Tutorial video coming soon once we get all the steps in this process ironed out.
 
 * * *
 
@@ -71,21 +71,21 @@ Tutorial video coming soon once we get all the steps in this process complete.
 
 UGUI is based on Intel's Node-Webkit, which itself is based on Node.JS and Webkit (how about that!).
 
-Webkit is the popular engine that is used in Chrome/Chromium, Safari, Opera, and most Android and iOS browsers. It's been a leader in supporting most new HTML5/CSS3 features (CSS Animation, Video/Audio, WebGL, etc).
+Webkit is the popular engine that is used in Chrome/Chromium, Safari, Opera, and most Android and iOS browsers. It's been a leader in supporting most new HTML5/CSS3 features (CSS Animation, Video/Audio, WebGL, etc.).
 
-Node.JS gives I/O support for JavaScript Developers. This is the key for us as it lets you read/write/edit/create files from with in the browser.
+Node.JS gives I/O support for JavaScript Developers. This is the key for us as it lets you read/write/edit/create files from within the browser.
 
 * * *
 
 ###To-Do List
 
 * Test packaging in different OS environments
-* Create ugui.js that will help abstract out connecting switches through the html/JS, to make the process as simple as possible for front end designers.
+* Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.
 * Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
-* Create UGUI logo (I'm thinking something with a [cartoon frog](http://imgur.com/IitQXw4), but I guess it could be anything).
+* Create UGUI logo (I'm thinking something with a [cartoon frog](http://imgur.com/IitQXw4), but I it could really be anything).
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
-* Ultimately I'd like to make a program that makes this whole process far less manual. UGUI Designer would have the following features:
+* Ultimately I'd like to make a program that makes this whole process far less manual. The program, *UGUI Designer*, would have the following features:
  1. Detect all JS and CSS files, uglify, minify, concat them in to one JS and one CSS doc.
  2. Remove any files not being used in the production version (git files, sass, etc.)
  3. Ability to export project to different environments (Win 32/64, Ubuntu, OSX, etc.)
- 4. Quick testing in Node-Webkit and portable Chromium that matches the same version as Node-Webkit.
+ 4. Quick testing in Node-Webkit and portable Chromium that matches the same version as Node-Webkit for easier developing.
