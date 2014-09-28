@@ -1,0 +1,16 @@
+{
+  "name": "nw-demo",
+  "main": "index.html",
+  "window": {
+     "icon": "_img/icon32.png",
+     "toolbar": false,
+     "frame": true,
+     "width": 900,
+     "height": 550,
+     "position": "center",
+     "min_width": 400,
+     "min_height": 200,
+     "max_width": 8000,
+     "max_height": 8000
+  }
+}
