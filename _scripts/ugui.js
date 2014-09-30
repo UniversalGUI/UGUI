@@ -1,9 +1,21 @@
+$(document).ready( function(){
 
 
 
 
 
 
+
+//var spawn = require('child_process').spawn,
+//    ls    = spawn('node', ['--version']);
+
+//ls.stdout.on('data', function (data) {
+//  console.log( " " + data );
+//});
+
+//ls.stderr.on('data', function (data) {
+//  console.log('stderr: ' + data);
+//});
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
@@ -12,6 +24,15 @@
 /////////////////////////////////////////////////////////////////
 // This is what makes running your CLI program and arguments   //
 // easier.                                                     //
+//                                                             //
+// $("#taco").click(function(){                                //
+//   runcmd("pngquant", ["--force", "file.png"]);              //
+// });                                                         //
+//                                                             //
+// runcmd("node", ["--version"], function(data){               //
+//   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
+// });                                                         //
+//                                                             //
 /////////////////////////////////////////////////////////////////
 
 function runcmd( executable, args, callback ) {
@@ -74,3 +95,5 @@ arr.forEach(ticks);
 
 
 
+
+}); //end onReady

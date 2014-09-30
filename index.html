@@ -18,6 +18,7 @@
 <!--<script type="text/javascript" src="_scripts/ven.dropzone.js"></script> -->
     <style>
       body {
+        font-family: arial;
         padding-top: 70px;
       }
       .navbar-brand img {
@@ -107,7 +108,7 @@
 
           <div class="row">
               <p class="col-md-12">
-              <select>
+              <select data-argOrder="21">
                 <option value="auto"   >Reduce Palette Automatically</option>
                 <option value="256"    >Reduce Palette to 256</option>
                 <option value="256ie"  >Reduce Palette to 256 (with IEbug option)</option>
@@ -117,15 +118,16 @@
           </div>
 
           <div class="row">
-            <div class="checkbox col-md-4"><label><input type="checkbox" id="force" data-argOrder="1" value="--force" />Overwrite existing output file.</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" id="nofs"  data-argOrder="2" value="--nofs"  />Disable Floyd-Steinberg dithering.</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" id="iebug" data-argOrder="3" vlaue="--iebug" />Make Internet Explorer 6 compatible</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="1" value="--force" />Overwrite existing output file.</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="2" value="--nofs"  />Disable Floyd-Steinberg dithering.</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="3" vlaue="--iebug" />Make Internet Explorer 6 compatible</label></div>
           </div>
           <div class="row">
             <label for="speed">Speed vs Quality:</label>
             <span>Slow/High Quality</span>
-            <input type="range" min="1" max="11" value="1" id="speed" step="1" list="speedlist" data-argOrder="4">
+            <input type="range" list="speedlist" min="1" max="11" step="1" value="1" id="speed" data-argOrder="4" data-argPrefix="--speed ">
             <span>Fast/Low Quality</span>
+            <textarea data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
           </div>
 
           <div class="row">

@@ -3,7 +3,7 @@
   "main": "index.html",
   "window": {
      "icon": "_img/icon32.png",
-     "toolbar": false,
+     "toolbar": true,
      "frame": true,
      "width": 900,
      "height": 550,
