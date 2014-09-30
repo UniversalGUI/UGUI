@@ -2,7 +2,7 @@
 
 
 var executable = "pngquant";
-var switches = "";
+var cmdSwitches = "";
 
 $( document ).ready( function(){
     //$("#compress").click( function( event ){
@@ -11,14 +11,14 @@ $( document ).ready( function(){
     //
     //    var force = $( "#force" ).prop( "checked" );
     //    if ( force == true ) {
-    //        var string = " --force";
+    //        var switch = " --force";
     //    }else{
-    //      var string = "";
+    //      var switch = "";
     //    }
     //    var filepath = $('#DropZone input[type=file]').val();
     //    var filename = $('#DropZone input[type=file]').val().split('\\').pop();
     //
-    //  $("#commandLine").html( executable + string + " " + filepath );
+    //  $("#commandLine").html( executable + switch + " " + filepath );
     //
     //});
 
@@ -38,6 +38,8 @@ $( document ).ready( function(){
             var argPrefix = $(cmdArgs[index]).attr("data-argPrefix");
             var argSuffix = $(cmdArgs[index]).attr("data-argSuffix");
 
+        //CHECKBOXES
+
             //Check if it is a checkbox
             if ( $( cmdArgs[index] ).is('input[type="checkbox"]') ) {
                 //See if the checkbox is checked
@@ -52,6 +54,8 @@ $( document ).ready( function(){
                     console.log("cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " not checked");
                 }
 
+        //RANGE, FILE, DROPDOWN, TEXTBOX
+
             //Check if element contains prefix AND suffix
             } else if
                 (
@@ -60,7 +64,7 @@ $( document ).ready( function(){
                     $(cmdArgs[index]).is('select') && argPrefix && argSuffix ||
                     $(cmdArgs[index]).is('textarea') && argPrefix && argSuffix
                 ) {
-                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch4 = "--speed 1"
+                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch40 = "-m 'message'"
                     window["cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder")] = argPrefix + $(cmdArgs[index]).val() + argSuffix;
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " has prefix and suffix" );
             //Check if element contains just a prefix
@@ -82,7 +86,7 @@ $( document ).ready( function(){
                     $(cmdArgs[index]).is('select') && argSuffix ||
                     $(cmdArgs[index]).is('textarea') && argSuffix
                 ) {
-                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch4 = "--speed 1"
+                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch38 = "12 px"
                     window["cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder")] = $(cmdArgs[index]).val() + argSuffix;
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " has suffix only" );
             //Check if it doesn't contain a prefix OR a suffix
@@ -93,16 +97,19 @@ $( document ).ready( function(){
                     $(cmdArgs[index]).is('select') ||
                     $(cmdArgs[index]).is('textarea')
                 ) {
-                    //creates a variable named cmdSwitch# and sets it to the switch value
+                    //creates a variable named cmdSwitch# and sets it to the switch value, cmdSwitch12 = "--silent"
                     window["cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder")] = $(cmdArgs[index]).val();
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " no prefix or suffix" );
 
-            //If the data-argOrder is used on an element that has not been specified above, attempt to grab a value
+
+        //If the data-argOrder is used on an element that has not been specified above, attempt to grab a value
+
+            //Check if element contains prefix AND a suffix
             } else if
                 (
                     argPrefix && argSuffix
                 ) {
-                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch4 = "--speed 1"
+                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch40 = "-m 'message'"
                     window["cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder")] = argPrefix + $(cmdArgs[index]).val() + argSuffix;
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " unknown type, has prefix and suffix" );
             //Check if element contains just a prefix
@@ -118,7 +125,7 @@ $( document ).ready( function(){
                 (
                     argSuffix
                 ) {
-                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch4 = "--speed 1"
+                    //creates a variable named cmdSwitch# and sets it to the switch value, so cmdSwitch38 = "12 px"
                     window["cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder")] = $(cmdArgs[index]).val() + argSuffix;
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " unknown type, has suffix only" );
             //Check if it doesn't contain a prefix OR a suffix
@@ -128,6 +135,13 @@ $( document ).ready( function(){
                     console.log( "cmdSwitch" + $(cmdArgs[index]).attr("data-argOrder") + " unknown type, no prefix or suffix" );
             }
         };
+
+        //1. Create an array of all cmdSwitch#'s        [cmdSwitch99, cmdSwitch21, cmdSwitch1, cmdSwitch2, cmdSwitch3, cmdSwitch4, cmdSwitch40]
+        //2. Order them ascending based on number value [cmdSwitch1, cmdSwitch2, cmdSwitch3, cmdSwitch4, cmdSwitch21, cmdSwitch40, cmdSwitch99]
+        //3. Combine them into one var. var cmdSwitches = cmdSwitch1 + cmdSwitch2 + cmdSwitch3 + cmdSwitch4 + cmdSwitch21 + cmdSwitch40 + cmdSwitch99;
+        //4. For now, output to a box on the page. $("#commandLine").html( executable + cmdSwitches );
+        //5. Should read: pngquant --force --nofs --iebug --speed 1 auto -m "user message" c:\file.png
+
     });
 
 });
