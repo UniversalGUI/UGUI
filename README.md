@@ -41,7 +41,7 @@ So how does this solve the problems from above?
 
 1. You no longer need to be an expert in the language the program was written in! This means the number of people able to work on the GUI is much larger.
 2. Since the GUI is created separate from the application itself, it allows us to reuse the GUI on any platform. If you have multiple versions of the same CLI program written in different languages for Windows, Mac, and Linux, you could use **THE SAME** UGUI file for all 3.
-3. With the Interface no longer being tied to the developer it allows designers and front end developers to come in and help without developers having to babysit their efforts.
+3. With the interface no longer being tied to the developer it allows designers and front end developers to come in and help without developers having to babysit their efforts.
 4. This means developers can focus on adding features and fixing bugs and let the designers worry about the GUI.
 
 * * *
