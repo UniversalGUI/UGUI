@@ -13,9 +13,10 @@ $( document ).ready( function(){
     //When you click the Compress button
     $("#compress").click( function( event ){
 
+        event.preventDefault();
+
         $("#commandLine").html(" ");
         //Prevent the form from sending like a normal website
-        event.preventDefault();
 
         var cmdArgs = $('#argsForm *[data-argOrder]');
 

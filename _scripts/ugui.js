@@ -6,24 +6,13 @@ $(document).ready( function(){
 
 
 
-//var spawn = require('child_process').spawn,
-//    ls    = spawn('node', ['--version']);
-
-//ls.stdout.on('data', function (data) {
-//  console.log( " " + data );
-//});
-
-//ls.stderr.on('data', function (data) {
-//  console.log('stderr: ' + data);
-//});
-
 /////////////////////////////////////////////////////////////////
 //                                                             //
 //                           RUN CMD                           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // This is what makes running your CLI program and arguments   //
-// easier.                                                     //
+// easier. Cow & Taco examples below to make life easier.      //
 //                                                             //
 // $("#taco").click(function(){                                //
 //   runcmd("pngquant", ["--force", "file.png"]);              //
@@ -44,6 +33,11 @@ function runcmd( executable, args, callback ) {
       callback(chunk);
     }
   });
+
+  //child.stderr.on('data', function (data) {
+  //  console.log('stderr: ' + data);
+  //});
+
 };
 
 
@@ -89,6 +83,67 @@ function ticks(element) {
 var lists = document.querySelectorAll("input[type=range][list]"),
       arr = Array.prototype.slice.call(lists);
 arr.forEach(ticks);
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                 CUT/COPY/PASTE CONTEXT MENU                 //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Right-click on any text or text field and you can now C&P!  //
+//                                                             //
+// Credit: https://github.com/b1rdex/nw-contextmenu            //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+$(function() {
+  function Menu(cutLabel, copyLabel, pasteLabel) {
+    var gui = require('nw.gui')
+      , menu = new gui.Menu()
+
+      , cut = new gui.MenuItem({
+        label: cutLabel || "Cut"
+        , click: function() {
+          document.execCommand("cut");
+          console.log('Menu:', 'cutted to clipboard');
+        }
+      })
+
+      , copy = new gui.MenuItem({
+        label: copyLabel || "Copy"
+        , click: function() {
+          document.execCommand("copy");
+          console.log('Menu:', 'copied to clipboard');
+        }
+      })
+
+      , paste = new gui.MenuItem({
+        label: pasteLabel || "Paste"
+        , click: function() {
+          document.execCommand("paste");
+          console.log('Menu:', 'pasted to textarea');
+        }
+      })
+    ;
+
+    menu.append(cut);
+    menu.append(copy);
+    menu.append(paste);
+
+    return menu;
+  }
+
+  var menu = new Menu(/* pass cut, copy, paste labels if you need i18n*/);
+  $(document).on("contextmenu", function(e) {
+    e.preventDefault();
+    menu.popup(e.originalEvent.x, e.originalEvent.y);
+  });
+});
 
 
 
