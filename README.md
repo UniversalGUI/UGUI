@@ -1,4 +1,4 @@
-#UGUI
+#![UGUI Logo and Mascot Starby the Frog](_assets/ugui-logo.png "Starby the Frog") UGUI
 
 ##Universal Graphical User Interface
 
