@@ -1,4 +1,4 @@
-#![UGUI Logo and Mascot Starby the Frog](_assets/ugui-logo.png "Starby the Frog" "width:70px") UGUI
+#![UGUI Logo and Mascot Starby the Frog](_assets/ugui-logo.png "Starby the Frog") UGUI
 
 ##Universal Graphical User Interface
 
@@ -82,12 +82,18 @@ At it's core, it really doesn't differ. In both instances you're making a Node-W
 
 * * *
 
+###What's the deal with PNGQuant?
+
+We needed a real world test application to build UGUI around to put it in better context during development. "pngquant" is a very simple command line tool for compressing pngs. Since it only has a fiew commands and comes pre-packed with some batch files used as presets, it seemed like a good choice. It is not actually an official part of UGUI and will not be seen in version 1.0.
+
+* * *
+
 ###To-Do List
 
 * Test packaging in different OS environments
 * Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.
 * Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
-* Create UGUI logo (I'm thinking something with a [cartoon frog](http://imgur.com/IitQXw4), but I it could really be anything).
+* ~~Create UGUI logo (I'm thinking something with a [cartoon frog](http://imgur.com/IitQXw4), but I it could really be anything).~~
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
 * Ultimately I'd like to make a program that makes this whole process far less manual. The program, *UGUI Designer*, would have the following features:
  1. Detect all JS and CSS files, uglify, minify, concat them in to one JS and one CSS doc.
