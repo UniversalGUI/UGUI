@@ -69,16 +69,16 @@ $( document ).ready( function(){
         function extractSwitchString(argumentElement) {
 
             //1. Create a variable based on the elements argPrefix data.
-            var prefix = handleWhiteSpaces(argumentElement.data('argprefix'));
+            var prefix = htmlEscape(argumentElement.data('argprefix'));
 
             //2. Create a variable based on the value of the element, if no value present log error.
-            var value = handleWhiteSpaces(argumentElement.val());
+            var value = htmlEscape(argumentElement.val());
             if (!value) throw "something terrible is wrong, value is null for argumentElement!";
             //3. Create a variable based on the elements argSuffix data.
-            var suffix = handleWhiteSpaces(argumentElement.data('argsuffix'));
+            var suffix = htmlEscape(argumentElement.data('argsuffix'));
 
             //4. Create one variable containing all three of the above in the proper order and skipping Pre/Suf if not supplied.
-            var theSwitchString = (prefix ? prefix + ' ' : '') + value + (suffix ? ' ' + suffix : '');
+           var theSwitchString = (prefix || '') + value + (suffix || '');
 
             //5. Create a variable with the numeral value of the order the arguments should be outputted in.
             var argOrder = argumentElement.data('argorder');
@@ -88,6 +88,16 @@ $( document ).ready( function(){
 
             //7. Plug above variables in to the unsortedCmds object to be sorted later
             unsortedCmds[argOrder] = theSwitchString;
+        }
+
+        function htmlEscape(str) {
+            if (!str) return;
+            return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
         }
 
         function handleWhiteSpaces(text) {
