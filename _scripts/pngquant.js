@@ -37,8 +37,7 @@ $( document ).ready( function(){
 
         //Create an object containing all elements with an argOrder.
         var cmdArgs = $('#argsForm *[data-argOrder]');
-        var unsortedCmds = new Object(); //????????????????Does this need to be cleared after each click?
-                                            //no, once execution leave this code blocks, all LOCAL variables are destroyed
+        var unsortedCmds = new Object();
 
         //If an element is an unchecked checkbox, it gets skipped.
         for (var index = 0; index < cmdArgs.length; index++) {
@@ -116,9 +115,4 @@ $( document ).ready( function(){
 
     });
 
-    //1. Create an array of all cmdSwitch#'s        [cmdSwitch99, cmdSwitch21, cmdSwitch1, cmdSwitch2, cmdSwitch3, cmdSwitch4, cmdSwitch40]
-    //2. Order them ascending based on number value [cmdSwitch1, cmdSwitch2, cmdSwitch3, cmdSwitch4, cmdSwitch21, cmdSwitch40, cmdSwitch99]
-    //3. Combine them into one var. var cmdSwitches = cmdSwitch1 + cmdSwitch2 + cmdSwitch3 + cmdSwitch4 + cmdSwitch21 + cmdSwitch40 + cmdSwitch99;
-    //4. For now, output to a box on the page. $("#commandLine").html( executable + cmdSwitches );
-    //5. Should read: pngquant --force --nofs --iebug --speed 1 auto -m "user message" c:\file.png
 });
