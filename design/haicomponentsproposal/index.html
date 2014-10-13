@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<h1>JARED, WHY U RACK ALLSOME SAUCE!</h1>
+	<div>
+		<label for="commandname">Command Name:</label>
+		<input type="text" id="commandname"/>
+		<br />
+		<label for="switchtype">Add: </label>
+		<select id="switchtype">
+			<option value="checkbox">Checkbox Switch</option>
+			<option value="slider">Slider</option>
+		</select>
+		<input type="button" id="gobutton" value="Go">
+
+		<div id="switches">
+<!-- 			<div data-type="checkbox">
+				<input type="checkbox" />
+				<input type="text" class="checkboxvalue" placeholder="value" />
+				<input type="text" class="checkboxdescription" placeholder="description" />
+			</div> -->
+			
+		</div>
+
+		<br />
+		<input type="button" id="generatehtml" value="Generate HTML" />
+		<div id="copyablehtml">
+
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript">
+		//prototypes utilities
+		String.prototype.escapeHTML = function () {
+  			return (this.replace(/>/g,'&gt;').
+         			replace(/</g,'&lt;').
+         			replace(/"/g,'&quot;')
+  			);
+		};
+
+	</script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript">
+
+		$(function() {
+			$('#gobutton').click(addNewSwitch);
+			$('#generatehtml').click(generateCopyableHtmlForAllSwitches);
+		});
+
+		function addNewSwitch(event) {
+			var switchType = $('#switchtype').val();
+			if (switchType == 'checkbox') {
+				var newSwitch = generateCheckbox();
+			} else if (switchType === 'slider') {
+				var newSwitch = generateSlider();
+			} else {
+				throw 'something is terribbly wrong';
+			}
+			$('#switches').append(newSwitch);
+		}
+
+		function generateCheckbox() {
+			return '<div data-type="checkbox">' +
+				'<input type="checkbox" />' +
+				'<input type="text" class="checkboxvalue" placeholder="value" />' +
+				'<input type="text" class="checkboxdescription" placeholder="description" />' +
+			'</div>';
+		}
+
+		function generateCopyableHtmlForAllSwitches() {
+			var allSwitches = $('#switches').children();
+
+			$('#copyablehtml').empty();
+
+			for (var i = 0; i < allSwitches.length; i++) {
+				var currentSwitch = $(allSwitches[i]);
+				var type = currentSwitch.data('type');
+				if (type === 'checkbox') {
+					var html = generateCopyableCheckbox(currentSwitch);
+				}
+				else {
+					throw 'something is very wrong in generateCopyableHtmlForAllSwitches';
+				}
+				$('#copyablehtml').append(html + '<br />');
+			}
+
+		}
+
+		function generateCopyableCheckbox(checkboxSwitchElement) {
+			var value = checkboxSwitchElement.find('.checkboxvalue').val();
+			var description = checkboxSwitchElement.find('.checkboxdescription').val();
+			var x = '<input type="checkbox" value="' + value + '">' + description + "</input>";
+			return x.escapeHTML();
+		}
+
+	</script>
+</body>
+</html>

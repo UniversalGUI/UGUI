@@ -1,4 +1,6 @@
-
+String.prototype.hasWhiteSpace = function() {
+    return /\s/g.test(this);
+}
 
 //Put your executable's name below without file extension.
 var executable = "pngquant";
@@ -36,6 +38,7 @@ $( document ).ready( function(){
         //Create an object containing all elements with an argOrder.
         var cmdArgs = $('#argsForm *[data-argOrder]');
         var unsortedCmds = new Object(); //????????????????Does this need to be cleared after each click?
+                                            //no, once execution leave this code blocks, all LOCAL variables are destroyed
 
         //If an element is an unchecked checkbox, it gets skipped.
         for (var index = 0; index < cmdArgs.length; index++) {
@@ -59,7 +62,7 @@ $( document ).ready( function(){
                     });
                 }
             }
-            theSwitchArray.sort(function(a, b) { return a.value - b.value; });
+            theSwitchArray.sort(function(a, b) { return a.key - b.key; });
             //theSwitchArray.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
             return theSwitchArray; // returns array
         }
@@ -67,15 +70,17 @@ $( document ).ready( function(){
         function extractSwitchString(argumentElement) {
 
             //1. Create a variable based on the elements argPrefix data.
-            var prefix = argumentElement.data('argprefix');
+            var prefix = handleWhiteSpaces(argumentElement.data('argprefix'));
+
             //2. Create a variable based on the value of the element, if no value present log error.
-            var value = argumentElement.val();
+            var value = handleWhiteSpaces(argumentElement.val());
             if (!value) throw "something terrible is wrong, value is null for argumentElement!";
             //3. Create a variable based on the elements argSuffix data.
-            var suffix = argumentElement.data('argsuffix');
+            var suffix = handleWhiteSpaces(argumentElement.data('argsuffix'));
 
             //4. Create one variable containing all three of the above in the proper order and skipping Pre/Suf if not supplied.
-            var theSwitchString = (prefix ? prefix + '' : '') + value + (suffix ? '' + suffix : '');
+            var theSwitchString = (prefix ? prefix + ' ' : '') + value + (suffix ? ' ' + suffix : '');
+
             //5. Create a variable with the numeral value of the order the arguments should be outputted in.
             var argOrder = argumentElement.data('argorder');
 
@@ -83,7 +88,15 @@ $( document ).ready( function(){
             window['cmdSwitch' + argOrder] = theSwitchString;
 
             //7. Plug above variables in to the unsortedCmds object to be sorted later
-            unsortedCmds[theSwitchString] = argOrder;
+            unsortedCmds[argOrder] = theSwitchString;
+        }
+
+        function handleWhiteSpaces(text) {
+            if (!text) return;
+            if (text.hasWhiteSpace()) {
+                return "\"" + text + "\"";
+            }
+            return text;
         }
 
         //Create an array with the sorted content
@@ -91,8 +104,7 @@ $( document ).ready( function(){
 
         //Get the value of each element and send it to be outputted.
         for (var index = 0; index < theSwitchArray.length; index++) {
-            var cmdArg = $(theSwitchArray[index].key);
-            outputCmd(cmdArg.selector);
+            outputCmd(theSwitchArray[index].value);
         }
 
         //Output the commands arguments in the correct order
