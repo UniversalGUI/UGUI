@@ -13,10 +13,37 @@ $( document ).ready( function(){
     //  var filename = $('#DropZone input[type=file]').val().split('\\').pop();
     //  $("#commandLine").html( executable + switch + " " + filepath );
 
+    //Create an object
     var cmdSwitches = [];
 
+    //Create an object containing all elements with an argOrder.
+    var cmdArgs = $('#argsForm *[data-argOrder]');
+
+
     ///////////////////////////////////////////////////////////////////////////
-    //            What happenes when you click the submit button.            //
+    //     Gray out submit button until all required elements are filled.    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    //When you click out of a form element
+    $("#argsForm *[data-argOrder]").blur( function(){
+        //check if any of the required elements aren't filled out
+        for (var index = 0; index < cmdArgs.length; index++) {
+            var cmdArg = $(cmdArgs[index]);
+            //console.log(cmdArg.is(':invalid'));
+            //If a required element wasn't filled out, make the submit button gray
+            if ( cmdArg.is(':invalid') ) {
+                $("#sendCmdArgs").prop("disabled",true);
+                return;
+            }
+        };
+        //If all the required elements are filled out, enable the submit button
+        $("#sendCmdArgs").prop("disabled",false);
+    //on page load have this run once
+    }).trigger('blur');
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //             What happens when you click the submit button.            //
     ///////////////////////////////////////////////////////////////////////////
     // When the button is pressed, prevent it from submitting the form like  //
     // it normally would in a browser. Then grab all elements with an        //
@@ -35,8 +62,6 @@ $( document ).ready( function(){
         //clear out the commandLine box every time sendCmdArgs is clicked.
         $("#commandLine").html(" ");
 
-        //Create an object containing all elements with an argOrder.
-        var cmdArgs = $('#argsForm *[data-argOrder]');
         var unsortedCmds = new Object();
 
         //If an element is an unchecked checkbox, it gets skipped.
