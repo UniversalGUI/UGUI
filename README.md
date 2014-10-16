@@ -84,7 +84,7 @@ At it's core, it really doesn't differ. In both instances you're making a Node-W
 
 ###What's the deal with PNGQuant?
 
-We needed a real world test application to build UGUI around to put it in better context during development. "pngquant" is a very simple command line tool for compressing pngs. Since it only has a fiew commands and comes pre-packed with some batch files used as presets, it seemed like a good choice. It is not actually an official part of UGUI and will not be seen in version 1.0.
+We needed a real world test application to build UGUI around to put it in better context during development. "pngquant" is a very simple command line tool for compressing pngs. Since it only has a few commands and comes pre-packed with some batch files used as presets, it seemed like a good choice. It is not actually an official part of UGUI and will not be seen in version 1.0.
 
 * * *
 

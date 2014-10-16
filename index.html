@@ -3,15 +3,15 @@
   <head>
     <title>UGUI: pngquant</title>
     <link rel="icon" ty pe="image/x-icon" href="favicon.ico">
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> -->
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/darkly/bootstrap.min.css"> -->
-<!--<link rel="stylesheet" href="http://bootswatch.com/cyborg/bootstrap.min.css">-->
+<!--<link rel="stylesheet" href="http://bootswatch.com/cyborg/bootstrap.min.css"> -->
 <!--<link rel="stylesheet" href="_style/ven.flyingfocus.css">-->
 <!--<link rel="stylesheet" href="_style/ven.dropzone.css"> -->
 <!--<script type="text/javascript" src="_scripts/jquery.min.js"></script>-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<!--<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
     <script type="text/javascript" src="_scripts/pngquant.js"></script>
 <!--<script type="text/javascript" src="_scripts/ven.flyingfocus.js"></script>-->
@@ -40,7 +40,7 @@
       <button id="taco">Next</button>
     -->
 
-    <div class="navbar navbar-inverse navbar-fixed-top hide" role="navigation">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -125,7 +125,7 @@
           <div class="row">
             <label for="speed">Speed vs Quality:</label>
             <span>Slow/High Quality</span>
-            <input type="range" list="speedlist" min="1" max="11" step="1" value="1" id="speed" data-argOrder="4" data-argPrefix="--speed ">
+            <input type="range" id="speed" list="speedlist" min="1" max="11" step="1" value="1" data-argOrder="4" data-argPrefix="--speed ">
             <span>Fast/Low Quality</span>
           </div>
           <div class="row">

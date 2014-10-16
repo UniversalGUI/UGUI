@@ -7,7 +7,7 @@ var executable = "pngquant";
 //cmdSwitches variable is meant to be blank here
 var cmdSwitches = "";
 
-$( document ).ready( function(){
+$(document).ready( function(){
 
     //  var filepath = $('#DropZone input[type=file]').val();
     //  var filename = $('#DropZone input[type=file]').val().split('\\').pop();
@@ -20,9 +20,57 @@ $( document ).ready( function(){
     var cmdArgs = $('#argsForm *[data-argOrder]');
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    //     Gray out submit button until all required elements are filled.    //
-    ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                WARNING: IDENTICAL ARGORDERS                 //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+    // If the designer/developer use the same data-argOrder value  //
+    // for multiple elements, display a warning.                   //
+    /////////////////////////////////////////////////////////////////
+
+    var arr = {};
+
+    //Create a variable containing the warning if mutliple argOrders have the same value.
+    var multiArgOrders = '<div class="alert alert-block"> \
+      <button type="button" class="close" data-dismiss="alert">&times;</button> \
+      <h4>UGUI Developer Warning!</h4> \
+        You have more than one <code>data-argOrder</code> with the same value. \
+    </div>';
+
+    for (var index = 0; index < cmdArgs.length; index++) {
+        arr[cmdArgs[index].dataset.argorder] = cmdArgs[index];
+    }
+
+    //Create a new array with duplicate argOrders removed
+    cmdArgs = new Array();
+    for ( var key in arr )
+        cmdArgs.push(arr[key]);
+
+    //If the new array had any duplicates removed display a warning.
+    if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
+        $("body").prepend( multiArgOrders );
+    }
+
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //            SUBMIT LOCKED UNTIL REQUIRED FULFILLED           //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+    // Gray out the submit button until all required elements are  //
+    // filled out.                                                 //
+    /////////////////////////////////////////////////////////////////
 
     //When you click out of a form element
     $("#argsForm *[data-argOrder]").blur( function(){
@@ -42,16 +90,26 @@ $( document ).ready( function(){
     }).trigger('blur');
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    //             What happens when you click the submit button.            //
-    ///////////////////////////////////////////////////////////////////////////
-    // When the button is pressed, prevent it from submitting the form like  //
-    // it normally would in a browser. Then grab all elements with an        //
-    // argOrder except for unchecked checkboxes. Combine the prefix, value,  //
-    // and suffix into one variable per element. Put them in the correct     //
-    // order. Send out all of the prefix/value/suffix combos in the correct  //
-    // order to the CLI executable.                                          //
-    ///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////
+    //                                                             //
+    //                       CLICKING SUBMIT                       //
+    //                                                             //
+    /////////////////////////////////////////////////////////////////
+    // What happens when you click the submit button.              //
+    /////////////////////////////////////////////////////////////////
+    // When the button is pressed, prevent it from submitting the  //
+    // form like it normally would in a browser. Then grab all     //
+    // elements with an argOrder except for unchecked checkboxes.  //
+    // Combine the prefix, value and suffix into one variable per  //
+    // element. Put them in the correct order. Send out all of the //
+    // prefix/value/suffix combos in the correct order to the CLI  //
+    // executable.                                                 //
+    /////////////////////////////////////////////////////////////////
 
     //When you click the Compress button.
     $("#sendCmdArgs").click( function( event ){
