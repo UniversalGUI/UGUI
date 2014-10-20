@@ -30,7 +30,7 @@ $(document).ready( function(){
     //                WARNING: IDENTICAL ARGORDERS                 //
     //                                                             //
     /////////////////////////////////////////////////////////////////
-    // If the designer/developer use the same data-argOrder value  //
+    // If the designer/developer uses the same data-argOrder value //
     // for multiple elements, display a warning.                   //
     /////////////////////////////////////////////////////////////////
 
