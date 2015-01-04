@@ -354,7 +354,7 @@ $(function() {
     return menu;
   }
 
-  var menu = new Menu(/* pass cut, copy, paste labels if you need i18n*/);
+  var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
   $(document).on("contextmenu", function(e) {
     e.preventDefault();
     menu.popup(e.originalEvent.x, e.originalEvent.y);

@@ -2,7 +2,7 @@
 
 ##Universal Graphical User Interface
 
-UGUI gives a face to command line programs, and that face is HTML/CSS/JS.
+**UGUI gives a face to command line programs, and that face is HTML/CSS/JS.**
 
 * * *
 
