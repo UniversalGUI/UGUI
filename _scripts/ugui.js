@@ -12,9 +12,9 @@ $(document).ready( function(){
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // This is what makes running your CLI program and arguments   //
-// easier. Cow & Taco examples below to make life easier.      //
+// easier. Cow & Taco examples below to make life simpler.     //
 //                                                             //
-// $("#taco").click(function(){                                //
+// $("#taco").click( function(){                               //
 //   runcmd("pngquant", ["--force", "file.png"]);              //
 // });                                                         //
 //                                                             //
@@ -25,6 +25,7 @@ $(document).ready( function(){
 /////////////////////////////////////////////////////////////////
 
 function runcmd( executable, args, callback ) {
+  console.log( executable, args, callback )
   var spawn = require('child_process').spawn;
   var child = spawn( executable, args );
 
@@ -155,7 +156,6 @@ $("#argsForm *[data-argOrder]").blur( function(){
 //When you click the Compress button.
 $("#sendCmdArgs").click( function( event ){
 
-
     //Prevent the form from sending like a normal website.
     event.preventDefault();
     //clear out the commandLine box every time sendCmdArgs is clicked.
@@ -201,13 +201,13 @@ $("#sendCmdArgs").click( function( event ){
         //3. Create a variable based on the elements argSuffix data.
         var suffix = htmlEscape(argumentElement.data('argsuffix'));
 
-        //4. Create one variable containing all three of the above in the proper order and skipping Pre/Suf if not supplied.
-       var theSwitchString = (prefix || '') + value + (suffix || '');
+        //4. Combine the above 3 variables into one new variable in the proper order and skipping Pre/Suf if not supplied.
+        var theSwitchString = (prefix || '') + value + (suffix || '');
 
         //5. Create a variable with the numeral value of the order the arguments should be outputted in.
         var argOrder = argumentElement.data('argorder');
 
-        //6. Create a variable called using the argOrder and setting it to the combined Pre/Val/Suf. Like so: cmdSwitch6 = "--speed 9mph";
+        //6. Create a variable named using the argOrder and setting it to the combined Pre/Val/Suf. Like so: cmdSwitch6 = "--speed 9mph";
         window['cmdSwitch' + argOrder] = theSwitchString;
 
         //7. Plug above variables in to the unsortedCmds object to be sorted later
@@ -241,18 +241,25 @@ $("#sendCmdArgs").click( function( event ){
 
     //Create an array with the sorted content
     var theSwitchArray = sortObject(unsortedCmds);
+    //Creat an array for to fill with the arguments to be sent to the cmd line
+    var cmdSwitchArray = [];
 
     //Get the value of each element and send it to be outputted.
     for (var index = 0; index < theSwitchArray.length; index++) {
+        //add the arguments for #commandLine dev tool
         outputCmd(theSwitchArray[index].value);
+        //push arguments to the command line
+        cmdSwitchArray.push(theSwitchArray[index].value);
     }
 
-    //Output the commands arguments in the correct order
+    //Output the commands arguments in the correct order in the #commandLine dev tool
     function outputCmd(cmdSwitch) {
         $("#commandLine").append(cmdSwitch + " ");
     }
 
     $("#commandLine").prepend(executable);
+
+    runcmd(executable, cmdSwitchArray);
 
 });
 
@@ -308,13 +315,37 @@ arr.forEach(ticks);
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
+//              DETECT IF IN DEVELOPER ENVIRONMENT             //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Detects if you're in Development or Production environment. //
+//                                                             //
+// If you have a class of "dev" or "prod" in the body tag UGUI //
+// will enable key bindings such as F12 or CTRL+Shift+I to     //
+// launch Webkit's Developer Tools, or F5 to refresh. Also it  //
+// displays the Command Line output at the bottom of the page. //
+/////////////////////////////////////////////////////////////////
+
+if ( $("body").hasClass("prod") ) {
+  $("#commandLine").hide();
+} else if ( $("body").hasClass("dev") ){
+  $("#commandLine").show();
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
 //                 CUT/COPY/PASTE CONTEXT MENU                 //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // Right-click on any text or text field and you can now C&P!  //
 //                                                             //
 // Credit: https://github.com/b1rdex/nw-contextmenu            //
-//                                                             //
 /////////////////////////////////////////////////////////////////
 
 $(function() {

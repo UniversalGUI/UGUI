@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UGUI: pngquant</title>
+    <link rel="icon" ty pe="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="_style/ven.bootstrap.css">
+    <link rel="stylesheet" href="_style/ven.bootstrap.theme.css">
+    <link rel="stylesheet" href="_style/style.css">
+<!--<link rel="stylesheet" href="_style/ven.bootstrap.darkly.css"> -->
+<!--<link rel="stylesheet" href="http://bootswatch.com/cyborg/bootstrap.min.css"> -->
+    <!-- UGUI Requires jQuery 1.9.1 or above. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_scripts/ugui.js"></script>
+    <script type="text/javascript" src="_scripts/executable.js"></script>
+<!--<script type="text/javascript" src="_scripts/ven.flyingfocus.js"></script>-->
+<!--<script type="text/javascript" src="_scripts/ven.dropzone.js"></script> -->
+    <style>
+      body {
+        font-family: arial;
+        padding-top: 57px;
+      }
+      .navbar-brand img {
+        width: 32px;
+        margin: 0px 7px 0px 0px;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body role="document" class="dev">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img src="_img/icon32.png" alt="pngquant logo" />pngquant</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#new">New</a></li>
+                <li><a href="#new">Open</a></li>
+                <li class="divider"></li>
+                <li><a href="#exit">Exit</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#undo">Undo</a></li>
+                <li class="divider"></li>
+                <li><a href="#cut">Cut</a></li>
+                <li><a href="#copy">Copy</a></li>
+                <li><a href="#paste">Paste</a></li>
+                <li><a href="#delete">Delete</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#console">Console</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#help">Help/FAQ</a></li>
+                <li class="divider"></li>
+                <li><a href="#about">About UGUI pngquant</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container" role="main">
+
+      <header>
+        <h3>UGUI: pngquant <small>Lossy compression of PNG files!</small></h3>
+      </header>
+
+      <section>
+        <form id="argsForm" role="form-inline">
+
+          <div id="DropZone" class="form-group" title="Only png files are supported.">
+            <label>Drag and Drop your PNG here.</label>
+            <input data-argOrder="99" required="required" type="file" accept="image/png" />
+          </div>
+
+          <div class="row">
+              <p class="col-md-12">
+              <select data-argOrder="21">
+                <option value="auto"   >Reduce Palette Automatically</option>
+                <option value="256"    >Reduce Palette to 256</option>
+                <option value="256ie"  >Reduce Palette to 256 (with IEbug option)</option>
+                <option value="custom" >Custom</option>
+              </select>
+              </p>
+          </div>
+
+          <div class="row">
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="1" value="--force" />Overwrite existing output file.</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="2" value="--nofs"  />Disable Floyd-Steinberg dithering.</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="3" value="--iebug" />Make Internet Explorer 6 compatible</label></div>
+          </div>
+          <div class="row">
+            <label for="speed">Speed vs Quality:</label>
+            <span>Slow/High Quality</span>
+            <input type="range" id="speed" list="speedlist" min="1" max="11" step="1" value="1" data-argOrder="4" data-argPrefix="--speed ">
+            <span>Fast/Low Quality</span>
+          </div>
+          <div class="row">
+            <textarea required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-md-offset-6 text-right">
+              <button id="sendCmdArgs" type="submit" class="btn btn-default">Compress!</button>
+            </div>
+          </div>
+
+        </form>
+
+        <pre id="commandLine"></pre>
+        <style>#commandLine:before{content: "Command Line Output:";}</style>
+
+      </section>
+
+      <div class="modal hide">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title">About</h4>
+            </div>
+            <div class="modal-body">
+              <p class=" well">The conversion reduces file sizes significantly (often as much as 70%) and preserves full alpha transparency. Generated images are compatible with all modern web browsers, and have better fallback in IE6 than 24-bit PNGs.</p>
+              <p class="hide">Quantizes one or more 32-bit RGBA PNGs to 8-bit (or smaller) RGBA-palette PNGs using Floyd-Steinberg diffusion dithering (unless disabled). The output filename is the same as the input name except that it ends in "-fs8.png", "-or8.png" or your custom extension (unless the input is stdin, in which case the quantized image will go to stdout). The default behavior if the output file exists is to skip the conversion; use --force to overwrite.</p>
+              <p>pngquant, 2.2.0 (April 2014), by Greg Roelofs, Kornel Lesinski.</p>
+              <p>Compiled with libpng 1.6.12; using libpng 1.6.12.</p>
+              <p>UGUI version of pngquant by The Jared Wilcurt.</p>
+              <p>UGUI version of pngquant uses jQuery, DropZone Plugin, and FlyingFocus.</p>
+              <p>UGUI uses Node-Webkit.</p>
+              <p>Node-Webkit uses Node.js, parts of Chromium, and the Blink version of Webkit.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <pre class="hide">
+        usage:  pngquant [options] [ncolors] [pngfile [pngfile ...]]
+
+        options:
+          --force           overwrite existing output files (synonym: -f)
+          --nofs            disable Floyd-Steinberg dithering
+          --ext new.png     set custom suffix/extension for output filename
+          --output file     output path, only if one input file is specified (synonym: -o)
+          --speed N         speed/quality trade-off. 1=slow, 3=default, 11=fast & rough
+          --quality min-max don't save below min, use less colors below max (0-100)
+          --verbose         print status messages (synonym: -v)
+      </pre>
+
+    </div>
+  </body>
+</html>

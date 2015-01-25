@@ -1,4 +1,4 @@
-#![UGUI Logo and Mascot Starby the Frog](_assets/ugui-logo.png "Starby the Frog") UGUI
+#![UGUI Logo](_assets/ugui-logo.png "Universal Graphical User Interface") UGUI
 
 ##Universal Graphical User Interface
 
@@ -17,7 +17,7 @@ How do you spend your limited time now?
  * Working in GUI libraries for this **one** specific language?
  * Fixing bugs?
  * Do you take the time to implement new features knowing it will mean you'll have to redesign the GUI?
- * Give up and work on a different project, open source it and let someone else update it if they care...
+ * Give up and work on a different project, but ya know, open source it and let someone else update it if they care...
  * Not even bother and just create a command line version, maybe a GUI will be made by *someone else* with the same or better experience with this specific language and its GUI libraries.
 
 I don't like these options, I see a lot of problems here.
@@ -72,7 +72,7 @@ UGUI is based on Intel's Node-Webkit, which itself is based on Node.JS and Webki
 
 Webkit is the popular engine that is used in Chrome/Chromium, Safari, Opera, and most Android and iOS browsers. It's been a leader in supporting most new HTML5/CSS3 features (CSS Animation, Video/Audio, WebGL, etc.).
 
-Node.JS gives I/O support for JavaScript Developers. This is the key for us as it lets you read/write/edit/create files from within the browser.
+Node.JS gives I/O support for JavaScript Developers. This is the key for us as it lets you read/write/edit/create files from within the browser. And most importantly, it allows you to run executables from the browser.
 
 * * *
 
@@ -91,12 +91,12 @@ We needed a real world test application to build UGUI around to put it in better
 ###To-Do List
 
 * Test packaging in different OS environments
-* Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.
+* ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
 * Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
-* ~~Create UGUI logo (I'm thinking something with a [cartoon frog](http://imgur.com/IitQXw4), but I it could really be anything).~~
+* ~~Create UGUI logo.~~
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
 * Ultimately I'd like to make a program that makes this whole process far less manual. The program, *UGUI Designer*, would have the following features:
  1. Detect all JS and CSS files, uglify, minify, concat them in to one JS and one CSS doc.
  2. Remove any files not being used in the production version (git files, sass, etc.)
  3. Ability to export project to different environments (Win 32/64, Ubuntu, OSX, etc.)
- 4. Quick testing in Node-Webkit and portable Chromium that matches the same version as Node-Webkit for easier developing.
+ 4. Eventually the exporting function would create an installer for windows that will check if the required version of NW is already installed and if not download and install it, allowing for much smaller file sizes when packaging and distributing.
