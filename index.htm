@@ -130,8 +130,19 @@
 
         </form>
 
-        <pre id="commandLine"></pre>
-        <style>#commandLine:before{content: "Command Line Output:";}</style>
+        <div id="uguiDevTools" class="slideHide">
+          <pre class="chevron">&#0171;</pre>
+          <h3>UGUI Developer Tools</h3>
+          <p>To hide the UGUI Dev Tools set the <code>&lt;body&gt;</code> class to "prod" instead of "dev".</p>
+          <pre id="commandLine"></pre>
+          <p>Key bindings:</p>
+          <ul>
+            <li><strong>F5</strong> Soft Refresh</li>
+            <li><strong>Shift+F5</strong> Refresh ignoring cache</li>
+            <li><strong>CTRL+F5</strong> Hard Refresh</li>
+            <li><strong>F12</strong> or <strong>CTRL+Shift+I</strong> Open Webkit's Developer Tools</li>
+          </ul>
+        </div>
 
       </section>
 

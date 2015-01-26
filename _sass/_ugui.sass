@@ -1,0 +1,65 @@
+
+// Styles only used by UGUI
+
+$quick: 0.5s ease all
+
+body.dev #argsForm
+    margin-bottom: 280px
+
+#uguiDevTools
+    display: none
+    background-color: #E0E0E0
+    padding: 0px 10px 0px 10px
+    border-width: 3px 3px 0px 3px
+    border-style: solid
+    border-color: #777
+    border-radius: 25px 25px 0px 0px
+    width: 80%
+    position: fixed
+    bottom: 0px
+    left: 10%
+    transition: $quick
+    h3
+        font-weight: bold
+    p
+        margin: 8px 0px
+    &.slideHide
+        bottom: -7px !important
+        transition: $quick
+    *:not(pre)
+        transition: $quick
+
+.shrink
+    +bmp0
+    font-size: 0px
+    line-height: 0px
+
+#commandLine
+    margin: 0px
+    &:before
+        content: "Command Line Output: "
+        font-weight: bold
+
+.chevron
+    display: table-cell
+    width: 40px
+    height: 40px
+    background-color: transparent
+    border: 0px
+    margin: 14px -7px 0px 0px
+    padding: 0px
+    color: #777
+    font-family: sans-serif
+    font-size: 40px
+    font-weight: bold
+    line-height: 33px
+    text-align: center
+    vertical-align: middle
+    float: right
+    cursor: pointer
+    overflow: hidden
+    transition: $quick
+    transform: rotate(90deg)
+    &.down
+        margin-top: 0px
+        transform: rotate(-450deg) !important

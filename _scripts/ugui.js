@@ -326,12 +326,55 @@ arr.forEach(ticks);
 // displays the Command Line output at the bottom of the page. //
 /////////////////////////////////////////////////////////////////
 
+//Check if the body has a class of prod for Production Environment
 if ( $("body").hasClass("prod") ) {
-  $("#commandLine").hide();
+    $("#uguiDevTools").hide();
 } else if ( $("body").hasClass("dev") ){
-  $("#commandLine").show();
-}
 
+    //get node webkit GUI - WIN
+    var gui = require('nw.gui');
+    // get the window object
+    var win = gui.Window.get();
+
+    //Display the command line output box on page and UGUI Dev Tool info
+    $("#uguiDevTools *:not(pre)").addClass("shrink");
+    $("#uguiDevTools").show();
+
+    $(".chevron").click( function() {
+        $(".chevron").toggleClass("down");
+        $("#uguiDevTools").toggleClass("slideHide")
+        $("#uguiDevTools *:not(pre)").toggleClass("shrink");
+    });
+
+    document.onkeydown = function (pressed) {
+        ///Check CTRL + F key and do nothing :(
+        if ( pressed.ctrlKey === true && pressed.keyCode === 70 ) {
+            pressed.preventDefault();
+            console.info("Node-Webkit currently has no 'Find' feature built in. Sorry :(")
+            return false;
+        //Check CTRL + F5 keys and hard refresh the page
+        } else if ( pressed.ctrlKey === true && pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reloadDev();
+            return false;
+        //Check Shift + F5 keys and refresh ignoring cache
+        } else if ( pressed.shiftKey === true && pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reloadIgnoringCache();
+            return false;
+        //Check F5 key and soft refresh
+        } else if ( pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reload();
+            return false;
+        //Check F12 or Ctrl+Shift+I and display Webkit Dev Tools
+        } else if ( pressed.keyCode === 123 || pressed.ctrlKey === true && pressed.shiftKey === true && pressed.keyCode === 73 ) {
+            pressed.preventDefault();
+            win.showDevTools();
+            return false;
+        }
+    }
+}
 
 
 
