@@ -340,12 +340,14 @@ if ( $("body").hasClass("prod") ) {
     $("#uguiDevTools *:not(pre)").addClass("shrink");
     $("#uguiDevTools").show();
 
+    //Hide/Show Dev tools box
     $(".chevron").click( function() {
         $(".chevron").toggleClass("down");
         $("#uguiDevTools").toggleClass("slideHide")
         $("#uguiDevTools *:not(pre)").toggleClass("shrink");
     });
 
+    //Keyboard shortcuts
     document.onkeydown = function (pressed) {
         ///Check CTRL + F key and do nothing :(
         if ( pressed.ctrlKey === true && pressed.keyCode === 70 ) {
@@ -374,6 +376,22 @@ if ( $("body").hasClass("prod") ) {
             return false;
         }
     }
+
+    //testing swapping stylesheets
+    var fs = require('fs');
+    var allSwatches = fs.readdir('_style/ven.bootswatch', function(err, files){
+        if (!err)
+            for (var index = 0; index < files.length; index++) {
+                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + files[index] + "'>" + files[index].split(".min.css")[0] + "</option>");
+            }
+        else
+            console.warn('Could not return list of style swatches.');
+    });
+
+    $('#swatchSwapper').change(function (){
+        $('head link[data-swatch]').attr('href', $('#swatchSwapper').val() );
+    });
+
 }
 
 
