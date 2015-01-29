@@ -47,10 +47,6 @@ function runcmd( executable, args, callback ) {
 
 
 
-/*///////////////////To be implemented later//////////////////////
-var filepath = $('#DropZone input[type=file]').val();
-var filename = $('#DropZone input[type=file]').val().split('\\').pop();
-////////////////////////////////////////////////////////////////*/
 
 //Create an object
 var cmdSwitches = [];
@@ -98,6 +94,32 @@ if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
     console.warn( "// You have more than one data-argOrder with the same value. //" );
     console.warn( "///////////////////////////////////////////////////////////////" );
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                   DROPZONE MODIFICATIONS                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// After dropping a file in the DropZone, put the file name in //
+// the DropZone. If the file is an image, display a thumbnail. //
+/////////////////////////////////////////////////////////////////
+
+$('#DropZone input[type=file]').change( function(){
+    var filepath = $('#DropZone input[type=file]').val();
+    var filename = $('#DropZone input[type=file]').val().split('\\').pop();
+    var droppedFilename = "Dropped " + filename;
+    $("#DropZone label").attr("data-content", droppedFilename);
+    //if (filename ends in png||jpg||jpeg||webp||bmp||gif) {
+        $("#DropZone").append('<img src="' + filepath + '" alt="Thumbnail of dropped image." />');
+    //}
+})
+
 
 
 

@@ -27,7 +27,7 @@
             font-size: 0px
             &:after
                 font-size: 24px
-                content: "Dropped"
+                content: attr(data-content)
                 line-height: 80px
     div
         display: table-cell
@@ -39,6 +39,7 @@
         &:after
             content: " "
     img
+        display: block
         border-radius: 10px
         vertical-align: middle
         max-width: 95%
