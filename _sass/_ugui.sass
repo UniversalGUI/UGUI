@@ -25,6 +25,22 @@ body.dev #argsForm
     -webkit-font-smoothing: antialiased
     font-family: sans-serif
     transition: $quick
+    nav
+        margin: 0px 0px 9px 9px
+        span
+            font-size: 10px
+            color: #666
+            font-variant: italic
+            cursor: pointer
+            &:after
+                content: " | "
+            &:last-of-type:after
+                content: ""
+    section
+        padding: 1px
+        margin: 0px 0px 10px 0px
+        display: block
+        height: auto
     h3
         +bmp0
         border: 0px
@@ -63,11 +79,13 @@ body.dev #argsForm
     &.slideHide
         bottom: -7px !important
         transition: $quick
-    *:not(pre)
+    *
         transition: $quick
 
 .shrink
-    +bmp0
+    border: 0px !important
+    margin: 0px !important
+    padding: 0px !important
     font-size: 0px !important
     line-height: 0px !important
     opacity: 0 !important
@@ -93,27 +111,3 @@ body.dev #argsForm
     font-size: 13px
     font-family: sans-serif
     margin: 0px 0px 3px 0px
-
-.chevron
-    display: table-cell
-    width: 40px
-    height: 40px
-    background-color: transparent
-    border: 0px
-    margin: 14px -7px 0px 0px
-    padding: 0px
-    color: #777
-    font-family: sans-serif
-    font-size: 40px
-    font-weight: bold
-    line-height: 33px
-    text-align: center
-    vertical-align: middle
-    float: right
-    cursor: pointer
-    overflow: hidden
-    transition: $quick
-    transform: rotate(90deg)
-    &.down
-        margin-top: 0px
-        transform: rotate(-450deg) !important

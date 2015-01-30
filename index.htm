@@ -4,8 +4,8 @@
     <title>UGUI: pngquant</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="_style/ven.bootstrap.css">
-    <!--<link rel="stylesheet" href="_style/ven.bootstrap.theme.css"> -->
-    <link rel="stylesheet" href="_style/ven.bootswatch/yeti.min.css" data-swatch="swapper">
+    <!-- Change this next line from cerulean to whatever swatch you pick. -->
+    <link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">
     <link rel="stylesheet" href="_style/style.css">
     <!-- UGUI Requires jQuery 1.9.1 or above. -->
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
@@ -129,18 +129,32 @@
         </form>
 
         <div id="uguiDevTools" class="slideHide">
-          <pre class="chevron">&#0171;</pre>
-          <h3>UGUI Developer Tools</h3>
-          <p>To hide the UGUI Dev Tools set the <code>&lt;body&gt;</code> class to "prod" instead of "dev".</p>
-          <pre id="commandLine"></pre>
-          <p>Key bindings:</p>
-          <ul>
-            <li><strong>F5</strong> Soft Refresh</li>
-            <li><strong>Shift+F5</strong> Refresh ignoring cache</li>
-            <li><strong>CTRL+F5</strong> Hard Refresh</li>
-            <li><strong>F12</strong> or <strong>CTRL+Shift+I</strong> Open Webkit's Developer Tools</li>
-          </ul>
-          <select id="swatchSwapper"></select>
+          <nav>
+            <span data-nav="uguiAbout">About</span>
+            <span data-nav="uguiCommand">CMD Output</span>
+            <span data-nav="uguiShortcuts">Shortcuts</span>
+            <span data-nav="uguiSwapper">Style Swapper</span>
+          </nav>
+          <section class="uguiAbout">
+            <h3>UGUI Developer Tools</h3>
+            <p>To hide the UGUI Dev Tools set the <code>&lt;body&gt;</code> class to "prod" instead of "dev".</p>
+          </section>
+          <section class="uguiCommand">
+            <pre id="commandLine"></pre>
+          </section>
+          <section class="uguiShortcuts">
+            <p>Key bindings:</p>
+            <ul>
+              <li><strong>F5</strong> Soft Refresh</li>
+              <li><strong>Shift+F5</strong> Refresh ignoring cache</li>
+              <li><strong>CTRL+F5</strong> Hard Refresh</li>
+              <li><strong>F12</strong> or <strong>CTRL+Shift+I</strong> Open Webkit's Developer Tools</li>
+            </ul>
+          </section>
+          <section class="uguiSwapper">
+            <p>Test out different looks for your application. Change the style in the header to the swatch you like best!</p>
+            <select id="swatchSwapper"></select>
+          </section>
         </div>
 
       </section>

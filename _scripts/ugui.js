@@ -359,15 +359,24 @@ if ( $("body").hasClass("prod") ) {
     var win = gui.Window.get();
 
     //Display the command line output box on page and UGUI Dev Tool info
-    $("#uguiDevTools *:not(pre)").addClass("shrink");
     $("#uguiDevTools").show();
+    $("#uguiDevTools section").addClass("shrink");
+    $("#uguiDevTools section *").addClass("shrink");
 
-    //Hide/Show Dev tools box
-    $(".chevron").click( function() {
-        $(".chevron").toggleClass("down");
-        $("#uguiDevTools").toggleClass("slideHide")
-        $("#uguiDevTools *:not(pre)").toggleClass("shrink");
-    });
+    //Hide/Show based on UGUI Dev Tools navigation
+    $("#uguiDevTools nav span").click( function(){
+        var sectionClicked = $(this).attr('data-nav');
+
+        if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
+            $("#uguiDevTools section").addClass("shrink");
+            $("#uguiDevTools section *").addClass("shrink");
+            $("#uguiDevTools section." + sectionClicked).removeClass("shrink");
+            $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
+        } else {
+            $("#uguiDevTools section." + sectionClicked).addClass("shrink")
+            $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink")
+        }
+    })
 
     //Keyboard shortcuts
     document.onkeydown = function (pressed) {
@@ -399,10 +408,14 @@ if ( $("body").hasClass("prod") ) {
         }
     }
 
-    //testing swapping stylesheets
+    //Swatch/Styles Swapper
+    //Allow access to the filesystem
     var fs = require('fs');
+    //Grab all the files in the ven.bootswatch file and put them in an array
     var allSwatches = fs.readdir('_style/ven.bootswatch', function(err, files){
+        //if that works
         if (!err)
+            //check each file and put it in the dropdown box
             for (var index = 0; index < files.length; index++) {
                 $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + files[index] + "'>" + files[index].split(".min.css")[0] + "</option>");
             }
@@ -410,6 +423,7 @@ if ( $("body").hasClass("prod") ) {
             console.warn('Could not return list of style swatches.');
     });
 
+    //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
     $('#swatchSwapper').change(function (){
         $('head link[data-swatch]').attr('href', $('#swatchSwapper').val() );
     });
