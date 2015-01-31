@@ -1,4 +1,4 @@
-#![UGUI Logo](_assets/ugui-logo.png "Universal Graphical User Interface") UGUI
+#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface") UGUI
 
 ##Universal Graphical User Interface
 
@@ -88,15 +88,23 @@ We needed a real world test application to build UGUI around to put it in better
 
 * * *
 
-###To-Do List
+###Project Roadmap
 
-* Test packaging in different OS environments
+**Phase 1: ugui.js**
+
 * ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
-* Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
 * ~~Create UGUI logo.~~
+* Test packaging in different OS environments
+
+**Phase 2: Templates and Site**
+
+* Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
+
+**Phase 3: UGUI Designer**
+
 * Ultimately I'd like to make a program that makes this whole process far less manual. The program, *UGUI Designer*, would have the following features:
  1. Detect all JS and CSS files, uglify, minify, concat them in to one JS and one CSS doc.
  2. Remove any files not being used in the production version (git files, sass, etc.)
  3. Ability to export project to different environments (Win 32/64, Ubuntu, OSX, etc.)
- 4. Eventually the exporting function would create an installer for windows that will check if the required version of NW is already installed and if not download and install it, allowing for much smaller file sizes when packaging and distributing.
+ 4. Eventually the exporting function would create an installer for Windows that will check if the required version of NW.js is already installed and if not download and install it, allowing for much smaller file sizes when packaging and distributing.
