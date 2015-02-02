@@ -388,11 +388,14 @@ if ( $("body").hasClass("prod") ) {
 }
 
 function putExeHelpInDevTools() {
-    //Add a new section
-    $("#uguiDevTools nav").append("<span data-nav=ugui" + executable + ">" + executable + "</span>");
+    //Run the executable with -help arg to get it's help info
     runcmd(executable, ["-help"], function( returnedHelpInfo ){
-        $("#uguiDevTools").append("<section class='ugui" + executable + "'></section>");
-        $("#uguiDevTools section.ugui" + executable).html("<pre class='executableHelp'>" + returnedHelpInfo + "</pre>")
+        //Add a new nav item in the Dev Tools based on the name of the user's Executable
+        $("#uguiDevTools nav").append("<span data-nav=ugui" + executable + ">" + executable + "</span>");
+        //Create a section in the UGUI Dev Tools to place the help info in
+        $("#uguiDevTools").append("<section class='shrink ugui" + executable + "'></section>");
+        //Put the help info in a <pre>
+        $("#uguiDevTools section.ugui" + executable).html("<pre class='executableHelp shrink'>" + returnedHelpInfo + "</pre>")
     });
 }
 
