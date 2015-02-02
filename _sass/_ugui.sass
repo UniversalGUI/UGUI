@@ -34,8 +34,10 @@ body.dev #argsForm
             cursor: pointer
             &:after
                 content: " | "
-            &:last-of-type:after
-                content: ""
+            &:last-of-type
+                text-transform: capitalize
+                &:after
+                    content: ""
     section
         padding: 1px
         margin: 0px 0px 10px 0px
@@ -122,3 +124,6 @@ body.dev #argsForm
     font-size: 13px
     font-family: sans-serif
     margin: 0px 0px 3px 0px
+
+.executableHelp
+    max-height: 156px

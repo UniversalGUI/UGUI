@@ -25,7 +25,6 @@ $(document).ready( function(){
 /////////////////////////////////////////////////////////////////
 
 function runcmd( executable, args, callback ) {
-  console.log( executable, args, callback )
   var spawn = require('child_process').spawn;
   var child = spawn( executable, args );
 
@@ -71,13 +70,6 @@ var cmdArgs = $('#argsForm *[data-argOrder]');
 
 var arr = {};
 
-//Create a variable containing the warning if mutliple argOrders have the same value.
-var multiArgOrders = '<div class="alert alert-danger alert-dismissible" role="alert"> \
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> \
-  <h4>UGUI Developer Warning!</h4> \
-    You have more than one <code>data-argOrder</code> with the same value. \
-</div>';
-
 for (var index = 0; index < cmdArgs.length; index++) {
     arr[cmdArgs[index].dataset.argorder] = cmdArgs[index];
 }
@@ -89,7 +81,10 @@ for ( var key in arr )
 
 //If the new array had any duplicates removed display a warning.
 if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
-    $("body").prepend( multiArgOrders );
+    $.get('_markup/ugui-multiargorders.htm', function( multiArgOrdersMarkup ){
+        //Put alert mesage at top of page
+        $("body.dev").prepend( multiArgOrdersMarkup );
+    });
     console.warn( "///////////////////////////////////////////////////////////////" );
     console.warn( "// You have more than one data-argOrder with the same value. //" );
     console.warn( "///////////////////////////////////////////////////////////////" );
@@ -359,9 +354,10 @@ if ( $("body").hasClass("prod") ) {
     var win = gui.Window.get();
 
     //Create UGUI Dev Tools markup
-    $.get('_markup/uguidevtools.htm', function( uguiDevToolsMarkup ){
+    $.get('_markup/ugui-devtools.htm', function( uguiDevToolsMarkup ){
         //Put Dev Tool Markup on the page
         $("body.dev").append( uguiDevToolsMarkup );
+        putExeHelpInDevTools();
         $("#uguiDevTools section").addClass("shrink");
         $("#uguiDevTools section *").addClass("shrink");
         $("#uguiDevTools").show();
@@ -389,6 +385,15 @@ if ( $("body").hasClass("prod") ) {
     //Keyboard shortcuts
     keyBindings();
 
+}
+
+function putExeHelpInDevTools() {
+    //Add a new section
+    $("#uguiDevTools nav").append("<span data-nav=ugui" + executable + ">" + executable + "</span>");
+    runcmd(executable, ["-help"], function( returnedHelpInfo ){
+        $("#uguiDevTools").append("<section class='ugui" + executable + "'></section>");
+        $("#uguiDevTools section.ugui" + executable).html("<pre class='executableHelp'>" + returnedHelpInfo + "</pre>")
+    });
 }
 
 function swatchSwapper() {
