@@ -1,4 +1,4 @@
-#![UGUI Logo](_assets/logol/ugui-logo.png "Universal Graphical User Interface") UGUI
+#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface") UGUI
 
 ##Universal Graphical User Interface
 
