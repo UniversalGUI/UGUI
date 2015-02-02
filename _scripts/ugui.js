@@ -359,89 +359,39 @@ if ( $("body").hasClass("prod") ) {
     var win = gui.Window.get();
 
     //Create UGUI Dev Tools markup
-    var uguiDevToolsMarkup = '<div id="uguiDevTools" class="slideHide"> \
-          <nav> \
-            <span data-nav="uguiAbout">About</span> \
-            <span data-nav="uguiCommand">CMD Output</span> \
-            <span data-nav="uguiShortcuts">Shortcuts</span> \
-            <span data-nav="uguiSwapper">Style Swapper</span> \
-          </nav> \
-          <section class="uguiAbout"> \
-            <h3>UGUI Developer Tools</h3> \
-            <p>To hide the UGUI Dev Tools set the <code>&lt;body&gt;</code> class to "prod" instead of "dev".</p> \
-          </section> \
-          <section class="uguiCommand"> \
-            <pre id="commandLine"></pre> \
-          </section> \
-          <section class="uguiShortcuts"> \
-            <p>Key bindings:</p> \
-            <ul> \
-              <li><strong>F5</strong> Soft Refresh</li> \
-              <li><strong>Shift+F5</strong> Refresh ignoring cache</li> \
-              <li><strong>CTRL+F5</strong> Hard Refresh</li> \
-              <li><strong>F12</strong> or <strong>CTRL+Shift+I</strong> Open Webkit\'s Developer Tools</li> \
-            </ul> \
-          </section> \
-          <section class="uguiSwapper"> \
-            <p>Test out different looks for your application. Change the style in the header to the swatch you like best!</p> \
-            <select id="swatchSwapper"></select> \
-          </section> \
-        </div>';
+    $.get('_markup/uguidevtools.htm', function( uguiDevToolsMarkup ){
+        //Put Dev Tool Markup on the page
+        $("body.dev").append( uguiDevToolsMarkup );
+        $("#uguiDevTools section").addClass("shrink");
+        $("#uguiDevTools section *").addClass("shrink");
+        $("#uguiDevTools").show();
 
-    //Put Dev Tool Markup on the page
-    $("body.dev").append( uguiDevToolsMarkup );
-    $("#uguiDevTools section").addClass("shrink");
-    $("#uguiDevTools section *").addClass("shrink");
-    $("#uguiDevTools").show();
+        $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $("#sendCmdArgs").html() + "</em> button to see output.</span>");
 
-    $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $("#sendCmdArgs").html() + "</em> button to see output.</span>");
+        //Hide/Show based on UGUI Dev Tools navigation
+        $("#uguiDevTools nav span").click( function(){
+            var sectionClicked = $(this).attr('data-nav');
 
-    //Hide/Show based on UGUI Dev Tools navigation
-    $("#uguiDevTools nav span").click( function(){
-        var sectionClicked = $(this).attr('data-nav');
+            if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
+                $("#uguiDevTools section").addClass("shrink");
+                $("#uguiDevTools section *").addClass("shrink");
+                $("#uguiDevTools section." + sectionClicked).removeClass("shrink");
+                $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
+            } else {
+                $("#uguiDevTools section." + sectionClicked).addClass("shrink")
+                $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink")
+            }
+        })
 
-        if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
-            $("#uguiDevTools section").addClass("shrink");
-            $("#uguiDevTools section *").addClass("shrink");
-            $("#uguiDevTools section." + sectionClicked).removeClass("shrink");
-            $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
-        } else {
-            $("#uguiDevTools section." + sectionClicked).addClass("shrink")
-            $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink")
-        }
-    })
+        swatchSwapper();
+    });
 
     //Keyboard shortcuts
-    document.onkeydown = function (pressed) {
-        ///Check CTRL + F key and do nothing :(
-        if ( pressed.ctrlKey === true && pressed.keyCode === 70 ) {
-            pressed.preventDefault();
-            console.info("Node-Webkit currently has no 'Find' feature built in. Sorry :(")
-            return false;
-        //Check CTRL + F5 keys and hard refresh the page
-        } else if ( pressed.ctrlKey === true && pressed.keyCode === 116 ) {
-            pressed.preventDefault();
-            win.reloadDev();
-            return false;
-        //Check Shift + F5 keys and refresh ignoring cache
-        } else if ( pressed.shiftKey === true && pressed.keyCode === 116 ) {
-            pressed.preventDefault();
-            win.reloadIgnoringCache();
-            return false;
-        //Check F5 key and soft refresh
-        } else if ( pressed.keyCode === 116 ) {
-            pressed.preventDefault();
-            win.reload();
-            return false;
-        //Check F12 or Ctrl+Shift+I and display Webkit Dev Tools
-        } else if ( pressed.keyCode === 123 || pressed.ctrlKey === true && pressed.shiftKey === true && pressed.keyCode === 73 ) {
-            pressed.preventDefault();
-            win.showDevTools();
-            return false;
-        }
-    }
+    keyBindings();
 
-    //Swatch/Styles Swapper
+}
+
+function swatchSwapper() {
     //Allow access to the filesystem
     var fs = require('fs');
     //Grab all the files in the ven.bootswatch file and put them in an array
@@ -460,8 +410,43 @@ if ( $("body").hasClass("prod") ) {
     $('#swatchSwapper').change(function (){
         $('head link[data-swatch]').attr('href', $('#swatchSwapper').val() );
     });
-
 }
+
+function keyBindings() {
+    //Keyboard shortcuts
+    document.onkeydown = function (pressed) {
+        ///Check CTRL + F key and do nothing :(
+        if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
+            pressed.preventDefault();
+            console.info("Node-Webkit currently has no 'Find' feature built in. Sorry :(")
+            return false;
+        //Check CTRL + F5 keys and hard refresh the page
+        } else if ( pressed.ctrlKey && pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reloadDev();
+            return false;
+        //Check Shift + F5 keys and refresh ignoring cache
+        } else if ( pressed.shiftKey && pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reloadIgnoringCache();
+            return false;
+        //Check F5 key and soft refresh
+        } else if ( pressed.keyCode === 116 ) {
+            pressed.preventDefault();
+            win.reload();
+            return false;
+        //Check F12, Ctrl+Shift+I, or Option+Shift+I and display Webkit Dev Tools
+        } else if (
+            pressed.keyCode === 123 ||
+            pressed.ctrlKey && pressed.shiftKey && pressed.keyCode === 73 ||
+            pressed.altKey && pressed.shiftKey && pressed.keyCode === 73 ) {
+                pressed.preventDefault();
+                win.showDevTools();
+                return false;
+        }
+    }
+};
+
 
 
 
