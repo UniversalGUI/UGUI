@@ -34,10 +34,15 @@ body.dev #argsForm
             cursor: pointer
             &:after
                 content: " | "
-            &:last-of-type
-                text-transform: capitalize
-                &:after
-                    content: ""
+            &:last-of-type:after
+                content: ""
+    select
+        background-color: #F5F5F5
+        border: 1px solid #CCC
+        padding: 2px
+        font-size: 13px
+        font-family: sans-serif
+        margin: 0px 0px 3px 0px
     section
         padding: 1px
         margin: 0px 0px 10px 0px
@@ -116,14 +121,21 @@ body.dev #argsForm
         font-size: 11px
         font-style: normal
 
-#swatchSwapper
+#swatchSwapper,
+span[data-nav="uguiExecutable"],
+.executableName
     text-transform: capitalize
-    background-color: #F5F5F5
-    border: 1px solid #CCC
-    padding: 2px
-    font-size: 13px
-    font-family: sans-serif
-    margin: 0px 0px 3px 0px
+
+.executableName
+    color: #555
+    font-weight: bold
 
 .executableHelp
     max-height: 156px
+
+.helpIntro
+    position: absolute
+    top: 4px
+    right: 12px
+    font-size: 12px
+    color: #444

@@ -4,6 +4,7 @@
     <span data-nav="uguiCommand">CMD Output</span>
     <span data-nav="uguiShortcuts">Shortcuts</span>
     <span data-nav="uguiSwapper">Style Swapper</span>
+    <span data-nav="uguiExecutable">Executable</span>
   </nav>
   <section class="uguiAbout">
     <h3>UGUI Developer Tools</h3>
@@ -24,5 +25,22 @@
   <section class="uguiSwapper">
     <p>Test out different looks for your application. Change the style in the header to the swatch you like best!</p>
     <select id="swatchSwapper"></select>
+  </section>
+  <section class="uguiExecutable">
+    <div class="helpIntro">Get information from <span class="executableName"></span>
+      <select class="helpDropdown">
+        <option></option>
+        <option value="/?">/?</option>
+        <option value="-?">-?</option>
+        <option value="--?">--?</option>
+        <option value="/help">/help</option>
+        <option value="-help">-help</option>
+        <option value="--help">--help</option>
+        <option value="/about">/about</option>
+        <option value="-about">-about</option>
+        <option value="--about">--about</option>
+      </select>
+    </div>
+    <pre class="executableHelp"></pre>
   </section>
 </div>

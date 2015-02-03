@@ -388,14 +388,25 @@ if ( $("body").hasClass("prod") ) {
 }
 
 function putExeHelpInDevTools() {
-    //Run the executable with -help arg to get it's help info
-    runcmd(executable, ["-help"], function( returnedHelpInfo ){
-        //Add a new nav item in the Dev Tools based on the name of the user's Executable
-        $("#uguiDevTools nav").append("<span data-nav=ugui" + executable + ">" + executable + "</span>");
-        //Create a section in the UGUI Dev Tools to place the help info in
-        $("#uguiDevTools").append("<section class='shrink ugui" + executable + "'></section>");
-        //Put the help info in a <pre>
-        $("#uguiDevTools section.ugui" + executable).html("<pre class='executableHelp shrink'>" + returnedHelpInfo + "</pre>")
+    //Add a new nav item in the Dev Tools based on the name of the user's Executable
+    $("#uguiDevTools span[data-nav=uguiExecutable]").html(executable);
+    $("#uguiDevTools .executableName").html(executable);
+
+    //Declare a variable
+    var executableHelpChoice;
+
+    //Everytime the dropdown changes update the <pre>
+    $("#uguiDevTools .helpDropdown").change( function(){
+
+        //Update the variable to match the user's choice
+        executableHelpChoice = $(this).val();
+
+        //Run the executable using the user's chosen argument to get it's help info
+        runcmd(executable, [ executableHelpChoice ], function( returnedHelpInfo ){
+            //Put the help info in a <pre>
+            $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
+        });
+
     });
 }
 
