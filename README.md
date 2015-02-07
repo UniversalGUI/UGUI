@@ -24,17 +24,32 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
+Current Version: V0.95 **almost there!**
+
 **Phase 1: ugui.js**
 
-* ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
-* ~~Create UGUI logo.~~
-* Test packaging in different OS environments
+* V1.0 ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
+* V1.0 ~~Create UGUI logo.~~
+* V1.0 ~~Remove all browser specific stuff that isn't relevant like -moz, -o, -ms, filter, old -webkit, EOT, etc.~~
+* V1.0 Update layout design using Bootstrap.
+* V1.0 Clean up template to have generic sample content.
+* V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, and UGUI Designer.
+* V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
+* V1.5 Test packaging in different OS environments.
 
 **Phase 2: Templates and Site**
 
 * Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
-
+ * Hardware Pack template to be created using D3.JS library to graphically display information about hardware such as CPU and RAM usage.
+ * File System Pack template to be created to display information about files in a folder, file sizes, etc.
+ * 3D Pack template using OpenGL and three.js to take advantage of 3D.
+ * System Tray template for windowless application using native system tray and context-menu.
+ * Mega Pack which combines most of the parts from all other official template packs.
+ * More general templates that just focus on different visual layouts.
+ * Advanced templates for more unique CMD programs.
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
+* Create Explainer and tutorial videos.
+* Advertise the existence of this project like crazy!
 
 **Phase 3: UGUI Designer**
 

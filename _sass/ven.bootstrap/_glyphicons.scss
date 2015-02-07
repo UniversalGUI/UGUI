@@ -10,9 +10,7 @@
 // Import the fonts
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../_fonts/bootstrap/glyphicons-halflings-regular.eot');
-  src: url('../_fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-       url('../_fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'),
+  src: url('../_fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'),
        url('../_fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'),
        url('../_fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
@@ -27,7 +25,6 @@
   font-weight: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 // Individual icons
