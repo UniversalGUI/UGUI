@@ -33,7 +33,8 @@ Current Version: V0.95 **almost there!**
 * V1.0 ~~Remove all browser specific stuff that isn't relevant like -moz, -o, -ms, filter, old -webkit, EOT, etc.~~
 * V1.0 Update layout design using Bootstrap.
 * V1.0 Clean up template to have generic sample content.
-* V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, and UGUI Designer.
+* V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
+* V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 
@@ -73,6 +74,7 @@ Current Version: V0.95 **almost there!**
 * [jQuery](http://jquery.com)
 * [Twitter Bootstrap](http://getbootstrap.com)
 * [Bootswatch](http://bootswatch.com)
+* [strip-json-comments](https://github.com/sindresorhus/strip-json-comments)
 * [DropZoneJS](http://www.dropzonejs.com)
 * [Dudley Storey](http://demosthenes.info/blog/864/Auto-Generate-Marks-on-HTML5-Range-Sliders-with-JavaScript) - For range slider increments, though this will likely be replaced with [Slider for Bootstrap](http://seiyria.github.io/bootstrap-slider)
 * [Cut, Copy, Paste Context Menu](https://github.com/b1rdex/nw-contextmenu)

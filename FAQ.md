@@ -75,9 +75,3 @@ io.js is based on Node.JS and gives I/O support for JavaScript Developers. This 
 ###How does UGUI differ from just using nw.js
 
 At it's core, it really doesn't differ. In both instances you're making a nwjs app. The point of the UGUI project is to make the process as easy and simple as possible. We want to create dynamic templates that can be used in most instances and take most of the hassle out of the process so designers can focus on designing, and not coding. This is why our templates are based around jQuery and Twitter Bootstrap. These are familiar and easy to work with for most front-end developers/designers. By basing all the templates off of Bootstrap it means themes can be interchangeable and it allows for designers to create new themes that everyone can use.
-
-* * *
-
-###What's the deal with PNGQuant?
-
-We needed a real world test application to build UGUI around to put it in better context during development. "pngquant" is a very simple command line tool for compressing pngs. Since it only has a few commands and comes pre-packed with some batch files used as presets, it seemed like a good choice. It is not actually an official part of UGUI and will not be seen in version 1.0.
