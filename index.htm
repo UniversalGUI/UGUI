@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>UGUI: pngquant</title>
+    <title>Your Program Name</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="_style/ven.bootstrap.css">
     <!-- Change this next line from cerulean to whatever swatch you pick. -->
@@ -11,7 +11,6 @@
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
-    <script type="text/javascript" src="_scripts/executable.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
     <style>
       body {
@@ -23,6 +22,7 @@
       }
     </style>
   </head>
+  <!-- Change the class form dev to prod when you're ready to distribute your application. -->
   <body role="document" class="dev">
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -33,7 +33,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="_img/icon32.png" alt="pngquant logo" />pngquant</a>
+          <a class="navbar-brand" href="#"><img src="_img/icon32.png" alt="Your Application Name logo" />Your Application Name</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -68,7 +68,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#help">Help/FAQ</a></li>
                 <li class="divider"></li>
-                <li><a href="#about">About UGUI pngquant</a></li>
+                <li><a href="#about">About</a></li>
               </ul>
             </li>
           </ul>
@@ -79,37 +79,37 @@
     <div class="container" role="main">
 
       <header>
-        <h3>UGUI: pngquant <small>Lossy compression of PNG files!</small></h3>
+        <h3>Your Application Name <small>Short description or tagline</small></h3>
       </header>
 
       <section>
         <form id="argsForm" role="form-inline">
 
-          <div id="DropZone" class="form-group" title="Only png files are supported.">
-            <label data-content="Dropped">Drag and Drop your PNG here.</label>
-            <input data-argOrder="99" required="required" type="file" accept="image/png" />
+          <div id="DropZone" class="form-group" title="Click to browse for your file.">
+            <label data-content="Dropped">Drag and Drop your file here.</label>
+            <input data-argOrder="99" required="required" type="file" />
           </div> <!-- REPLACE WITH http://www.dropzonejs.com -->
 
           <div class="row">
               <p class="col-md-12">
-              <select data-argOrder="21">
-                <option value="auto"   >Reduce Palette Automatically</option>
-                <option value="256"    >Reduce Palette to 256</option>
-                <option value="256ie"  >Reduce Palette to 256 (with IEbug option)</option>
-                <option value="custom" >Custom</option>
+              <select data-argOrder="4">
+                <option value="--potato" >List of items</option>
+                <option value="--carrot" >in a dropdown</option>
+                <option value="--celery" >that will send</option>
+                <option value="--ginger" >specific arguments</option>
               </select>
               </p>
           </div>
 
           <div class="row">
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="1" value="--force" />Overwrite existing output file.</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="2" value="--nofs"  />Disable Floyd-Steinberg dithering.</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="3" value="--iebug" />Make Internet Explorer 6 compatible</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="1" value="-plum" />Several checkboxes</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="2" value="-kiwi" />that each add a</label></div>
+            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="3" value="-pear" />different argument</label></div>
           </div>
           <div class="row">
             <label for="speed">Speed vs Quality:</label>
             <span>Slow/High Quality</span>
-            <input type="range" id="speed" list="speedlist" min="1" max="11" step="1" value="1" data-argOrder="4" data-argPrefix="--speed ">
+            <input type="range" id="speed" list="speedlist" min="1" max="11" step="1" value="1" data-argOrder="5" data-argPrefix="--speed ">
             <span>Fast/Low Quality</span>
           </div> <!-- REPLACE WITH http://seiyria.github.io/bootstrap-slider -->
           <div class="row">
@@ -118,7 +118,7 @@
 
           <div class="row">
             <div class="col-md-6 col-md-offset-6 text-right">
-              <button id="sendCmdArgs" type="submit" class="btn btn-default">Compress!</button>
+              <button id="sendCmdArgs" type="submit" class="btn btn-default">Run!</button>
             </div>
           </div>
 
@@ -126,7 +126,7 @@
 
       </section>
 
-      <div class="modal hide">
+      <div id="aboutModal" class="modal hide">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -134,14 +134,27 @@
               <h4 class="modal-title">About</h4>
             </div>
             <div class="modal-body">
-              <p class=" well">The conversion reduces file sizes significantly (often as much as 70%) and preserves full alpha transparency. Generated images are compatible with all modern web browsers, and have better fallback in IE6 than 24-bit PNGs.</p>
-              <p class="hide">Quantizes one or more 32-bit RGBA PNGs to 8-bit (or smaller) RGBA-palette PNGs using Floyd-Steinberg diffusion dithering (unless disabled). The output filename is the same as the input name except that it ends in "-fs8.png", "-or8.png" or your custom extension (unless the input is stdin, in which case the quantized image will go to stdout). The default behavior if the output file exists is to skip the conversion; use --force to overwrite.</p>
-              <p>pngquant, 2.2.0 (April 2014), by Greg Roelofs, Kornel Lesinski.</p>
-              <p>Compiled with libpng 1.6.12; using libpng 1.6.12.</p>
-              <p>UGUI version of pngquant by The Jared Wilcurt.</p>
-              <p>UGUI version of pngquant uses jQuery, DropZone Plugin.</p>
-              <p>UGUI uses Node-Webkit.</p>
-              <p>Node-Webkit uses Node.js, parts of Chromium, and the Blink version of Webkit.</p>
+              <p class=" well">A detailed explanation of what your application does or is used for.</p>
+              <div>
+                <p>pngquant, 2.2.0 (April 2014), by Greg Roelofs, Kornel Lesinski.</p>
+                <p>Compiled with libpng 1.6.12; using libpng 1.6.12.</p>
+                <p>UGUI version of pngquant by The Jared Wilcurt.</p>
+              </div>
+              <div>
+                <p><span class="applicationName">This application</span> uses the <a href="#">UGUI</a> framework.</p>
+                <p>UGUI uses
+                  <a href="http://nwjs.io">NW.js</a>,
+                  <a href="http://jquery.com">jQuery</a>,
+                  <a href="http://getbootstrap.com" title="by Twitter">Bootstrap</a>,
+                  <a href="http://bootswatch.com">Bootswatch</a>,
+                  <a href="http://sass-lang.com">Sass</a>,
+                  <a href="http://dropzonejs.com">DropZone Plugin</a>,
+                  <a href="http://seiyria.github.io/bootstrap-slider">Bootstrap Slider</a>,
+                  <a href="https://github.com/sindresorhus/strip-json-comments" title="by Sindre Sorhus">strip-json-comments</a>,
+                  <a href="https://github.com/b1rdex/nw-contextmenu" title="by b1rdex">nw-contextmenu</a>.
+                </p>
+                <p>NW.js uses Node.js/IO.js, parts of Chromium, Webkit, and V8. For a full listing of technologies used by NW.js visit <a href="http://nwjs.io">nwjs.io</a>.</p>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

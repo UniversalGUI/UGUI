@@ -1,34 +1,35 @@
 {
-    "name": "UGUI: PNGQuant",
-    "main": "index.htm",
-    "version": "0.1.0",
-    "description": "Lossy compression for your pngs!",
-    "keywords": [ "portable network graphic", "png", "compression", "optimization", "lossy" ],
+    "name": "Your Application Name",                           // "Birds with Arms!"
+    "executable": "cli_filename",                              // If your command line program is called "BirdsWithArms.exe" set this to "BirdsWithArms"
+    "main": "index.htm",                                       // The default page that is displayed on launch
+    "version": "0.1.0",                                        // MAJOR.MINOR.PATCH more info: semver.org
+    "description": "A description of your application",        // "Put human arms on pictures of birds! Fun for all ages."
+    "keywords": [ "A collection", "of", "keywords" ],          // "birds", "arms", "novelty", "humor", "serious internet business"
     "window": {
-        "title": "UGUI: PNGQuant",
+        "title": "Your Application Name",
         "icon": "_img/icon32.png",
-        "toolbar": true,
-        "resizable": true,
-        "visible": true,
-        "width": 900,
-        "height": 550,
+        "toolbar": true,             // Most set this to false prior to distribution
+        "resizable": true,           // Window can be resized by user
+        "visible": true,             // False for tray icon apps, this requires setting up and linking to the tray.js file
+        "width": 900,                // Starting width of application
+        "height": 550,               // Starting height of application
         "min_width": 400,
         "min_height": 200,
         "max_width": 8000,
         "max_height": 8000,
-        "position": "center",
-        "always-on-top": false,
-        "show_in_taskbar": true,
-        "fullscreen": false,
-        "frame": true,
-        "as_desktop": false
+        "position": "center",        // null or center or mouse, controls where window will be put
+        "always-on-top": false,      // Whether the window should always stay on top of other windows
+        "show_in_taskbar": true,     // Whether the window is shown in taskbar or dock
+        "fullscreen": false,         // Whether window is fullscreen
+        "frame": true,               // false to make the window frameless
+        "as_desktop": false          // Show as desktop background window under X11 environment
     },
-    "nodejs": true,
-    "single-instance": true,
-    "node-main": "",
-    "webkit": {
-        "page-cache": false,
-        "java": false,
-        "plugin": false
+    "nodejs": true,                  // UGUI requies Node support in WebKit, so this must stay set to true
+    "single-instance": true,         // This prevents the user from opening multiple windows of your application
+    "node-main": "_scripts/node.js", // This is the first thing loaded. Everything in this file is ran in the Node context
+    "webkit": {                      // Controls what features of WebKit should be on/off
+        "page-cache": false,         // Whether to enable page cache
+        "java": false,               // Whether to load Java applets
+        "plugin": false              // Whether to load external browser plugins like Flash
     }
 }
