@@ -79,10 +79,14 @@ $(document).ready( function(){
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                   SET EXECUTABLE VARIABLE                   //
+//                         READ A FILE                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// This grabs the executable name from the package.json        //
+// A function that allows you to set the contents of a file to //
+// a variable. Like so:                                        //
+//                                                             //
+// var devTools = readAFile('_markup/ugui-devtools.htm');      //
+//                                                             //
 /////////////////////////////////////////////////////////////////
 
 function readAFile(filePathAndName) {
@@ -90,11 +94,6 @@ function readAFile(filePathAndName) {
     var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
     return fileData;
 }
-
-var packagejsonData = readAFile('package.json');
-var packageJSON = JSON.parse(stripJsonComments(packagejsonData));
-
-var executable = (packageJSON.executable);
 
 
 
@@ -122,8 +121,8 @@ var executable = (packageJSON.executable);
 
 function runcmd( executable, args, callback ) {
   var spawn = require('child_process').spawn;
+  console.log( executable, args );
   var child = spawn( executable, args );
-
   child.stdout.on('data', function(chunk) {
     if (typeof callback === 'function'){
       callback(chunk);
@@ -142,12 +141,37 @@ function runcmd( executable, args, callback ) {
 
 
 
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                        UGUI VARIABLES                       //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Listing of Variables used throughout this library.          //
+/////////////////////////////////////////////////////////////////
 
-//Create an object
+//Current Version of UGUI!
+var uguiVersion = "0.95.0";
+
+//Create an object for all the command line switches
 var cmdSwitches = [];
 
 //Create an object containing all elements with an argOrder.
 var cmdArgs = $('#argsForm *[data-argOrder]');
+
+//Get the contents of the package.json file
+var packagejsonData = readAFile('package.json');
+
+//Parse the package.json file after removing its comments
+var packageJSON = JSON.parse(stripJsonComments(packagejsonData));
+
+//The file.exe defined by the developer in the package.json file
+var executable = packageJSON.executable;
+
+//Name of the developer's application, set in package.json
+var appName = packageJSON.name;
+
+//Version of the developer's application, set in package.json
+var appVersion = packageJSON.version;
 
 
 
@@ -194,32 +218,6 @@ if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                   DROPZONE MODIFICATIONS                    //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// After dropping a file in the DropZone, put the file name in //
-// the DropZone. If the file is an image, display a thumbnail. //
-/////////////////////////////////////////////////////////////////
-
-$('#DropZone input[type=file]').change( function(){
-    var filepath = $('#DropZone input[type=file]').val();
-    var filename = $('#DropZone input[type=file]').val().split('\\').pop();
-    var droppedFilename = "Dropped " + filename;
-    $("#DropZone label").attr("data-content", droppedFilename);
-    //if (filename ends in png||jpg||jpeg||webp||bmp||gif) {
-        $("#DropZone").append('<img src="' + filepath + '" alt="Thumbnail of dropped image." />');
-    //}
-})
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
 //            SUBMIT LOCKED UNTIL REQUIRED FULFILLED           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -228,7 +226,7 @@ $('#DropZone input[type=file]').change( function(){
 /////////////////////////////////////////////////////////////////
 
 //When you click out of a form element
-$("#argsForm *[data-argOrder]").blur( function(){
+$("#argsForm *[data-argOrder]").change( function(){
     //check if any of the required elements aren't filled out
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
@@ -242,7 +240,7 @@ $("#argsForm *[data-argOrder]").blur( function(){
     //If all the required elements are filled out, enable the submit button
     $("#sendCmdArgs").prop("disabled",false);
 //on page load have this run once
-}).trigger('blur');
+}).trigger('change');
 
 
 
@@ -274,9 +272,10 @@ $("#sendCmdArgs").click( function( event ){
     //clear out the commandLine box every time sendCmdArgs is clicked.
     $("#commandLine").html(" ");
 
+    var unsortedDevCmds = new Object();
     var unsortedCmds = new Object();
 
-    //If an element is an unchecked checkbox, it gets skipped.
+    //If an element is an unchecked checkbox, it gets skipped, otherwise it gets processed.
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
 
@@ -307,24 +306,31 @@ $("#sendCmdArgs").click( function( event ){
 
         //1. Create a variable based on the elements argPrefix data.
         var prefix = htmlEscape(argumentElement.data('argprefix'));
+        var prefixCmd = argumentElement.data('argprefix');
 
         //2. Create a variable based on the value of the element, if no value present log error.
         var value = htmlEscape(argumentElement.val());
-        if (!value) throw "something terrible is wrong, value is null for argumentElement!";
+        var valueCmd = argumentElement.val();
+        if (!value) { console.warn("Something not good happend! The value for argumentElement is null.") }
+
         //3. Create a variable based on the elements argSuffix data.
         var suffix = htmlEscape(argumentElement.data('argsuffix'));
+        var suffixCmd = argumentElement.data('argsuffix');
 
         //4. Combine the above 3 variables into one new variable in the proper order and skipping Pre/Suf if not supplied.
         var theSwitchString = (prefix || '') + value + (suffix || '');
+        var theSwitchStringCmd = (prefixCmd || '') + valueCmd + (suffixCmd || '');
 
         //5. Create a variable with the numeral value of the order the arguments should be outputted in.
         var argOrder = argumentElement.data('argorder');
 
         //6. Create a variable named using the argOrder and setting it to the combined Pre/Val/Suf. Like so: cmdSwitch6 = "--speed 9mph";
-        window['cmdSwitch' + argOrder] = theSwitchString;
+        window['devSwitch' + argOrder] = theSwitchString;
+        window['cmdSwitch' + argOrder] = theSwitchStringCmd;
 
         //7. Plug above variables in to the unsortedCmds object to be sorted later
-        unsortedCmds[argOrder] = theSwitchString;
+        unsortedDevCmds[argOrder] = theSwitchString;
+        unsortedCmds[argOrder] = theSwitchStringCmd;
     }
 
     function htmlEscape(str) {
@@ -337,7 +343,7 @@ $("#sendCmdArgs").click( function( event ){
             .replace(/>/g, '&gt;');
     }
 
-    /*
+    /* The user can just use the prefix and suffix if something needs to be in quotes
     String.prototype.hasWhiteSpace = function() {
         return /\s/g.test(this);
     }
@@ -346,15 +352,17 @@ $("#sendCmdArgs").click( function( event ){
     function handleWhiteSpaces(text) {
         if (!text) return;
         if (text.hasWhiteSpace()) {
-            return "\"" + text + "\"";
+`            return "\"" + text + "\"";
         }
         return text;
     }
     */
 
     //Create an array with the sorted content
-    var theSwitchArray = sortObject(unsortedCmds);
-    //Creat an array for to fill with the arguments to be sent to the cmd line
+    var theSwitchArray = sortObject(unsortedDevCmds);
+    var theSwitchArrayCmd = sortObject(unsortedCmds);
+
+    //Creat an array to fill with the arguments to be sent to the cmd line
     var cmdSwitchArray = [];
 
     //Get the value of each element and send it to be outputted.
@@ -362,7 +370,7 @@ $("#sendCmdArgs").click( function( event ){
         //add the arguments for #commandLine dev tool
         outputCmd(theSwitchArray[index].value);
         //push arguments to the command line
-        cmdSwitchArray.push(theSwitchArray[index].value);
+        cmdSwitchArray.push(theSwitchArrayCmd[index].value);
     }
 
     //Output the commands arguments in the correct order in the #commandLine dev tool
@@ -375,50 +383,6 @@ $("#sendCmdArgs").click( function( event ){
     runcmd(executable, cmdSwitchArray);
 
 });
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//                   RANGE SLIDER INCREMENTS                   //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This will automatically add incremental lines/ticks above   //
-// range sliders in your forms. Copy/Edit the HTML below and   //
-// the JS will take care of the rest.                          //
-//                                                             //
-// <label for="amp">How loud is your amp?</label>              //
-// <input type="range" min="1" max="11" value="5" id="amp"     //
-// step="1" list="amplist">                                    //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
-//http://demosthenes.info/blog/757/Playing-With-The-HTML5-range-Slider-Input
-//http://demosthenes.info/blog/864/Auto-Generate-Marks-on-HTML5-Range-Sliders-with-JavaScript
-
-function ticks(element) {
-    if (element.hasOwnProperty('list')
-     && element.hasOwnProperty('min')
-     && element.hasOwnProperty('max')
-     && element.hasOwnProperty('step')) {
-        var datalist = document.createElement('datalist'),
-             minimum = parseInt(element.getAttribute('min')),
-                step = parseInt(element.getAttribute('step')),
-             maximum = parseInt(element.getAttribute('max'));
-         datalist.id = element.getAttribute('list');
-        for (var i = minimum; i < maximum + step; i = i + step) {
-            datalist.innerHTML += "<option value=" + i + "></option>";
-        }
-        element.parentNode.insertBefore(datalist, element.nextSibling);
-    }
-}
-var lists = document.querySelectorAll("input[type=range][list]"),
-      arr = Array.prototype.slice.call(lists);
-arr.forEach(ticks);
 
 
 
@@ -533,7 +497,7 @@ function keyBindings() {
         ///Check CTRL + F key and do nothing :(
         if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
             pressed.preventDefault();
-            console.info("Node-Webkit currently has no 'Find' feature built in. Sorry :(")
+            console.info("NW.js currently has no 'Find' feature built in. Sorry :(")
             return false;
         //Check CTRL + F5 keys and hard refresh the page
         } else if ( pressed.ctrlKey && pressed.keyCode === 116 ) {
@@ -561,6 +525,75 @@ function keyBindings() {
         }
     }
 };
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                   DROPZONE MODIFICATIONS                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// After dropping a file in the DropZone, put the file name in //
+// the DropZone. If the file is an image, display a thumbnail. //
+/////////////////////////////////////////////////////////////////
+
+$('#DropZone input[type=file]').change( function(){
+    var filepath = $('#DropZone input[type=file]').val();
+    var filename = $('#DropZone input[type=file]').val().split('\\').pop();
+    var droppedFilename = "Dropped " + filename;
+    $("#DropZone label").attr("data-content", droppedFilename);
+    //if (filename ends in png||jpg||jpeg||webp||bmp||gif) {
+        $("#DropZone").append('<img src="' + filepath + '" alt="Thumbnail of dropped image." />');
+    //}
+})
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                   RANGE SLIDER INCREMENTS                   //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This will automatically add incremental lines/ticks above   //
+// range sliders in your forms. Copy/Edit the HTML below and   //
+// the JS will take care of the rest.                          //
+//                                                             //
+// <label for="amp">How loud is your amp?</label>              //
+// <input type="range" min="1" max="11" value="5" id="amp"     //
+// step="1" list="amplist">                                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+//http://demosthenes.info/blog/757/Playing-With-The-HTML5-range-Slider-Input
+//http://demosthenes.info/blog/864/Auto-Generate-Marks-on-HTML5-Range-Sliders-with-JavaScript
+
+function ticks(element) {
+    if (element.hasOwnProperty('list')
+     && element.hasOwnProperty('min')
+     && element.hasOwnProperty('max')
+     && element.hasOwnProperty('step')) {
+        var datalist = document.createElement('datalist'),
+             minimum = parseInt(element.getAttribute('min')),
+                step = parseInt(element.getAttribute('step')),
+             maximum = parseInt(element.getAttribute('max'));
+         datalist.id = element.getAttribute('list');
+        for (var i = minimum; i < maximum + step; i = i + step) {
+            datalist.innerHTML += "<option value=" + i + "></option>";
+        }
+        element.parentNode.insertBefore(datalist, element.nextSibling);
+    }
+}
+var lists = document.querySelectorAll("input[type=range][list]"),
+      arr = Array.prototype.slice.call(lists);
+arr.forEach(ticks);
 
 
 
