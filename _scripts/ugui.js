@@ -499,16 +499,21 @@ function keyBindings() {
             pressed.preventDefault();
             console.info("NW.js currently has no 'Find' feature built in. Sorry :(")
             return false;
-        //Check CTRL + F5 keys and hard refresh the page
-        } else if ( pressed.ctrlKey && pressed.keyCode === 116 ) {
-            pressed.preventDefault();
-            win.reloadDev();
-            return false;
-        //Check Shift + F5 keys and refresh ignoring cache
-        } else if ( pressed.shiftKey && pressed.keyCode === 116 ) {
-            pressed.preventDefault();
-            win.reloadIgnoringCache();
-            return false;
+        //Check CTRL+F5, CTRL+R, or CMD+R keys and hard refresh the page
+        } else if (
+            pressed.ctrlKey && pressed.keyCode === 116 ||
+            pressed.ctrlKey && pressed.keyCode === 82 ||
+            pressed.metaKey && pressed.keyCode === 82 ) {
+                pressed.preventDefault();
+                win.reloadDev();
+                return false;
+        //Check Shift+F5 and CMD+Shift+R keys and refresh ignoring cache
+        } else if (
+            pressed.shiftKey && pressed.keyCode === 116 ||
+            pressed.metaKey && pressed.shiftKey && pressed.keyCode === 82 ) {
+                pressed.preventDefault();
+                win.reloadIgnoringCache();
+                return false;
         //Check F5 key and soft refresh
         } else if ( pressed.keyCode === 116 ) {
             pressed.preventDefault();
