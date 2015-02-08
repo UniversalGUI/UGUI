@@ -1,4 +1,4 @@
-#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface") UGUI
+#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface")
 
 ##Universal Graphical User Interface
 
@@ -31,10 +31,11 @@ Current Version: V0.95 **almost there!**
 * V1.0 ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
 * V1.0 ~~Create UGUI logo.~~
 * V1.0 ~~Remove all browser specific stuff that isn't relevant like -moz, -o, -ms, filter, old -webkit, EOT, etc.~~
-* V1.0 Update layout design using Bootstrap.
-* V1.0 Clean up template to have generic sample content.
-* V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
+* V1.0 ~~Clean up template to have generic sample content.~~
 * V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.
+* V1.0 Update layout design using Bootstrap.
+* V1.0 Create About/Help modal using dynamic information. Separate user about from UGUI about markup.
+* V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 
