@@ -28,6 +28,7 @@ body.dev #argsForm
     -webkit-font-smoothing: antialiased
     font-family: sans-serif
     transition: $quick
+    z-index: 9999
     nav
         margin: 0px 0px 9px 9px
         span
@@ -142,3 +143,15 @@ span[data-nav="uguiExecutable"],
     right: 12px
     font-size: 12px
     color: #444
+
+.versionApp,
+.versionUGUI
+    position: relative
+    top: -0.2em
+    background-color: rgba(0,0,0,0.2)
+    border-radius: 100px
+    margin: 0px
+    padding: 3px 8px
+    color: #FFF
+    line-height: normal
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.25)

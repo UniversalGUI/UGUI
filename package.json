@@ -3,6 +3,7 @@
     "executable": "cli_filename",                              // If your command line program is called "BirdsWithArms.exe" set this to "BirdsWithArms"
     "main": "index.htm",                                       // The default page that is displayed on launch
     "version": "0.1.0",                                        // MAJOR.MINOR.PATCH more info: semver.org
+    "author": "Your Name",                                     // Put your name or your team's name here, this is dynamically placed in the about section of your app
     "description": "A description of your application",        // "Put human arms on pictures of birds! Fun for all ages."
     "keywords": [ "A collection", "of", "keywords" ],          // "birds", "arms", "novelty", "humor", "serious internet business"
     "window": {

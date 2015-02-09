@@ -173,6 +173,9 @@ var appName = packageJSON.name;
 //Version of the developer's application, set in package.json
 var appVersion = packageJSON.version;
 
+//Name of the app developer or development team
+var authorName = packageJSON.author;
+
 
 
 
@@ -382,6 +385,34 @@ $("#sendCmdArgs").click( function( event ){
 
     runcmd(executable, cmdSwitchArray);
 
+});
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                     UPDATE ABOUT MODAL                      //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This pulls in information about the application from the    //
+// package.json file and puts in in the About modal. It also   //
+// pulls in UGUI's about info from the _markdown folder.       //
+/////////////////////////////////////////////////////////////////
+
+
+$.get('_markup/ugui-about.htm', function( aboutMarkup ){
+    //Put UGUI about info in about modal
+    $("#aboutModal .modal-body").append( aboutMarkup );
+
+    //Wait for the UGUI about info to be loaded before updating the App about section
+    //Load application name, version number, and author from package.json
+    $(".applicationName").html(appName);
+    $(".versionApp").html(appVersion).prepend("V");
+    $(".authorName").html(authorName);
 });
 
 
