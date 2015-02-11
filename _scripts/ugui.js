@@ -1,4 +1,16 @@
+//Wait for the document to load before running ugui.js
 $(document).ready( function(){
+    ugui();
+});
+
+
+
+
+
+
+//Container for all UGUI components
+function ugui() {
+
 
 
 
@@ -169,6 +181,9 @@ var executable = packageJSON.executable;
 
 //Name of the developer's application, set in package.json
 var appName = packageJSON.name;
+
+//Window Title
+var appTitle = packageJSON.window.title;
 
 //Version of the developer's application, set in package.json
 var appVersion = packageJSON.version;
@@ -395,6 +410,25 @@ $("#sendCmdArgs").click( function( event ){
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
+//        REPLACE HTML TEXT WITH TEXT FROM PACKAGE.JSON        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Some text on the page can be auto-filled from the content   //
+// in the package.json. This replaces the text on the page.    //
+/////////////////////////////////////////////////////////////////
+
+$(".applicationName").html(appName);
+$(".applicationTitle").html(appTitle);
+getAboutModal();
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
 //                     UPDATE ABOUT MODAL                      //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -404,15 +438,54 @@ $("#sendCmdArgs").click( function( event ){
 /////////////////////////////////////////////////////////////////
 
 
-$.get('_markup/ugui-about.htm', function( aboutMarkup ){
-    //Put UGUI about info in about modal
-    $("#aboutModal .modal-body").append( aboutMarkup );
+function getAboutModal() {
+    $.get('_markup/ugui-about.htm', function( aboutMarkup ){
+        //Put UGUI about info in about modal
+        $("#aboutModal .modal-body").append( aboutMarkup );
 
-    //Wait for the UGUI about info to be loaded before updating the App about section
-    //Load application name, version number, and author from package.json
-    $(".applicationName").html(appName);
-    $(".versionApp").html(appVersion).prepend("V");
-    $(".authorName").html(authorName);
+        //Wait for the UGUI about info to be loaded before updating the App about section
+        //Load application name, version number, and author from package.json
+        $(".applicationName").html(appName);
+        $(".versionApp").html(appVersion).prepend("V");
+        $(".authorName").html(authorName);
+    });
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//          CONTROLS THE FUNCTIONALITY OF THE NAV BAR          //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+//The about modal includes credits to all the compents UGUI uses, so it must be in each UGUI app.
+//ugui.js will automatically add a link to it in the navbar
+$(".navbar .navHelp .dropdown-menu").append('<li class="divider"></li><li><a href="#about">About</a></li>');
+
+$(".navbar a[href='#about']").click( function() {
+    $("#aboutModal").removeClass("hide").show();
+});
+
+//Makes sure that the logo and app name in the nav bar are vertically centered
+function centerNavLogo() {
+    var navHeight = $(".navbar").height();
+    $(".navbar-brand").css("line-height", navHeight + "px");
+    $(".navbar-brand").css("padding-top", "0px");
+    $(".navbar-brand *").css("line-height", navHeight + "px");
+}
+
+//Run once on page load
+centerNavLogo();
+
+//When you click on the X in the top corner, close this instance of Node-Webkit
+$(".navbar a[href='#exit']").click( function() {
+    var win = gui.Window.get();
+    win.close(true);
 });
 
 
@@ -478,6 +551,22 @@ if ( $("body").hasClass("prod") ) {
 
 }
 
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//             PUT CLI HELP INFO IN UGUI DEV TOOLS             //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This funciton is only ran when in dev mode. It adds another //
+// tab in the UGUI Developer Tools that returns information    //
+// from the user's executable with arguments like --help.      //
+/////////////////////////////////////////////////////////////////
+
 function putExeHelpInDevTools() {
     //Add a new nav item in the Dev Tools based on the name of the user's Executable
     $("#uguiDevTools span[data-nav=uguiExecutable]").html(executable);
@@ -501,6 +590,23 @@ function putExeHelpInDevTools() {
     });
 }
 
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                      SWAP BOOTSWATCHES                      //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This funciton is only ran when in dev mode. It grabs a list //
+// of all files in the ven.bootswatch folder and puts them in  //
+// a dropdown box in UGUI Developer Tools so developers can    //
+// try out different stylesheets.                              //
+/////////////////////////////////////////////////////////////////
+
 function swatchSwapper() {
     //Allow access to the filesystem
     var fs = require('fs');
@@ -510,7 +616,9 @@ function swatchSwapper() {
         if (!err)
             //check each file and put it in the dropdown box
             for (var index = 0; index < files.length; index++) {
-                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + files[index] + "'>" + files[index].split(".min.css")[0] + "</option>");
+                var fileName = files[index];
+                var swatchName = files[index].split(".min.css")[0];
+                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + fileName + "'>" + swatchName + "</option>");
             }
         else
             console.warn('Could not return list of style swatches.');
@@ -519,8 +627,25 @@ function swatchSwapper() {
     //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
     $('#swatchSwapper').change(function (){
         $('head link[data-swatch]').attr('href', $('#swatchSwapper').val() );
+        window.setTimeout(centerNavLogo, 71);
     });
+
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                  CUSTOM KEYBOARD SHORTCUTS                  //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This funciton is only ran when in dev mode. It gives the    //
+// developer access to common/expected keyboard shortcuts.     //
+/////////////////////////////////////////////////////////////////
 
 function keyBindings() {
     //Keyboard shortcuts
@@ -691,10 +816,4 @@ $(function() {
   });
 });
 
-
-
-
-
-
-
-}); //end onReady
+}// end ugui();

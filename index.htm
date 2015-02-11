@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Your Program Name</title>
+    <title class="applicationTitle">Your Application Name</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="_style/ven.bootstrap.css">
     <!-- Change this next line from cerulean to whatever swatch you pick. -->
@@ -12,19 +12,10 @@
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
-    <style>
-      body {
-        padding-top: 57px;
-      }
-      .navbar-brand img {
-        width: 32px;
-        margin: 0px 7px 0px 0px;
-      }
-    </style>
   </head>
   <!-- Change the class form dev to prod when you're ready to distribute your application. -->
   <body role="document" class="dev">
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -33,16 +24,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><img src="_img/icon32.png" alt="Your Application Name logo" />Your Application Name</a>
+          <a class="navbar-brand">
+            <img src="_img/logo.png" alt="Logo" />
+            <span class="applicationName">Your Application Name</span>
+          </a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#new">New</a></li>
-                <li><a href="#new">Open</a></li>
-                <li class="divider"></li>
+                <!-- <li><a href="#new">New</a></li> -->
+                <!-- <li><a href="#new">Open</a></li> -->
+                <!-- <li class="divider"></li> -->
                 <li><a href="#exit">Exit</a></li>
               </ul>
             </li>
@@ -57,29 +51,30 @@
                 <li><a href="#delete">Delete</a></li>
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown devNav">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">View <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#console">Console</a></li>
+                <!-- <li>Fullscreen</li> Adding in UGUI 1.5 -->
+                <li class="devNav"><a href="#console">Console</a></li>
+                <li class="divider"></li>
+                <li class="devNav"><a href="#cmdoutput">Command Line Output</a></li>
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown navHelp">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#help">Help/FAQ</a></li>
-                <li class="divider"></li>
-                <li><a href="#about">About</a></li>
               </ul>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
 
     <div class="container" role="main">
 
       <header>
-        <h3>Your Application Name <small>Short description or tagline</small></h3>
+        <h3><span class="applicationName">Your Application Name</span> <small>Short description or tagline</small></h3>
       </header>
 
       <section>

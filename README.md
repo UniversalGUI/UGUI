@@ -36,6 +36,8 @@ Current Version: V0.95 **almost there!**
 * V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.
 * V1.0 Update layout design using Bootstrap.
 * V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
+* V1.0 Have the "About" link in the navbar added via ugui.js
+* V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 
