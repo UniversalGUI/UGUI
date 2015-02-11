@@ -1,6 +1,6 @@
-#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface") UGUI
+#![UGUI Logo](_assets/logo/ugui-logo.png "Universal Graphical User Interface")
 
-##Universal GUI: Frequently Asked Pages
+##Universal Graphical User Interface: FAQ
 
 * * *
 
@@ -62,16 +62,6 @@ So how does this solve the problems from above?
 
 * * *
 
-###What is UGUI based on?
-
-UGUI is based on nw.js, which itself is based on io.js and Chromium.
-
-Chromium uses the popular Webkit rendering engine which is also used by Chrome, Safari, Opera, and most Android and iOS browsers. It's been a leader in supporting most new HTML5/CSS3 features (CSS Animation, Video/Audio, WebGL, etc.).
-
-io.js is based on Node.JS and gives I/O support for JavaScript Developers. This is the key for us as it lets you read/write/edit/create files from within the browser. And most importantly, it allows you to run executables from the browser.
-
-* * *
-
 ###How does UGUI differ from just using nw.js
 
-At it's core, it really doesn't differ. In both instances you're making a nwjs app. The point of the UGUI project is to make the process as easy and simple as possible. We want to create dynamic templates that can be used in most instances and take most of the hassle out of the process so designers can focus on designing, and not coding. This is why our templates are based around jQuery and Twitter Bootstrap. These are familiar and easy to work with for most front-end developers/designers. By basing all the templates off of Bootstrap it means themes can be interchangeable and it allows for designers to create new themes that everyone can use.
+UGUI is a framework FOR nw.js. So at it's core, it really doesn't differ. In both instances you're making a nwjs app. The point of the UGUI project is to make the process as easy and simple as possible. We want to create dynamic templates that can be used in most instances and take most of the hassle out of the process so designers can focus on designing, and not coding. This is why our templates are based around jQuery and Twitter Bootstrap. These are familiar and easy to work with for most front-end developers/designers. We want to give you all the resources you need already set up out of the box to save you time.

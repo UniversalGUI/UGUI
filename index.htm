@@ -11,6 +11,7 @@
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
+    <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
   </head>
   <!-- Change the class form dev to prod when you're ready to distribute your application. -->
@@ -103,9 +104,9 @@
           </div>
           <div class="row">
             <label for="speed">Speed vs Quality:</label>
-            <span>Slow/High Quality</span>
-            <input type="range" id="speed" list="speedlist" min="1" max="11" step="1" value="1" data-argOrder="5" data-argPrefix="--speed ">
-            <span>Fast/Low Quality</span>
+            <span>High Quality (Slower)</span>
+            <input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="1" data-argOrder="5" data-argPrefix="--speed " />
+            <span>Low Quality (Faster)</span>
           </div> <!-- REPLACE WITH http://seiyria.github.io/bootstrap-slider -->
           <div class="row">
             <textarea required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>

@@ -8,6 +8,7 @@ $(document).ready( function(){
 
 
 
+
 //Container for all UGUI components
 function ugui() {
 
@@ -32,39 +33,39 @@ function ugui() {
 /////////////////////////////////////////////////////////////////
 
 (function () {
-    'use strict';
+    "use strict";
     function stripJsonComments(str) {
         var currentChar;
         var nextChar;
         var insideString = false;
         var insideComment = false;
-        var ret = '';
+        var ret = "";
         for (var i = 0; i < str.length; i++) {
             currentChar = str[i];
             nextChar = str[i + 1];
-            if (!insideComment && str[i - 1] !== '\\' && currentChar === '"') {
+            if (!insideComment && str[i - 1] !== "\\" && currentChar === '"') {
                 insideString = !insideString;
             }
             if (insideString) {
                 ret += currentChar;
                 continue;
             }
-            if (!insideComment && currentChar + nextChar === '//') {
-                insideComment = 'single';
+            if (!insideComment && currentChar + nextChar === "//") {
+                insideComment = "single";
                 i++;
-            } else if (insideComment === 'single' && currentChar + nextChar === '\r\n') {
+            } else if (insideComment === "single" && currentChar + nextChar === "\r\n") {
                 insideComment = false;
                 i++;
                 ret += currentChar;
                 ret += nextChar;
                 continue;
-            } else if (insideComment === 'single' && currentChar === '\n') {
+            } else if (insideComment === "single" && currentChar === "\n") {
                 insideComment = false;
-            } else if (!insideComment && currentChar + nextChar === '/*') {
-                insideComment = 'multi';
+            } else if (!insideComment && currentChar + nextChar === "/*") {
+                insideComment = "multi";
                 i++;
                 continue;
-            } else if (insideComment === 'multi' && currentChar + nextChar === '*/') {
+            } else if (insideComment === "multi" && currentChar + nextChar === "*/") {
                 insideComment = false;
                 i++;
                 continue;
@@ -76,7 +77,7 @@ function ugui() {
         }
         return ret;
     }
-    if (typeof module !== 'undefined' && module.exports) {
+    if (typeof module !== "undefined" && module.exports) {
         module.exports = stripJsonComments;
     } else {
         window.stripJsonComments = stripJsonComments;
@@ -97,12 +98,12 @@ function ugui() {
 // A function that allows you to set the contents of a file to //
 // a variable. Like so:                                        //
 //                                                             //
-// var devTools = readAFile('_markup/ugui-devtools.htm');      //
+// var devTools = readAFile("_markup/ugui-devtools.htm");      //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
 function readAFile(filePathAndName) {
-    var fs = require('fs');
+    var fs = require("fs");
     var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
     return fileData;
 }
@@ -132,17 +133,17 @@ function readAFile(filePathAndName) {
 /////////////////////////////////////////////////////////////////
 
 function runcmd( executable, args, callback ) {
-  var spawn = require('child_process').spawn;
+  var spawn = require("child_process").spawn;
   console.log( executable, args );
   var child = spawn( executable, args );
-  child.stdout.on('data', function(chunk) {
-    if (typeof callback === 'function'){
+  child.stdout.on("data", function(chunk) {
+    if (typeof callback === "function"){
       callback(chunk);
     }
   });
 
-  //child.stderr.on('data', function (data) {
-  //  console.log('stderr: ' + data);
+  //child.stderr.on("data", function (data) {
+  //  console.log("stderr: " + data);
   //});
 
 };
@@ -161,17 +162,14 @@ function runcmd( executable, args, callback ) {
 // Listing of Variables used throughout this library.          //
 /////////////////////////////////////////////////////////////////
 
-//Current Version of UGUI!
-var uguiVersion = "0.95.0";
-
 //Create an object for all the command line switches
 var cmdSwitches = [];
 
 //Create an object containing all elements with an argOrder.
-var cmdArgs = $('#argsForm *[data-argOrder]');
+var cmdArgs = $("#argsForm *[data-argOrder]");
 
 //Get the contents of the package.json file
-var packagejsonData = readAFile('package.json');
+var packagejsonData = readAFile("package.json");
 
 //Parse the package.json file after removing its comments
 var packageJSON = JSON.parse(stripJsonComments(packagejsonData));
@@ -219,7 +217,7 @@ for ( var key in arr )
 
 //If the new array had any duplicates removed display a warning.
 if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
-    $.get('_markup/ugui-multiargorders.htm', function( multiArgOrdersMarkup ){
+    $.get("_markup/ugui-multiargorders.htm", function( multiArgOrdersMarkup ){
         //Put alert mesage at top of page
         $("body.dev").prepend( multiArgOrdersMarkup );
     });
@@ -248,9 +246,9 @@ $("#argsForm *[data-argOrder]").change( function(){
     //check if any of the required elements aren't filled out
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
-        //console.log(cmdArg.is(':invalid'));
+        //console.log(cmdArg.is(":invalid"));
         //If a required element wasn't filled out, make the submit button gray
-        if ( cmdArg.is(':invalid') ) {
+        if ( cmdArg.is(":invalid") ) {
             $("#sendCmdArgs").prop("disabled",true);
             return;
         }
@@ -258,7 +256,7 @@ $("#argsForm *[data-argOrder]").change( function(){
     //If all the required elements are filled out, enable the submit button
     $("#sendCmdArgs").prop("disabled",false);
 //on page load have this run once
-}).trigger('change');
+}).trigger("change");
 
 
 
@@ -298,7 +296,7 @@ $("#sendCmdArgs").click( function( event ){
         var cmdArg = $(cmdArgs[index]);
 
         //skips extraction if checkbox not checked.
-        if ( cmdArg.is(':checkbox') && !cmdArg.prop("checked") ) continue;
+        if ( cmdArg.is(":checkbox") && !cmdArg.prop("checked") ) continue;
 
         //All elements other than unchecked checkboxes get ran through this function.
         extractSwitchString(cmdArg);
@@ -310,8 +308,8 @@ $("#sendCmdArgs").click( function( event ){
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
                 theSwitchArray.push({
-                    'key': prop,
-                    'value': obj[prop]
+                    "key": prop,
+                    "value": obj[prop]
                 });
             }
         }
@@ -323,8 +321,8 @@ $("#sendCmdArgs").click( function( event ){
     function extractSwitchString(argumentElement) {
 
         //1. Create a variable based on the elements argPrefix data.
-        var prefix = htmlEscape(argumentElement.data('argprefix'));
-        var prefixCmd = argumentElement.data('argprefix');
+        var prefix = htmlEscape(argumentElement.data("argprefix"));
+        var prefixCmd = argumentElement.data("argprefix");
 
         //2. Create a variable based on the value of the element, if no value present log error.
         var value = htmlEscape(argumentElement.val());
@@ -332,19 +330,19 @@ $("#sendCmdArgs").click( function( event ){
         if (!value) { console.warn("Something not good happend! The value for argumentElement is null.") }
 
         //3. Create a variable based on the elements argSuffix data.
-        var suffix = htmlEscape(argumentElement.data('argsuffix'));
-        var suffixCmd = argumentElement.data('argsuffix');
+        var suffix = htmlEscape(argumentElement.data("argsuffix"));
+        var suffixCmd = argumentElement.data("argsuffix");
 
         //4. Combine the above 3 variables into one new variable in the proper order and skipping Pre/Suf if not supplied.
-        var theSwitchString = (prefix || '') + value + (suffix || '');
-        var theSwitchStringCmd = (prefixCmd || '') + valueCmd + (suffixCmd || '');
+        var theSwitchString = (prefix || "") + value + (suffix || "");
+        var theSwitchStringCmd = (prefixCmd || "") + valueCmd + (suffixCmd || "");
 
         //5. Create a variable with the numeral value of the order the arguments should be outputted in.
-        var argOrder = argumentElement.data('argorder');
+        var argOrder = argumentElement.data("argorder");
 
         //6. Create a variable named using the argOrder and setting it to the combined Pre/Val/Suf. Like so: cmdSwitch6 = "--speed 9mph";
-        window['devSwitch' + argOrder] = theSwitchString;
-        window['cmdSwitch' + argOrder] = theSwitchStringCmd;
+        window["devSwitch" + argOrder] = theSwitchString;
+        window["cmdSwitch" + argOrder] = theSwitchStringCmd;
 
         //7. Plug above variables in to the unsortedCmds object to be sorted later
         unsortedDevCmds[argOrder] = theSwitchString;
@@ -354,11 +352,11 @@ $("#sendCmdArgs").click( function( event ){
     function htmlEscape(str) {
         if (!str) return;
         return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+            .replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
     }
 
     /* The user can just use the prefix and suffix if something needs to be in quotes
@@ -439,7 +437,7 @@ getAboutModal();
 
 
 function getAboutModal() {
-    $.get('_markup/ugui-about.htm', function( aboutMarkup ){
+    $.get("_markup/ugui-about.htm", function( aboutMarkup ){
         //Put UGUI about info in about modal
         $("#aboutModal .modal-body").append( aboutMarkup );
 
@@ -448,6 +446,7 @@ function getAboutModal() {
         $(".applicationName").html(appName);
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
+
     });
 }
 
@@ -459,8 +458,11 @@ function getAboutModal() {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//          CONTROLS THE FUNCTIONALITY OF THE NAV BAR          //
+//                 NAVIGATION BAR FUNCTIONALITY                //
 //                                                             //
+/////////////////////////////////////////////////////////////////
+// Everything in this section controls the visibility and the  //
+// functionality of the items in the top nav bar.              //
 /////////////////////////////////////////////////////////////////
 
 //The about modal includes credits to all the compents UGUI uses, so it must be in each UGUI app.
@@ -513,12 +515,12 @@ if ( $("body").hasClass("prod") ) {
 } else if ( $("body").hasClass("dev") ){
 
     //get node webkit GUI - WIN
-    var gui = require('nw.gui');
+    var gui = require("nw.gui");
     // get the window object
     var win = gui.Window.get();
 
     //Create UGUI Dev Tools markup
-    $.get('_markup/ugui-devtools.htm', function( uguiDevToolsMarkup ){
+    $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ){
         //Put Dev Tool Markup on the page
         $("body.dev").append( uguiDevToolsMarkup );
         putExeHelpInDevTools();
@@ -530,7 +532,7 @@ if ( $("body").hasClass("prod") ) {
 
         //Hide/Show based on UGUI Dev Tools navigation
         $("#uguiDevTools nav span").click( function(){
-            var sectionClicked = $(this).attr('data-nav');
+            var sectionClicked = $(this).attr("data-nav");
 
             if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
                 $("#uguiDevTools section").addClass("shrink");
@@ -609,9 +611,9 @@ function putExeHelpInDevTools() {
 
 function swatchSwapper() {
     //Allow access to the filesystem
-    var fs = require('fs');
+    var fs = require("fs");
     //Grab all the files in the ven.bootswatch file and put them in an array
-    var allSwatches = fs.readdir('_style/ven.bootswatch', function(err, files){
+    var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files){
         //if that works
         if (!err)
             //check each file and put it in the dropdown box
@@ -621,13 +623,17 @@ function swatchSwapper() {
                 $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + fileName + "'>" + swatchName + "</option>");
             }
         else
-            console.warn('Could not return list of style swatches.');
+            console.warn("Could not return list of style swatches.");
     });
 
     //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
-    $('#swatchSwapper').change(function (){
-        $('head link[data-swatch]').attr('href', $('#swatchSwapper').val() );
+    $("#swatchSwapper").change(function (){
+        $("head link[data-swatch]").attr("href", $("#swatchSwapper").val() );
+        //Nav logo wasn't vertically centering after changing a stylesheet because the function was being ran after
+        //the stylesheet was swapped instead of after the page rendered the styles. Unfortunately a delay had to be used.
+        //71 was chosen because 14 FPS is the slowest you can go in animation before something looks choppy
         window.setTimeout(centerNavLogo, 71);
+        window.setTimeout(sliderHandleColor, 71);
     });
 
 }
@@ -702,9 +708,9 @@ function keyBindings() {
 // the DropZone. If the file is an image, display a thumbnail. //
 /////////////////////////////////////////////////////////////////
 
-$('#DropZone input[type=file]').change( function(){
-    var filepath = $('#DropZone input[type=file]').val();
-    var filename = $('#DropZone input[type=file]').val().split('\\').pop();
+$("#DropZone input[type=file]").change( function(){
+    var filepath = $("#DropZone input[type=file]").val();
+    var filename = $("#DropZone input[type=file]").val().split('\\').pop();
     var droppedFilename = "Dropped " + filename;
     $("#DropZone label").attr("data-content", droppedFilename);
     //if (filename ends in png||jpg||jpeg||webp||bmp||gif) {
@@ -720,41 +726,54 @@ $('#DropZone input[type=file]').change( function(){
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                   RANGE SLIDER INCREMENTS                   //
+//                         RANGE SLIDER                        //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// This will automatically add incremental lines/ticks above   //
-// range sliders in your forms. Copy/Edit the HTML below and   //
-// the JS will take care of the rest.                          //
-//                                                             //
-// <label for="amp">How loud is your amp?</label>              //
-// <input type="range" min="1" max="11" value="5" id="amp"     //
-// step="1" list="amplist">                                    //
-//                                                             //
+// Enables all elements with a class of slider to use the      //
+// boostrap-slider plugin.                                     //
+/////////////////////////////////////////////////////////////////
+// Documentation: http://seiyria.github.io/bootstrap-slider    //
 /////////////////////////////////////////////////////////////////
 
-//http://demosthenes.info/blog/757/Playing-With-The-HTML5-range-Slider-Input
-//http://demosthenes.info/blog/864/Auto-Generate-Marks-on-HTML5-Range-Sliders-with-JavaScript
+$(".slider").slider({
+    formatter: function(value) {
+    return value;
+    }
+});
 
-function ticks(element) {
-    if (element.hasOwnProperty('list')
-     && element.hasOwnProperty('min')
-     && element.hasOwnProperty('max')
-     && element.hasOwnProperty('step')) {
-        var datalist = document.createElement('datalist'),
-             minimum = parseInt(element.getAttribute('min')),
-                step = parseInt(element.getAttribute('step')),
-             maximum = parseInt(element.getAttribute('max'));
-         datalist.id = element.getAttribute('list');
-        for (var i = minimum; i < maximum + step; i = i + step) {
-            datalist.innerHTML += "<option value=" + i + "></option>";
-        }
-        element.parentNode.insertBefore(datalist, element.nextSibling);
+function sliderHandleSolid(themeColor) {
+    //If the navbar is white set the slider handle to gray
+    if (themeColor == "rgb(255, 255, 255)") {
+        $(".slider .slider-handle").css("background-color", "#7E7E7E");
+    } else {
+        //Set the color of the slider handle to match the color of the nav bar
+        $(".slider .slider-handle").css("background-color", themeColor);
     }
 }
-var lists = document.querySelectorAll("input[type=range][list]"),
-      arr = Array.prototype.slice.call(lists);
-arr.forEach(ticks);
+
+function sliderHandleGradient(themeGradient) {
+    $(".slider .slider-handle").css("background-image", themeGradient);
+}
+
+function sliderHandleColor() {
+    //remove the color of the slider handle
+    $(".slider .slider-handle").css("background-image", "none");
+
+    //get the color of the nav bar
+    var themeColor = $(".navbar").css("background-color");
+    //get the background image or gradient
+    var themeGradient = $(".navbar").css("background-image");
+
+    if (themeGradient == "none") {
+        sliderHandleSolid(themeColor);
+    } else {
+        sliderHandleGradient(themeGradient);
+    }
+
+}
+
+//Run once on page load
+sliderHandleColor();
 
 
 
@@ -774,14 +793,14 @@ arr.forEach(ticks);
 
 $(function() {
   function Menu(cutLabel, copyLabel, pasteLabel) {
-    var gui = require('nw.gui')
+    var gui = require("nw.gui")
       , menu = new gui.Menu()
 
       , cut = new gui.MenuItem({
         label: cutLabel || "Cut"
         , click: function() {
           document.execCommand("cut");
-          console.log('Menu:', 'cutted to clipboard');
+          console.log("Menu:", "cutted to clipboard");
         }
       })
 
@@ -789,7 +808,7 @@ $(function() {
         label: copyLabel || "Copy"
         , click: function() {
           document.execCommand("copy");
-          console.log('Menu:', 'copied to clipboard');
+          console.log("Menu:", "copied to clipboard");
         }
       })
 
@@ -797,7 +816,7 @@ $(function() {
         label: pasteLabel || "Paste"
         , click: function() {
           document.execCommand("paste");
-          console.log('Menu:', 'pasted to textarea');
+          console.log("Menu:", "pasted to textarea");
         }
       })
     ;
