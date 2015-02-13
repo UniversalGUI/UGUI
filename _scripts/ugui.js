@@ -446,7 +446,8 @@ function getAboutModal() {
         $(".applicationName").html(appName);
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
-
+        $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
+        $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
     });
 }
 
