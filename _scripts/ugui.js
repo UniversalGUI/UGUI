@@ -512,7 +512,7 @@ $(".navbar a[href='#exit']").click( function() {
 
 //Check if the body has a class of prod for Production Environment
 if ( $("body").hasClass("prod") ) {
-    $("#uguiDevTools").hide();
+    $("#uguiDevTools").remove();
 } else if ( $("body").hasClass("dev") ){
 
     //get node webkit GUI - WIN
@@ -534,13 +534,16 @@ if ( $("body").hasClass("prod") ) {
         //Hide/Show based on UGUI Dev Tools navigation
         $("#uguiDevTools nav span").click( function(){
             var sectionClicked = $(this).attr("data-nav");
+            $("#uguiDevTools nav span").removeClass("selected");
 
             if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
+                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").addClass('selected');
                 $("#uguiDevTools section").addClass("shrink");
                 $("#uguiDevTools section *").addClass("shrink");
                 $("#uguiDevTools section." + sectionClicked).removeClass("shrink");
                 $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
             } else {
+                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").removeClass('selected');
                 $("#uguiDevTools section." + sectionClicked).addClass("shrink")
                 $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink")
             }
