@@ -31,6 +31,6 @@
     "webkit": {                      // Controls what features of WebKit should be on/off
         "page-cache": false,         // Whether to enable page cache
         "java": false,               // Whether to load Java applets
-        "plugin": false              // Whether to load external browser plugins like Flash
+        "plugin": true               // Whether to load external browser plugins like Flash
     }
 }
