@@ -11,6 +11,7 @@
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
+    <script type="text/javascript" src="_scripts/ven.dropdowns-enhancement.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
   </head>
@@ -86,30 +87,46 @@
             <input data-argOrder="99" required="required" type="file" />
           </div> <!-- REPLACE WITH http://www.dropzonejs.com -->
 
+
           <div class="row">
-              <p class="col-md-12">
-              <select data-argOrder="4">
-                <option value="--potato" >List of items</option>
-                <option value="--carrot" >in a dropdown</option>
-                <option value="--celery" >that will send</option>
-                <option value="--ginger" >specific arguments</option>
-              </select>
-              </p>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-4">
+              <label><input type="radio" name="radioDials" data-argOrder="18" value="-meow" /> Radio dial</label><br />
+              <label><input type="radio" name="radioDials" data-argOrder="19" value="-purr" /> choices</label><br />
+              <label><input type="radio" name="radioDials" data-argOrder="20" value="-nyan" /> for arguments</label>
+            </div>
+              <div class="col-md-4">
+            <div class="checkbox">
+                <label><input type="checkbox" data-argOrder="21" value="-plum" />Several checkboxes</label><br />
+                <label><input type="checkbox" data-argOrder="22" value="-kiwi" />that each add a</label><br />
+                <label><input type="checkbox" data-argOrder="23" value="-pear" />different argument</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="btn-group">
+                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Checked option <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><input type="radio" name="dropdown" id="potato" value="--potato" /><label for="potato">List of items</label></li>
+                  <li><input type="radio" name="dropdown" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
+                  <li><input type="radio" name="dropdown" id="celery" value="--celery" /><label for="celery">that will send</label></li>
+                  <li><input type="radio" name="dropdown" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <div class="row">
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="1" value="-plum" />Several checkboxes</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="2" value="-kiwi" />that each add a</label></div>
-            <div class="checkbox col-md-4"><label><input type="checkbox" data-argOrder="3" value="-pear" />different argument</label></div>
-          </div>
-          <div class="row">
-            <label for="speed">Speed vs Quality:</label>
+            <label for="speed">Speed vs Quality:</label><br />
             <span>High Quality (Slower)</span>
             <input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="1" data-argOrder="5" data-argPrefix="--speed " />
             <span>Low Quality (Faster)</span>
           </div> <!-- REPLACE WITH http://seiyria.github.io/bootstrap-slider -->
           <div class="row">
-            <textarea required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
+            <label for="message">Message:</label>
+            <textarea id="message" class="form-control" required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
           </div>
 
           <div class="row">
