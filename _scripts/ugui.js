@@ -186,6 +186,9 @@ var appTitle = packageJSON.window.title;
 //Version of the developer's application, set in package.json
 var appVersion = packageJSON.version;
 
+//Description or tagline for application
+var appDescription = packageJSON.description;
+
 //Name of the app developer or development team
 var authorName = packageJSON.author;
 
@@ -417,6 +420,7 @@ $("#sendCmdArgs").click( function( event ){
 
 $(".applicationName").html(appName);
 $(".applicationTitle").html(appTitle);
+$(".applicationDescription").html(appDescription);
 getAboutModal();
 
 

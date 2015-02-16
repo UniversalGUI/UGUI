@@ -76,7 +76,10 @@
     <div class="container" role="main">
 
       <header>
-        <h3><span class="applicationName">Your Application Name</span> <small>Short description or tagline</small></h3>
+        <h3>
+          <span class="applicationName">Your Application Name</span>
+          <small class="applicationDescription">Short description or tagline</small>
+        </h3>
       </header>
 
       <section>
@@ -87,27 +90,20 @@
             <input data-argOrder="99" required="required" type="file" />
           </div> <!-- REPLACE WITH http://www.dropzonejs.com -->
 
-
           <div class="row">
-          </div>
-
-
-          <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 radio">
               <label><input type="radio" name="radioDials" data-argOrder="18" value="-meow" /> Radio dial</label><br />
               <label><input type="radio" name="radioDials" data-argOrder="19" value="-purr" /> choices</label><br />
               <label><input type="radio" name="radioDials" data-argOrder="20" value="-nyan" /> for arguments</label>
             </div>
-              <div class="col-md-4">
-            <div class="checkbox">
-                <label><input type="checkbox" data-argOrder="21" value="-plum" />Several checkboxes</label><br />
-                <label><input type="checkbox" data-argOrder="22" value="-kiwi" />that each add a</label><br />
-                <label><input type="checkbox" data-argOrder="23" value="-pear" />different argument</label>
-              </div>
+            <div class="col-md-4 checkbox">
+              <label><input type="checkbox" data-argOrder="21" value="-plum" />Several checkboxes</label><br />
+              <label><input type="checkbox" data-argOrder="22" value="-kiwi" />that each add a</label><br />
+              <label><input type="checkbox" data-argOrder="23" value="-pear" />different argument</label>
             </div>
             <div class="col-md-4">
               <div class="btn-group">
-                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Checked option <span class="caret"></span></button>
+                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Dropdown List <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><input type="radio" name="dropdown" id="potato" value="--potato" /><label for="potato">List of items</label></li>
                   <li><input type="radio" name="dropdown" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
@@ -115,18 +111,28 @@
                   <li><input type="radio" name="dropdown" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
                 </ul>
               </div>
+              <select>
+                <option value="asdf">Text</option>
+                <option value="qwer">More text</option>
+              </select>
             </div>
           </div>
 
           <div class="row">
-            <label for="speed">Speed vs Quality:</label><br />
-            <span>High Quality (Slower)</span>
-            <input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="1" data-argOrder="5" data-argPrefix="--speed " />
-            <span>Low Quality (Faster)</span>
-          </div> <!-- REPLACE WITH http://seiyria.github.io/bootstrap-slider -->
-          <div class="row">
-            <label for="message">Message:</label>
-            <textarea id="message" class="form-control" required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
+            <div class="col-md-6">
+              <label for="speed">Speed vs Quality:</label><br />
+              <table>
+                <tr>
+                  <td><span>High Quality (Slower)</span></td>
+                  <td><input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="1" data-argOrder="5" data-argPrefix="--speed " /></td>
+                  <td><span>Low Quality (Faster)</span></td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-md-6">
+              <label for="message">Message:</label>
+              <textarea id="message" class="form-control" required="required" data-argOrder="40" data-argPrefix='-m "' data-argSuffix='"'></textarea>
+            </div>
           </div>
 
           <div class="row">
