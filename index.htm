@@ -10,8 +10,8 @@
     <!-- UGUI Requires jQuery 1.9.1 or above. -->
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
-    <script type="text/javascript" src="_scripts/ugui.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropdowns-enhancement.js"></script>
+    <script type="text/javascript" src="_scripts/ugui.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
   </head>
@@ -92,9 +92,9 @@
 
           <div class="row">
             <div class="col-md-4 radio">
-              <label><input type="radio" name="radioDials" data-argOrder="18" value="-meow" /> Radio dial</label><br />
-              <label><input type="radio" name="radioDials" data-argOrder="19" value="-purr" /> choices</label><br />
-              <label><input type="radio" name="radioDials" data-argOrder="20" value="-nyan" /> for arguments</label>
+              <label><input type="radio" name="radioDials" data-argOrder="1" value="-meow" /> Radio dial</label><br />
+              <label><input type="radio" name="radioDials" data-argOrder="2" value="-purr" /> choices</label><br />
+              <label><input type="radio" name="radioDials" data-argOrder="3" value="-nyan" /> for arguments</label>
             </div>
             <div class="col-md-4 checkbox">
               <label><input type="checkbox" data-argOrder="21" value="-plum" />Several checkboxes</label><br />
@@ -105,13 +105,13 @@
               <div class="btn-group">
                 <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Dropdown List <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input type="radio" name="dropdown" id="potato" value="--potato" /><label for="potato">List of items</label></li>
-                  <li><input type="radio" name="dropdown" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
-                  <li><input type="radio" name="dropdown" id="celery" value="--celery" /><label for="celery">that will send</label></li>
-                  <li><input type="radio" name="dropdown" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
+                  <li><input type="radio" name="dropdown" data-argOrder="24" id="potato" value="--potato" /><label for="potato">List of items</label></li>
+                  <li><input type="radio" name="dropdown" data-argOrder="25" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
+                  <li><input type="radio" name="dropdown" data-argOrder="26" id="celery" value="--celery" /><label for="celery">that will send</label></li>
+                  <li><input type="radio" name="dropdown" data-argOrder="27" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
                 </ul>
               </div>
-              <select>
+              <select class="selectpicker" data-argOrder="4">
                 <option value="asdf">Text</option>
                 <option value="qwer">More text</option>
               </select>
@@ -124,7 +124,7 @@
               <table>
                 <tr>
                   <td><span>High Quality (Slower)</span></td>
-                  <td><input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="1" data-argOrder="5" data-argPrefix="--speed " /></td>
+                  <td><input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="6" data-argOrder="5" data-argPrefix="--speed " /></td>
                   <td><span>Low Quality (Faster)</span></td>
                 </tr>
               </table>

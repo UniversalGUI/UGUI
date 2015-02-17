@@ -207,16 +207,16 @@ var authorName = packageJSON.author;
 // for multiple elements, display a warning.                   //
 /////////////////////////////////////////////////////////////////
 
-var arr = {};
+var duplicatesArray = {};
 
 for (var index = 0; index < cmdArgs.length; index++) {
-    arr[cmdArgs[index].dataset.argorder] = cmdArgs[index];
+    duplicatesArray[cmdArgs[index].dataset.argorder] = cmdArgs[index];
 }
 
 //Create a new array with duplicate argOrders removed
 cmdArgs = new Array();
-for ( var key in arr )
-    cmdArgs.push(arr[key]);
+for ( var key in duplicatesArray )
+    cmdArgs.push(duplicatesArray[key]);
 
 //If the new array had any duplicates removed display a warning.
 if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
