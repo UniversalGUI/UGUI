@@ -69,7 +69,6 @@ Current Version: V0.95 **almost there!**
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Hai Nguyen](http://github.com/nmhai3) - Javascript Expert
-* [Alissa Renz](http://github.com/alissarenz) - Bootstrap Expert, template designs
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)
@@ -79,6 +78,7 @@ Current Version: V0.95 **almost there!**
 * [Bootswatch](http://bootswatch.com)
 * [strip-json-comments](https://github.com/sindresorhus/strip-json-comments)
 * [DropZoneJS](http://www.dropzonejs.com)
-* [Dudley Storey](http://demosthenes.info/blog/864/Auto-Generate-Marks-on-HTML5-Range-Sliders-with-JavaScript) - For range slider increments, though this will likely be replaced with [Slider for Bootstrap](http://seiyria.github.io/bootstrap-slider)
+* [Bootstrap Slider](http://seiyria.github.io/bootstrap-slider)
+* [Bootstrap Dropdowns Enhancement](http://behigh.github.io/bootstrap_dropdowns_enhancement)
 * [Cut, Copy, Paste Context Menu](https://github.com/b1rdex/nw-contextmenu)
 * [Sass](http://sass-lang.com) - Just cuz it's awesome
