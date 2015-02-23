@@ -133,19 +133,18 @@ function readAFile(filePathAndName) {
 /////////////////////////////////////////////////////////////////
 
 function runcmd( executable, args, callback ) {
-  var spawn = require("child_process").spawn;
-  console.log( executable, args );
-  var child = spawn( executable, args );
-  child.stdout.on("data", function(chunk) {
-    if (typeof callback === "function"){
-      callback(chunk);
-    }
-  });
+    var spawn = require("child_process").spawn;
+    console.log( executable, args );
+    var child = spawn( executable, args );
+    child.stdout.on("data", function(chunk) {
+        if (typeof callback === "function"){
+            callback(chunk);
+        }
+    });
 
-  //child.stderr.on("data", function (data) {
-  //  console.log("stderr: " + data);
-  //});
-
+    //child.stderr.on("data", function (data) {
+    //  console.log("stderr: " + data);
+    //});
 };
 
 
@@ -371,7 +370,7 @@ $("#sendCmdArgs").click( function( event ){
     function handleWhiteSpaces(text) {
         if (!text) return;
         if (text.hasWhiteSpace()) {
-`            return "\"" + text + "\"";
+            return "\"" + text + "\"";
         }
         return text;
     }
@@ -438,7 +437,6 @@ getAboutModal();
 // package.json file and puts in in the About modal. It also   //
 // pulls in UGUI's about info from the _markdown folder.       //
 /////////////////////////////////////////////////////////////////
-
 
 function getAboutModal() {
     $.get("_markup/ugui-about.htm", function( aboutMarkup ){
@@ -665,7 +663,7 @@ function putExeHelpInDevTools() {
 function swatchSwapper() {
     //Allow access to the filesystem
     var fs = require("fs");
-    //Grab all the files in the ven.bootswatch file and put them in an array
+    //Grab all the files in the ven.bootswatch folder and put them in an array
     var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files){
         //if that works
         if (!err)
@@ -681,7 +679,7 @@ function swatchSwapper() {
 
     //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
     $("#swatchSwapper").change(function (){
-        $("head link[data-swatch]").attr("href", $("#swatchSwapper").val() );
+        $("head link[data-swatch]").attr( "href", $("#swatchSwapper").val() );
         //Nav logo wasn't vertically centering after changing a stylesheet because the function was being ran after
         //the stylesheet was swapped instead of after the page rendered the styles. Unfortunately a delay had to be used.
         //71 was chosen because 14 FPS is the slowest you can go in animation before something looks choppy
@@ -846,33 +844,30 @@ sliderHandleColor();
 
 $(function() {
   function Menu(cutLabel, copyLabel, pasteLabel) {
-    var gui = require("nw.gui")
-      , menu = new gui.Menu()
+    var gui = require("nw.gui");
+    var menu = new gui.Menu();
 
-      , cut = new gui.MenuItem({
-        label: cutLabel || "Cut"
-        , click: function() {
-          document.execCommand("cut");
-          console.log("Menu:", "cutted to clipboard");
+    var cut = new gui.MenuItem( {
+        label: cutLabel || "Cut",
+        click: function() {
+            document.execCommand("cut");
+            console.log("Menu:", "cutted to clipboard");
         }
-      })
-
-      , copy = new gui.MenuItem({
-        label: copyLabel || "Copy"
-        , click: function() {
-          document.execCommand("copy");
-          console.log("Menu:", "copied to clipboard");
+    });
+    var copy = new gui.MenuItem({
+        label: copyLabel || "Copy",
+        click: function() {
+            document.execCommand("copy");
+            console.log("Menu:", "copied to clipboard");
         }
-      })
-
-      , paste = new gui.MenuItem({
-        label: pasteLabel || "Paste"
-        , click: function() {
-          document.execCommand("paste");
-          console.log("Menu:", "pasted to textarea");
+      });
+    var paste = new gui.MenuItem({
+        label: pasteLabel || "Paste",
+        click: function() {
+            document.execCommand("paste");
+            console.log("Menu:", "pasted to textarea");
         }
-      })
-    ;
+      });
 
     menu.append(cut);
     menu.append(copy);
@@ -881,11 +876,11 @@ $(function() {
     return menu;
   }
 
-  var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
-  $(document).on("contextmenu", function(e) {
-    e.preventDefault();
-    menu.popup(e.originalEvent.x, e.originalEvent.y);
-  });
+    var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
+    $(document).on("contextmenu", function(e) {
+        e.preventDefault();
+        menu.popup(e.originalEvent.x, e.originalEvent.y);
+    });
 });
 
 }// end ugui();
