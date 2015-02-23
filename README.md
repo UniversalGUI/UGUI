@@ -33,10 +33,10 @@ Current Version: V0.95 **almost there!**
 * V1.0 ~~Remove all browser specific stuff that isn't relevant like -moz, -o, -ms, filter, old -webkit, EOT, etc.~~
 * V1.0 ~~Clean up template to have generic sample content.~~
 * V1.0 ~~Create About/Help modal using dynamic information. Separate user about from UGUI about markup.~~
+* V1.0 ~~Update layout design using Bootstrap.~~
+* V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
 * V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.
-* V1.0 Update layout design using Bootstrap.
 * V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
-* V1.0 Have the "About" link in the navbar added via ugui.js
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
@@ -69,7 +69,6 @@ Current Version: V0.95 **almost there!**
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Hai Nguyen](http://github.com/nmhai3) - Javascript Expert
-* [Alissa Renz](http://github.com/alissarenz) - Bootstrap Expert, template designs
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)

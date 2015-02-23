@@ -445,13 +445,28 @@ function getAboutModal() {
         //Put UGUI about info in about modal
         $("#aboutModal .modal-body").append( aboutMarkup );
 
-        //Wait for the UGUI about info to be loaded before updating the App about section
+        //Wait for the "UGUI about" info to be loaded before updating the "App about" section
         //Load application name, version number, and author from package.json
         $(".applicationName").html(appName);
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
         $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
         $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
+
+        //Remove modal, enable scrollbar
+        function removeModal() {
+            $("#aboutModal").slideUp("slow", function(){
+                $("body").css("overflow","auto");
+            });
+        }
+
+        //When clicking on background or X, remove modal
+        $("#aboutModal").click( removeModal );
+        $("#aboutModal .modal-content").click( function(e) {
+            e.stopPropagation();
+        });
+        $("#aboutModal .glyphicon-remove").click( removeModal );
+
     });
 }
 
@@ -474,8 +489,38 @@ function getAboutModal() {
 //ugui.js will automatically add a link to it in the navbar
 $(".navbar .navHelp .dropdown-menu").append('<li class="divider"></li><li><a href="#about">About</a></li>');
 
+//Clicking "About" in the Nav Bar
 $(".navbar a[href='#about']").click( function() {
-    $("#aboutModal").removeClass("hide").show();
+
+    // Load native UI library
+    var gui = require('nw.gui');
+    //Get the current Window
+    var win = gui.Window.get();
+
+    //Show the modal
+    $("#aboutModal").fadeIn("slow");
+
+    function setModalHeight() {
+        if ( win.height < 301 ) {
+            $(".modal-header").addClass("shortScreen");
+        } else {
+            $(".modal-header").removeClass("shortScreen");
+        }
+        modalBodyHeight();
+    }
+
+    //Get the current height of the window and set the modal to 75% of that
+    function modalBodyHeight() {
+        $("#aboutModal .modal-body").css("max-height", (win.height * 0.5) + "px" );
+    }
+
+    //Make the header of the modal small when app is tiny
+    setModalHeight();
+    win.on('resize', setModalHeight );
+
+    //Remove page scrollbar when modal displays
+    $("body").css("overflow", "hidden");
+
 });
 
 //Makes sure that the logo and app name in the nav bar are vertically centered
