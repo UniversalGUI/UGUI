@@ -11,9 +11,9 @@
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropdowns-enhancement.js"></script>
-    <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
-    <script type="text/javascript" src="_scripts/ven.dropzone.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
+    <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
+    <script type="text/javascript" src="_scripts/ven.dropzone.js"></script>
   </head>
   <!-- Change the class form dev to prod when you're ready to distribute your application. -->
   <body role="document" class="dev">
@@ -83,11 +83,11 @@
       </header>
 
       <section>
-        <form id="argsForm" role="form-inline" class="dropzone">
+        <form id="argsForm" role="form-inline">
 
-          <div id="DropZoner" class="form-group" title="Click to browse for your file.">
+          <div id="DropZone" class="form-group" title="Click to browse for your file.">
             <label data-content="Dropped">Drag and Drop your file here.</label>
-            <input data-argOrder="99" required="required" type="file" name="file" />
+            <input data-argOrder="99" required="required" type="file" />
           </div> <!-- REPLACE WITH http://www.dropzonejs.com -->
 
           <div class="row">
