@@ -24,7 +24,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-Current Version: V0.95 **almost there!**
+Current Version: V0.99999999 (so close!)
 
 **Phase 1: ugui.js**
 
@@ -35,8 +35,8 @@ Current Version: V0.95 **almost there!**
 * V1.0 ~~Create About/Help modal using dynamic information. Separate user about from UGUI about markup.~~
 * V1.0 ~~Update layout design using Bootstrap.~~
 * V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
-* V1.0 Update GitHub project to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.
-* V1.0 Test out htmlEscape() to see if special characters work when sent to the commandline.
+* V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
+* V1.5 Test out htmlEscape() to see if special characters work when sent to the commandline.
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
@@ -51,6 +51,7 @@ Current Version: V0.95 **almost there!**
  * Mega Pack which combines most of the parts from all other official template packs.
  * More general templates that just focus on different visual layouts.
  * Advanced templates for more unique CMD programs.
+* ~~Buy domain name: [UGUI.io](http://ugui.io)~~
 * Create UGUI site that organizes templates and tutorials and lays everything out in a quick and easily digestible manner. Also highlights programs using UGUI.
 * Create Explainer and tutorial videos.
 * Advertise the existence of this project like crazy!
