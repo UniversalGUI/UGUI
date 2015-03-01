@@ -1,57 +1,27 @@
 #DropZone
-    display: table
-    width: 100%
-    height: 100px
-    border: 10px solid #696969
-    margin: 30px auto
-    background-color: #EEE
     position: relative
-    border-radius: 25px
-    color: #797979
-    font-weight: bold
-    font-size: 24px
-    line-height: auto
-    text-align: center
-    vertical-align: middle
-    &:hover
-        border-color: #8E8E8E
-        color: #9E9E9E
-    &.hover
-        border: 10px solid #5577AE
-        color: #5577AE
-    &.dropped
-        background: #6C7CA3
-        border-color: #1A3C72
-        color: #EAEFF8
-        label
-            font-size: 0px
-            &:after
-                font-size: 24px
-                content: attr(data-content)
-                line-height: 80px
-    div
-        display: table-cell
-        vertical-align: middle
-        height: 80px
     label
         margin: 0px
-        line-height: 80px
+        line-height: 1.5em
+        vertical-align: middle
         &:after
             content: " "
+    span
+        vertical-align: middle
     img
         display: block
         border-radius: 10px
         vertical-align: middle
-        max-width: 95%
-        max-height: 95%
+        max-width: 100px
+        max-height: 50px
+        margin: 0px 5px 0px 0px
     [type="file"]
         position: absolute
         cursor: pointer
         opacity: 1
         top: 0px
         right: 0px
-        bottom: 0px
-        left: 0px
         width: 100%
+        height: 100%
     [type="file"] /deep/ [type="button"]
         display: none

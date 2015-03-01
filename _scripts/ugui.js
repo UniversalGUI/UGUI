@@ -752,22 +752,65 @@ function keyBindings() {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                   DROPZONE MODIFICATIONS                    //
+//                          DROPZONE                           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// After dropping a file in the DropZone, put the file name in //
-// the DropZone. If the file is an image, display a thumbnail. //
+// Code for drag/drop/browse box.                              //
+/////////////////////////////////////////////////////////////////
+// https://github.com/jaysalvat/ezdz                           //
 /////////////////////////////////////////////////////////////////
 
-$("#DropZone input[type=file]").change( function(){
-    var filepath = $("#DropZone input[type=file]").val();
+$(function() {
+
+  $('#DropZone').on('dragover', function() {
+    $('#DropZone label').removeClass('text-info');    //Static
+    $('#DropZone label').removeClass('text-success'); //Dropped
+    $('#DropZone label').addClass('text-warning');    //Hover
+  });
+
+  $('#DropZone').on('dragleave', function() {
+    $('#DropZone label').removeClass('text-success'); //Dropped
+    $('#DropZone label').removeClass('text-warning'); //Hover
+    $('#DropZone label').addClass('text-info');       //Static
+  });
+
+  $('#DropZone input').on('change', function(event) {
+    var file = this.files[0];
+
+    $('#DropZone label').removeClass('text-info');    //Static
+    $('#DropZone label').removeClass('text-warning'); //Hover
+
+    if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
+      return alert('File type not allowed.');
+    }
+
+    $('#DropZone label').addClass('text-success');   //Dropped
+    $('#DropZone img').remove();
+
+    if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
+      var reader = new FileReader(file);
+
+      reader.readAsDataURL(file);
+
+      reader.onload = function(event) {
+        var data = event.target.result;
+        var $img = $('<img />').attr('src', data).fadeIn();
+
+        $('#DropZone img').attr('alt', "Thumbnail of dropped image.");
+        $('#DropZone span').html($img);
+      };
+    }
+
     var filename = $("#DropZone input[type=file]").val().split('\\').pop();
-    var droppedFilename = "Dropped " + filename;
-    $("#DropZone label").attr("data-content", droppedFilename);
-    //if (filename ends in png||jpg||jpeg||webp||bmp||gif) {
-        $("#DropZone").append('<img src="' + filepath + '" alt="Thumbnail of dropped image." />');
-    //}
-})
+    var droppedFilename = filename + " selected";
+    $('#DropZone label').html(droppedFilename);
+
+  });
+  // After dropping a file in the DropZone, put the file name in
+  // the DropZone. If the file is an image, display a thumbnail.
+  $("#DropZone input[type=file]").change( function(){
+  })
+});
 
 
 
