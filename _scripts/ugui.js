@@ -492,10 +492,6 @@ function getAboutModal() {
 // functionality of the items in the top nav bar.              //
 /////////////////////////////////////////////////////////////////
 
-//The about modal includes credits to all the compents UGUI uses, so it must be in each UGUI app.
-//ugui.js will automatically add a link to it in the navbar
-$(".navbar .navHelp .dropdown-menu").append('<li class="divider"></li><li><a href="#about">About</a></li>');
-
 //Clicking View > Command Line Output in the Nav Bar
 $(".navbar a[href='#cmdoutput']").click( function(){
     $("#uguiDevTools nav span[data-nav='uguiCommand']").trigger("click");
