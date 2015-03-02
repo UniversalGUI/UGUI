@@ -496,6 +496,17 @@ function getAboutModal() {
 //ugui.js will automatically add a link to it in the navbar
 $(".navbar .navHelp .dropdown-menu").append('<li class="divider"></li><li><a href="#about">About</a></li>');
 
+//Clicking View > Command Line Output in the Nav Bar
+$(".navbar a[href='#cmdoutput']").click( function(){
+    $("#uguiDevTools nav span[data-nav='uguiCommand']").trigger("click");
+})
+
+//Clicking View > Console in the Nav Bar
+$(".navbar a[href='#console']").click( function(){
+    require('nw.gui').Window.get().showDevTools();
+})
+
+
 //Clicking "About" in the Nav Bar
 $(".navbar a[href='#about']").click( function() {
 
