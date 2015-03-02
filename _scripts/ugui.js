@@ -244,7 +244,11 @@ if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
 /////////////////////////////////////////////////////////////////
 
 //When you click out of a form element
-$("#argsForm *[data-argOrder]").change( function(){
+$("#argsForm *[data-argOrder]").keyup  ( unlockSubmit );
+$("#argsForm *[data-argOrder]").mouseup( unlockSubmit );
+$("#argsForm *[data-argOrder]").change ( unlockSubmit );
+
+function unlockSubmit() {
     //check if any of the required elements aren't filled out
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
@@ -257,8 +261,10 @@ $("#argsForm *[data-argOrder]").change( function(){
     };
     //If all the required elements are filled out, enable the submit button
     $("#sendCmdArgs").prop("disabled",false);
+}
+
 //on page load have this run once
-}).trigger("change");
+unlockSubmit();
 
 
 
@@ -299,6 +305,9 @@ $("#sendCmdArgs").click( function( event ){
 
         //skips extraction if checkbox not checked.
         if ( cmdArg.is(":checkbox") && !cmdArg.prop("checked") ) continue;
+
+        //skips extraction if radio dial is not checked
+        if ( cmdArg.is(":radio") && !cmdArg.prop("checked") ) continue;
 
         //All elements other than unchecked checkboxes get ran through this function.
         extractSwitchString(cmdArg);
