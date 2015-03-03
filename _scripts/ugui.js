@@ -502,6 +502,10 @@ $(".navbar a[href='#console']").click( function(){
     require('nw.gui').Window.get().showDevTools();
 })
 
+//Clicking View > Fullscreen
+$(".navbar a[href='#fullscreen']").click( function(){
+    require('nw.gui').Window.get().toggleFullscreen();
+})
 
 //Clicking "About" in the Nav Bar
 $(".navbar a[href='#about']").click( function() {
