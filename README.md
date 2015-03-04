@@ -38,6 +38,7 @@ Current Version: V0.99999999 (so close!)
 * V1.0 ~~Update layout design using Bootstrap.~~
 * V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
 * V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
+* V1.0 Test in OSX, Linux, and Windows
 * V1.5 Test out htmlEscape() to see if special characters work when sent to the commandline.
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
