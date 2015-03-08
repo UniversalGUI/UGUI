@@ -821,7 +821,14 @@ $(function() {
       };
     }
 
-    var filename = $("#DropZone input[type=file]").val().split('\\').pop();
+    //Detect if in darwin, freebsd, linux, sunos or win32
+    var platform = process.platform;
+    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    if (platform == "win32") {
+       var filename = $("#DropZone input[type=file]").val().split('\\').pop();
+    } else {
+       var filename = $("#DropZone input[type=file]").val().split('/').pop();
+    }
     var droppedFilename = filename + " selected";
     $('#DropZone label').html(droppedFilename);
 
