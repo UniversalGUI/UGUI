@@ -238,7 +238,7 @@ function ugui() {
 }.call(this));
 
 //Should log [1, 2, 3, 4, 5, 6, 7, 8]
-console.log( _.flatten( [1, [2, 3], 4, [5, [[6], [7]]], 8] ) );
+//console.log( _.flatten( [1, [2, 3], 4, [5, [[6], [7]]], 8] ) );
 
 
 
@@ -408,7 +408,6 @@ function unlockSubmit() {
     //check if any of the required elements aren't filled out
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
-        //console.log(cmdArg.is(":invalid"));
         //If a required element wasn't filled out, make the submit button gray
         if ( cmdArg.is(":invalid") ) {
             $("#sendCmdArgs").prop("disabled",true);
@@ -546,14 +545,14 @@ $("#sendCmdArgs").click( function( event ){
     var theSwitchArrayCmd = sortObject(unsortedCmds);
 
     //Creat an array to fill with the arguments to be sent to the cmd line
-    var cmdSwitchArray = [];
+    var unflattenCmdSwitchArray = [];
 
     //Get the value of each element and send it to be outputted.
     for (var index = 0; index < theSwitchArray.length; index++) {
         //add the arguments for #commandLine dev tool
         outputCmd(theSwitchArray[index].value);
         //push arguments to the command line
-        cmdSwitchArray.push(theSwitchArrayCmd[index].value);
+        unflattenCmdSwitchArray.push(theSwitchArrayCmd[index].value);
     }
 
     //Output the commands arguments in the correct order in the #commandLine dev tool
@@ -561,9 +560,11 @@ $("#sendCmdArgs").click( function( event ){
         $("#commandLine").append(cmdSwitch + " ");
     }
 
+    var flattenedCmdSwitchArray = this._.flatten( unflattenCmdSwitchArray );
+//http://jsfiddle.net/m43aecf6/
     $("#commandLine").prepend(executable);
 
-    runcmd(executable, cmdSwitchArray);
+    runcmd(executable, flattenedCmdSwitchArray);
 
 });
 
