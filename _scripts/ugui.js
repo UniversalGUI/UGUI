@@ -4,6 +4,7 @@ UGUI TODO:
 
 1. Form validation to prevent end users from adding in Quotes to text box
 2. Detect if prefix or suffix has a quote in it and display an UGUI Dev Warning error if it does
+http://jsfiddle.net/1sxzsz56/
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
 4. Detect if prefix ends in space, if not combine with value
 5. Detect if suffix starts with space, if not combine with value
