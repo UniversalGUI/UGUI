@@ -1,3 +1,21 @@
+/*
+
+UGUI TODO:
+
+1. Form validation to prevent end users from adding in Quotes to text box
+2. Detect if prefix or suffix has a quote in it and display an UGUI Dev Warning error if it does
+3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
+4. Detect if prefix ends in space, if not combine with value
+5. Detect if suffix starts with space, if not combine with value
+6. Then push to an array, this arry could have 1, 2, or 3 items in it depending on the big if statement above
+7. That array is put in an object with a key that equals the argOrder, and a value that is the array (containing 1, 2, or 3 items)
+8. Those arrays get sorted and then pushed into a big array in the correct order
+9. Then do a loop based on length of items in big array. in that loop do another loop based on length of items in small array, then push each item in the small array into a new array
+10. that new array is what is sent to the command line BEEEOOOOTCHHHHH!
+
+*/
+
+
 //Wait for the document to load before running ugui.js
 $(document).ready( function(){
     ugui();
@@ -83,162 +101,6 @@ function ugui() {
         window.stripJsonComments = stripJsonComments;
     }
 })();
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//                      UNDERSCORE FLATTEN                     //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Since the command line expects a series of arguments in an  //
-// array, and that some arguments in the array may themselves  //
-// be an array, we must flatten them. Underscore provides a    //
-// method of doing this. However all I wanted was the part of  //
-// Underscore that offered this solution. The rest of the fat  //
-// has been trimmed.                                           //
-/////////////////////////////////////////////////////////////////
-// Underscore.js 1.8.2 - MIT license - http://underscorejs.org //
-// (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and            //
-// Investigative Reporters & Editors                           //
-/////////////////////////////////////////////////////////////////
-
-(function() {
-  // Establish the root object, `window` in the browser, or `exports` on the server.
-  var root = this;
-
-  // All **ECMAScript 5** native function implementations that we hope to use
-  // are declared here.
-  var nativeIsArray = Array.isArray;
-
-  // Create a safe reference to the Underscore object for use below.
-  var _ = function(obj) {
-    if (obj instanceof _) return obj;
-    if (!(this instanceof _)) return new _(obj);
-    this._wrapped = obj;
-  };
-
-  // Export the Underscore object for **Node.js**, with
-  // backwards-compatibility for the old `require()` API. If we're in
-  // the browser, add `_` as a global object.
-  if (typeof exports !== 'undefined') {
-    if (typeof module !== 'undefined' && module.exports) {
-      exports = module.exports = _;
-    }
-    exports._ = _;
-  } else {
-    root._ = _;
-  }
-
-  // Helper for collection methods to determine whether a collection
-  // should be iterated as an array or as an object
-  // Related: http://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength
-  var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
-  var isArrayLike = function(collection) {
-    var length = collection && collection.length;
-    return typeof length == 'number' && length >= 0 && length <= MAX_ARRAY_INDEX;
-  };
-
-  // Internal implementation of a recursive `flatten` function.
-  var flatten = function(input, shallow, strict, startIndex) {
-    var output = [], idx = 0;
-    for (var i = startIndex || 0, length = input && input.length; i < length; i++) {
-      var value = input[i];
-      if (isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
-        //flatten current level of array or arguments object
-        if (!shallow) value = flatten(value, shallow, strict);
-        var j = 0, len = value.length;
-        output.length += len;
-        while (j < len) {
-          output[idx++] = value[j++];
-        }
-      } else if (!strict) {
-        output[idx++] = value;
-      }
-    }
-    return output;
-  };
-
-  // Flatten out an array, either recursively (by default), or just one level.
-  _.flatten = function(array, shallow) {
-    return flatten(array, shallow, false);
-  };
-
-  // Internal recursive comparison function for `isEqual`.
-  var eq = function(a, b, aStack, bStack) {
-    // Identical objects are equal. `0 === -0`, but they aren't identical.
-    // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
-    if (a === b) return a !== 0 || 1 / a === 1 / b;
-    // A strict comparison is necessary because `null == undefined`.
-    if (a == null || b == null) return a === b;
-    // Unwrap any wrapped objects.
-    if (a instanceof _) a = a._wrapped;
-    if (b instanceof _) b = b._wrapped;
-    // Compare `[[Class]]` names.
-    var className = toString.call(a);
-    if (className !== toString.call(b)) return false;
-    switch (className) {
-      // Strings, numbers, regular expressions, dates, and booleans are compared by value.
-      case '[object RegExp]':
-      // RegExps are coerced to strings for comparison (Note: '' + /a/i === '/a/i')
-      case '[object String]':
-        // Primitives and their corresponding object wrappers are equivalent; thus, `"5"` is
-        // equivalent to `new String("5")`.
-        return '' + a === '' + b;
-      case '[object Number]':
-        // `NaN`s are equivalent, but non-reflexive.
-        // Object(NaN) is equivalent to NaN
-        if (+a !== +a) return +b !== +b;
-        // An `egal` comparison is performed for other numeric values.
-        return +a === 0 ? 1 / +a === 1 / b : +a === +b;
-      case '[object Date]':
-      case '[object Boolean]':
-        // Coerce dates and booleans to numeric primitive values. Dates are compared by their
-        // millisecond representations. Note that invalid dates with millisecond representations
-        // of `NaN` are not equivalent.
-        return +a === +b;
-    }
-
-    // Recursively compare objects and arrays.
-    if (areArrays) {
-      // Compare array lengths to determine if a deep comparison is necessary.
-      length = a.length;
-      if (length !== b.length) return false;
-      // Deep compare the contents, ignoring non-numeric properties.
-      while (length--) {
-        if (!eq(a[length], b[length], aStack, bStack)) return false;
-      }
-    } else {
-      // Deep compare objects.
-      var keys = _.keys(a), key;
-      length = keys.length;
-      // Ensure that both objects contain the same number of properties before comparing deep equality.
-      if (_.keys(b).length !== length) return false;
-      while (length--) {
-        // Deep compare each member
-        key = keys[length];
-        if (!(_.has(b, key) && eq(a[key], b[key], aStack, bStack))) return false;
-      }
-    }
-    // Remove the first object from the stack of traversed objects.
-    aStack.pop();
-    bStack.pop();
-    return true;
-  };
-
-  // Is a given value an array?
-  // Delegates to ECMA5's native Array.isArray
-  _.isArray = nativeIsArray || function(obj) {
-    return toString.call(obj) === '[object Array]';
-  };
-}.call(this));
-
-//Should log [1, 2, 3, 4, 5, 6, 7, 8]
-//console.log( _.flatten( [1, [2, 3], 4, [5, [[6], [7]]], 8] ) );
 
 
 
@@ -544,15 +406,15 @@ $("#sendCmdArgs").click( function( event ){
     var theSwitchArray = sortObject(unsortedDevCmds);
     var theSwitchArrayCmd = sortObject(unsortedCmds);
 
-    //Creat an array to fill with the arguments to be sent to the cmd line
-    var unflattenCmdSwitchArray = [];
-
     //Get the value of each element and send it to be outputted.
     for (var index = 0; index < theSwitchArray.length; index++) {
+
         //add the arguments for #commandLine dev tool
         outputCmd(theSwitchArray[index].value);
+
         //push arguments to the command line
-        unflattenCmdSwitchArray.push(theSwitchArrayCmd[index].value);
+        cmdSwitchArray.push(theSwitchArrayCmd[index].value);
+
     }
 
     //Output the commands arguments in the correct order in the #commandLine dev tool
@@ -560,11 +422,9 @@ $("#sendCmdArgs").click( function( event ){
         $("#commandLine").append(cmdSwitch + " ");
     }
 
-    var flattenedCmdSwitchArray = this._.flatten( unflattenCmdSwitchArray );
-//http://jsfiddle.net/m43aecf6/
     $("#commandLine").prepend(executable);
 
-    runcmd(executable, flattenedCmdSwitchArray);
+    runcmd(executable, cmdSwitchArray);
 
 });
 
