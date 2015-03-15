@@ -3,8 +3,8 @@
 UGUI TODO:
 
 1. Form validation to prevent end users from adding in Quotes to text box
+http://jsfiddle.net/1sxzsz56
 2. Detect if prefix or suffix has a quote in it and display an UGUI Dev Warning error if it does
-http://jsfiddle.net/1sxzsz56/
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
 4. Detect if prefix ends in space, if not combine with value
 5. Detect if suffix starts with space, if not combine with value
@@ -478,6 +478,9 @@ function getAboutModal() {
         $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
         $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
 
+        //After all content is loaded, detect all links that should open in the default browser
+        openDefaultBrowser();
+
         //Remove modal, enable scrollbar
         function removeModal() {
             $("#aboutModal").slideUp("slow", function(){
@@ -487,8 +490,8 @@ function getAboutModal() {
 
         //When clicking on background or X, remove modal
         $("#aboutModal").click( removeModal );
-        $("#aboutModal .modal-content").click( function(e) {
-            e.stopPropagation();
+        $("#aboutModal .modal-content").click( function( event ) {
+            event.stopPropagation();
         });
         $("#aboutModal .glyphicon-remove").click( removeModal );
 
@@ -790,6 +793,41 @@ function keyBindings() {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
+//               LAUNCH LINKS IN DEFAULT BROWSER               //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Detects all links on the page with a class of external-link //
+// and sets them to open the link in the user's default        //
+// default browser instead of using NW.js as a browser.        //
+/////////////////////////////////////////////////////////////////
+
+function openDefaultBrowser() {
+    console.log("bind");
+    // Load native UI library.
+    var gui = require('nw.gui');
+
+    // Open URL with default browser.
+    $(".external-link").click( function( event ){
+        //prevent the link from loading in NW.js
+        event.preventDefault();
+        //get the href url for the current link
+        var url = $(this).attr('href');
+        console.log(url);
+        //launch the user's default browser and load the URL for the link they clicked
+        gui.Shell.openExternal( url );
+    })
+};
+//Run once on page load
+openDefaultBrowser();
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
 //                          DROPZONE                           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -814,7 +852,7 @@ $(function() {
 
   // After dropping a file in the DropZone, put the file name in
   // the DropZone. If the file is an image, display a thumbnail.
-  $('#DropZone input').on('change', function(event) {
+  $('#DropZone input').on('change', function( event ) {
     var file = this.files[0];
 
     $('#DropZone label').removeClass('text-info');    //Static
@@ -832,7 +870,7 @@ $(function() {
 
       reader.readAsDataURL(file);
 
-      reader.onload = function(event) {
+      reader.onload = function( event ) {
         var data = event.target.result;
         var $img = $('<img />').attr('src', data).fadeIn();
 
@@ -963,9 +1001,9 @@ $(function() {
   }
 
     var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
-    $(document).on("contextmenu", function(e) {
-        e.preventDefault();
-        menu.popup(e.originalEvent.x, e.originalEvent.y);
+    $(document).on("contextmenu", function( event ) {
+        event.preventDefault();
+        menu.popup(event.originalEvent.x, event.originalEvent.y);
     });
 });
 

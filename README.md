@@ -39,8 +39,9 @@ Current Version: V0.99999999 (so close!)
 * V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
 * V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
 * V1.0 ~~Test in OSX, Linux, and Windows~~
-* V1.0 Bug found: Fix Array in Array issue so Prefix/Suffix based args work.
-* V1.5 Test out htmlEscape() to see if special characters work when sent to the commandline.
+* V1.0 Bug found: Redo the UGUI engine to accept sub-arguments properly.
+* V1.0 Add in basic form validation to prevent the user from breaking the command line with bad characters
+* V1.5 Clean up UGUI About section to have github credits icons appear dynamically or work offline.
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
