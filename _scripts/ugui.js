@@ -161,9 +161,9 @@ function runcmd( executable, args, callback ) {
         }
     });
 
-    //child.stderr.on("data", function (data) {
-    //  console.log("stderr: " + data);
-    //});
+    child.stderr.on("data", function (data) {
+      console.log("stderr: " + data);
+    });
 };
 
 
@@ -490,6 +490,7 @@ function getAboutModal() {
 
         //When clicking on background or X, remove modal
         $("#aboutModal").click( removeModal );
+        //allow you to click in the modal without triggering the removeModal function called when you click it's parent element
         $("#aboutModal .modal-content").click( function( event ) {
             event.stopPropagation();
         });
