@@ -3,7 +3,7 @@
 UGUI TODO:
 
 1. Form validation to prevent end users from adding in Quotes to text box
-http://jsfiddle.net/1sxzsz56
+   http://jsfiddle.net/1sxzsz56/1
 2. Detect if prefix or suffix has a quote in it and display an UGUI Dev Warning error if it does
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
 4. Detect if prefix ends in space, if not combine with value
@@ -12,7 +12,7 @@ http://jsfiddle.net/1sxzsz56
 7. That array is put in an object with a key that equals the argOrder, and a value that is the array (containing 1, 2, or 3 items)
 8. Those arrays get sorted and then pushed into a big array in the correct order
 9. Then do a loop based on length of items in big array. in that loop do another loop based on length of items in small array, then push each item in the small array into a new array
-10. that new array is what is sent to the command line BEEEOOOOTCHHHHH!
+10. that new array is what is sent to the command line
 
 */
 
@@ -803,7 +803,7 @@ function keyBindings() {
 /////////////////////////////////////////////////////////////////
 
 function openDefaultBrowser() {
-    console.log("bind");
+
     // Load native UI library.
     var gui = require('nw.gui');
 
@@ -813,7 +813,6 @@ function openDefaultBrowser() {
         event.preventDefault();
         //get the href url for the current link
         var url = $(this).attr('href');
-        console.log(url);
         //launch the user's default browser and load the URL for the link they clicked
         gui.Shell.openExternal( url );
     })
