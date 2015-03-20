@@ -39,85 +39,13 @@ function ugui() {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                     STRIP JSON COMMENTS                     //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// The package.json file has comments in it to make it easier  //
-// for the user to read. However you can't parse JSON that has //
-// comments. Node, Grunt, NW.js, and others have no problem    //
-// reading .json config files with comments though.            //
-/////////////////////////////////////////////////////////////////
-// by Sindre Sorhus - MIT License                              //
-// https://github.com/sindresorhus/strip-json-comments         //
-/////////////////////////////////////////////////////////////////
-
-(function () {
-    "use strict";
-    function stripJsonComments(str) {
-        var currentChar;
-        var nextChar;
-        var insideString = false;
-        var insideComment = false;
-        var ret = "";
-        for (var i = 0; i < str.length; i++) {
-            currentChar = str[i];
-            nextChar = str[i + 1];
-            if (!insideComment && str[i - 1] !== "\\" && currentChar === '"') {
-                insideString = !insideString;
-            }
-            if (insideString) {
-                ret += currentChar;
-                continue;
-            }
-            if (!insideComment && currentChar + nextChar === "//") {
-                insideComment = "single";
-                i++;
-            } else if (insideComment === "single" && currentChar + nextChar === "\r\n") {
-                insideComment = false;
-                i++;
-                ret += currentChar;
-                ret += nextChar;
-                continue;
-            } else if (insideComment === "single" && currentChar === "\n") {
-                insideComment = false;
-            } else if (!insideComment && currentChar + nextChar === "/*") {
-                insideComment = "multi";
-                i++;
-                continue;
-            } else if (insideComment === "multi" && currentChar + nextChar === "*/") {
-                insideComment = false;
-                i++;
-                continue;
-            }
-            if (insideComment) {
-                continue;
-            }
-            ret += currentChar;
-        }
-        return ret;
-    }
-    if (typeof module !== "undefined" && module.exports) {
-        module.exports = stripJsonComments;
-    } else {
-        window.stripJsonComments = stripJsonComments;
-    }
-})();
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
 //                         READ A FILE                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // A function that allows you to set the contents of a file to //
 // a variable. Like so:                                        //
 //                                                             //
-// var devTools = readAFile("_markup/ugui-devtools.htm");      //
+// var devToolsHTML = readAFile("_markup/ugui-devtools.htm");  //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
@@ -186,11 +114,8 @@ var cmdSwitches = [];
 //Create an object containing all elements with an argOrder.
 var cmdArgs = $("#argsForm *[data-argOrder]");
 
-//Get the contents of the package.json file
-var packagejsonData = readAFile("package.json");
-
-//Parse the package.json file after removing its comments
-var packageJSON = JSON.parse(stripJsonComments(packagejsonData));
+//Access the contents of the package.json file
+var packageJSON = require('nw.gui').App.manifest;
 
 //The file.exe defined by the developer in the package.json file
 var executable = packageJSON.executable;
