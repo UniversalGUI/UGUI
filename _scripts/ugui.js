@@ -18,9 +18,7 @@ UGUI TODO:
 
 
 //Wait for the document to load before running ugui.js
-$(document).ready( function(){
-    ugui();
-});
+$(document).ready( ugui );
 
 
 
@@ -249,7 +247,7 @@ $("#sendCmdArgs").click( function( event ){
         //skips extraction if checkbox not checked.
         if ( cmdArg.is(":checkbox") && !cmdArg.prop("checked") ) continue;
 
-        //skips extraction if radio dial is not checked
+        //skips extraction if radio dial is not selected
         if ( cmdArg.is(":radio") && !cmdArg.prop("checked") ) continue;
 
         //All elements other than unchecked checkboxes get ran through this function.
@@ -331,6 +329,10 @@ $("#sendCmdArgs").click( function( event ){
     //Create an array with the sorted content
     var theSwitchArray = sortObject(unsortedDevCmds);
     var theSwitchArrayCmd = sortObject(unsortedCmds);
+
+
+    //Creat an array to fill with the arguments to be sent to the cmd line
+    var cmdSwitchArray = [];
 
     //Get the value of each element and send it to be outputted.
     for (var index = 0; index < theSwitchArray.length; index++) {
@@ -528,12 +530,6 @@ $(".navbar a[href='#exit']").click( function() {
 if ( $("body").hasClass("prod") ) {
     $("#uguiDevTools").remove();
 } else if ( $("body").hasClass("dev") ){
-
-    //get node webkit GUI - WIN
-    var gui = require("nw.gui");
-    // get the window object
-    var win = gui.Window.get();
-
     //Create UGUI Dev Tools markup
     $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ){
         //Put Dev Tool Markup on the page
@@ -565,6 +561,11 @@ if ( $("body").hasClass("prod") ) {
 
         swatchSwapper();
     });
+
+    //get node webkit GUI - WIN
+    var gui = require("nw.gui");
+    // get the window object
+    var win = gui.Window.get();
 
     //Keyboard shortcuts
     keyBindings();
@@ -837,7 +838,7 @@ $(function() {
 
 $(".slider").slider({
     formatter: function(value) {
-    return value;
+        return value;
     }
 });
 
