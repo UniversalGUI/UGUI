@@ -23,10 +23,23 @@
       NW.js uses Node.js/IO.js, parts of Chromium, Webkit, and V8. For a full listing of technologies used by NW.js visit <a class="external-link" href="http://nwjs.io">nwjs.io</a>.<br />
       <br />
       Contributors to the UGUI Project:<br />
+      <!-- If the following script isn't ran on the page, it doesn't hit soon enough to check if the images loaded. -->
+      <!-- If the images load, keep text hidden, if the app is ran while a user is offline, show text instead of images. -->
+      <script>
+        function offline() {
+          $(".gitHubContributors").addClass("notOnline");
+        }
+      </script>
       <span class="gitHubContributors">
-        <a class="external-link" href="http://github.com/TheJaredWilcurt" ><img src="https://avatars.githubusercontent.com/u/4629794?v=3" alt="TheJaredWilcurt" title="TheJaredWilcurt" /></a>
-        <a class="external-link" href="http://github.com/nmhai3"          ><img src="https://avatars.githubusercontent.com/u/4622481?v=3" alt="nmhai3"          title="nmhai3"          /></a>
-        <a class="external-link" href="http://github.com/StephanRaab"     ><img src="https://avatars.githubusercontent.com/u/8717350?v=3" alt="StephanRaab"     title="StephanRaab"     /></a>
+        <a class="external-link" href="http://github.com/TheJaredWilcurt">
+          <img onerror="offline()" src="https://avatars.githubusercontent.com/u/4629794?v=3" alt="TheJaredWilcurt" title="TheJaredWilcurt" />
+          TheJaredWilcurt</a>,
+        <a class="external-link" href="http://github.com/nmhai3">
+          <img onerror="offline()" src="https://avatars.githubusercontent.com/u/4622481?v=3" alt="nmhai3" title="nmhai3" />
+          nmhai3</a>,
+        <a class="external-link" href="http://github.com/StephanRaab">
+          <img onerror="offline()" src="https://avatars.githubusercontent.com/u/8717350?v=3" alt="StephanRaab" title="StephanRaab" />
+          StephanRaab</a>
       </span>
     </p>
   </div>
