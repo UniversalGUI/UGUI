@@ -4,7 +4,7 @@ UGUI TODO:
 
 1. Form validation to prevent end users from adding in Quotes to text box
    http://jsfiddle.net/1sxzsz56/8
-2. Detect if prefix or suffix has a quote in it and display an UGUI Dev Warning error if it does
+2. ~~Detect if prefix or suffix has a quote in it and display a UGUI Dev Warning error if it does~~
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
 4. Detect if prefix ends in space, if not combine with value
 5. Detect if suffix starts with space, if not combine with value
@@ -169,6 +169,72 @@ if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
     console.warn( "// You have more than one data-argOrder with the same value. //" );
     console.warn( "///////////////////////////////////////////////////////////////" );
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//             WARN IF QUOTES IN PREFIX OR SUFFIX              //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Detect if the developer put single or double quotes in the  //
+// the data-argPrefix or data-argSuffix and display a warning  //
+// when in development mode.                                   //
+/////////////////////////////////////////////////////////////////
+
+function noPrefixSuffixQuotes() {
+
+    //Grab up all elements that have a prefix
+    var cmdArgPrefixes = $("#argsForm *[data-argPrefix");
+    //Loop through them all
+    for ( var index = 0; index < cmdArgPrefixes.length; index++ ) {
+        //make a var of the prefix content for the current item being looped
+        var cmdArgPrefixContent = $( cmdArgPrefixes[index] ).attr("data-argPrefix");
+        //if the content of the prefix contains a single or double quote
+        if ( cmdArgPrefixContent.indexOf("'") != -1 || cmdArgPrefixContent.indexOf('"') != -1 ) {
+            //add a warning at the top of the page
+            $.get("_markup/ugui-noquotes.htm", function( noQuotesMarkup ){
+                //Put alert mesage at top of page
+                $("body.dev").prepend( noQuotesMarkup );
+            });
+            //Throw a console warning too, why not :)
+            console.warn( "/////////////////////////////////////////////////////////////" );
+            console.warn( "// Do not place single or double quotes in data-argPrefix. //" );
+            console.warn( "/////////////////////////////////////////////////////////////" );
+            return;
+        }
+    }
+
+
+
+    //Grab up all elements that have a suffix
+    var cmdArgSuffixes = $("#argsForm *[data-argSuffix");
+    //Loop through them all
+    for ( var index = 0; index < cmdArgSuffixes.length; index++ ) {
+        //make a var of the suffix content for the current item being looped
+        var cmdArgSuffixContent = $( cmdArgSuffixes[index] ).attr("data-argSuffix");
+        //if the content of the suffix contains a single or double quote
+        if ( cmdArgSuffixContent.indexOf("'") != -1 || cmdArgSuffixContent.indexOf('"') != -1 ) {
+            //add a warning at the top of the page
+            $.get("_markup/ugui-noquotes.htm", function( noQuotesMarkup ){
+                //Put alert mesage at top of page
+                $("body.dev").prepend( noQuotesMarkup );
+            });
+            //Throw a console warning too, why not :)
+            console.warn( "/////////////////////////////////////////////////////////////" );
+            console.warn( "// Do not place single or double quotes in data-argSuffix. //" );
+            console.warn( "/////////////////////////////////////////////////////////////" );
+            return;
+        }
+    }
+};
+
+//Run once on page load
+noPrefixSuffixQuotes();
 
 
 
@@ -459,10 +525,8 @@ $(".navbar a[href='#fullscreen']").click( function(){
 //Clicking "About" in the Nav Bar
 $(".navbar a[href='#about']").click( function() {
 
-    // Load native UI library
-    var gui = require('nw.gui');
     //Get the current Window
-    var win = gui.Window.get();
+    var win = require('nw.gui').Window.get();
 
     //Show the modal
     $("#aboutModal").fadeIn("slow");
@@ -565,7 +629,7 @@ if ( $("body").hasClass("prod") ) {
     //get node webkit GUI - WIN
     var gui = require("nw.gui");
     // get the window object
-    var win = gui.Window.get();
+    var win = require('nw.gui').Window.get();
 
     //Keyboard shortcuts
     keyBindings();
