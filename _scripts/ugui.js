@@ -2,13 +2,12 @@
 
 UGUI TODO:
 
-1. Form validation to prevent end users from adding in Quotes to text box
-   http://jsfiddle.net/1sxzsz56/8
+1. ~~Form validation to prevent end users from adding in Quotes to text box~~
 2. ~~Detect if prefix or suffix has a quote in it and display a UGUI Dev Warning error if it does~~
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
 4. Detect if prefix ends in space, if not combine with value
 5. Detect if suffix starts with space, if not combine with value
-6. Then push to an array, this arry could have 1, 2, or 3 items in it depending on the big if statement above
+6. Then push to an array, this array could have 1, 2, or 3 items in it depending on the big if statement above
 7. That array is put in an object with a key that equals the argOrder, and a value that is the array (containing 1, 2, or 3 items)
 8. Those arrays get sorted and then pushed into a big array in the correct order
 9. Then do a loop based on length of items in big array. in that loop do another loop based on length of items in small array, then push each item in the small array into a new array
@@ -244,6 +243,42 @@ noPrefixSuffixQuotes();
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
+//          PREVENT USER FROM ENTERING QUOTES IN FORMS         //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+//Get all text fields where a quote could be entered
+var textFields = $( "textarea, input[type=text]" ).toArray();
+
+//Remove all quotes on every textfield whenever typing or leaving the field
+$(textFields).keyup( removeTypedQuotes );
+$(textFields).blur( removeTypedQuotes );
+
+function removeTypedQuotes() {
+    //Loop through all text fields on the page
+    for ( var i = 0; i < textFields.length; i++ ){
+        //User entered text of current text field
+        var textFieldValue = $( textFields[i] ).val();
+        //If the current text field has a double or single quote in it
+        if ( textFieldValue.indexOf('"') != -1 || textFieldValue.indexOf("'") != -1 ) {
+            //Remove quotes in current text field
+            $( textFields[i] ).val( $( textFields[i] ).val().replace(/['"]/g, '') );
+        }
+    }
+};
+
+removeTypedQuotes();
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
 //            SUBMIT LOCKED UNTIL REQUIRED FULFILLED           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -300,6 +335,10 @@ $("#sendCmdArgs").click( function( event ){
 
     //Prevent the form from sending like a normal website.
     event.preventDefault();
+
+    //Remove all single/double quotes from any text fields
+    removeTypedQuotes();
+
     //clear out the commandLine box every time sendCmdArgs is clicked.
     $("#commandLine").html(" ");
 
