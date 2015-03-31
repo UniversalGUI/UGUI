@@ -39,14 +39,17 @@ Current Version: V0.99999999 (so close!)
 * V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
 * V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
 * V1.0 ~~Test in OSX, Linux, and Windows~~
+* V1.0 ~~Clean up UGUI About section to have github credits icons appear dynamically or work offline.~~
+* V1.0 ~~Add in basic form validation to prevent the user from breaking the command line with bad characters~~
 * V1.0 Bug found: Redo the UGUI engine to accept sub-arguments properly.
-* V1.0 Add in basic form validation to prevent the user from breaking the command line with bad characters
-* V1.5 Clean up UGUI About section to have github credits icons appear dynamically or work offline.
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
+* V1.5 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
 
 **Phase 2: Site: Templates, Tutorials, & Documentation**
+
+The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.github.io](https://github.com/UniversalGUI/UniversalGUI.github.io/tree/dev)
 
 * ~~Buy domain name: [UGUI.io](http://ugui.io)~~
 * ~~Create a [community forum](http://ugui.reddit.com) for discussions~~
