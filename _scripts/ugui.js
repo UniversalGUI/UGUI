@@ -5,6 +5,7 @@ UGUI TODO:
 1. ~~Form validation to prevent end users from adding in Quotes to text box~~
 2. ~~Detect if prefix or suffix has a quote in it and display a UGUI Dev Warning error if it does~~
 3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
+    http://jsfiddle.net/9vayf6f4/5
 4. Detect if prefix ends in space, if not combine with value
 5. Detect if suffix starts with space, if not combine with value
 6. Then push to an array, this array could have 1, 2, or 3 items in it depending on the big if statement above
@@ -339,6 +340,30 @@ $("#sendCmdArgs").click( function( event ){
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
 
+});
+
+function argWrapQuotes() {
+
+    //If an element is an unchecked checkbox, it gets skipped, otherwise it gets processed.
+    for (var index = 0; index < cmdArgs.length; index++) {
+        var cmdArg = $(cmdArgs[index]);
+
+        //if ( $( cmdArgs[index]. ) ) {
+        //}
+
+    }
+}
+
+/*
+//When you click the Compress button.
+$("#sendCmdArgs").click( function( event ){
+
+    //Prevent the form from sending like a normal website.
+    event.preventDefault();
+
+    //Remove all single/double quotes from any text fields
+    removeTypedQuotes();
+
     //clear out the commandLine box every time sendCmdArgs is clicked.
     $("#commandLine").html(" ");
 
@@ -415,7 +440,7 @@ $("#sendCmdArgs").click( function( event ){
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;");
     }
-
+/*
     /* The user can just use the prefix and suffix if something needs to be in quotes
     String.prototype.hasWhiteSpace = function() {
         return /\s/g.test(this);
@@ -430,7 +455,7 @@ $("#sendCmdArgs").click( function( event ){
         return text;
     }
     */
-
+/*
     //Create an array with the sorted content
     var theSwitchArray = sortObject(unsortedDevCmds);
     var theSwitchArrayCmd = sortObject(unsortedCmds);
@@ -460,6 +485,7 @@ $("#sendCmdArgs").click( function( event ){
     runcmd(executable, cmdSwitchArray);
 
 });
+*/
 
 
 

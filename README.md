@@ -4,7 +4,7 @@
 
 **UGUI gives a face to command line programs, and that face is HTML, CSS, & JS.**
 
-Create your own cross-platform desktop applications in minutes using UGUI. 
+Create your own cross-platform desktop applications in minutes using UGUI.
 
 * * *
 
@@ -18,7 +18,7 @@ Download UGUI to use it for your project:
 
 ###What is UGUI
 
-UGUI is a library and framework for NW.js (formally Node-Webkit) that is design to make creating a desktop application as easy as possible. We specifically target the creation of GUI applications for command line programs, however UGUI can also be used as a general purpose starting point for any type of desktop application.
+UGUI is a library and framework for NW.js (formally Node-Webkit) that is designed to make creating a desktop application as easy as possible. We specifically target the creation of GUI applications for command line programs, however UGUI can also be used as a general purpose starting point for any type of desktop application.
 
 Our goal is to allow anyone, even those with no prior coding knowledge, to create a desktop application in just 5 minutes.
 
@@ -26,7 +26,8 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-Current Version: V0.99999999 (so close!)
+**Current Version:** V0.99999999 (so close!)  
+**Status:** You know when you have to break something first before you can fix it? Wellll, that parts accomplished!
 
 **Phase 1: The library and framwork.**
 
