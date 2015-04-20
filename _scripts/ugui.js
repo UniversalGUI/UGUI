@@ -187,38 +187,22 @@ if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
 /////////////////////////////////////////////////////////////////
 
 function noPrefixSuffixQuotes() {
+    //Grab up all elements that have a prefix/suffix
+    var cmdArgPrefixes = $("#argsForm *[data-argPrefix]");
+    var cmdArgSuffixes = $("#argsForm *[data-argSuffix]");
 
-    //Grab up all elements that have a prefix
-    var cmdArgPrefixes = $("#argsForm *[data-argPrefix");
+    //Run the function below once for prefixes and once for suffixes
+    prefixSuffixQuoteRemoval(cmdArgPrefixes, "data-argPrefix");
+    prefixSuffixQuoteRemoval(cmdArgSuffixes, "data-argSuffix");
+}
+
+function prefixSuffixQuoteRemoval(cmdArgPreSuff, dataArgPreSuff) {
     //Loop through them all
-    for ( var index = 0; index < cmdArgPrefixes.length; index++ ) {
-        //make a var of the prefix content for the current item being looped
-        var cmdArgPrefixContent = $( cmdArgPrefixes[index] ).attr("data-argPrefix");
-        //if the content of the prefix contains a single or double quote
-        if ( cmdArgPrefixContent.indexOf("'") != -1 || cmdArgPrefixContent.indexOf('"') != -1 ) {
-            //add a warning at the top of the page
-            $.get("_markup/ugui-noquotes.htm", function( noQuotesMarkup ){
-                //Put alert mesage at top of page
-                $("body.dev").prepend( noQuotesMarkup );
-            });
-            //Throw a console warning too, why not :)
-            console.warn( "/////////////////////////////////////////////////////////////" );
-            console.warn( "// Do not place single or double quotes in data-argPrefix. //" );
-            console.warn( "/////////////////////////////////////////////////////////////" );
-            return;
-        }
-    }
-
-
-
-    //Grab up all elements that have a suffix
-    var cmdArgSuffixes = $("#argsForm *[data-argSuffix");
-    //Loop through them all
-    for ( var index = 0; index < cmdArgSuffixes.length; index++ ) {
+    for ( var index = 0; index < cmdArgPreSuff.length; index++ ) {
         //make a var of the suffix content for the current item being looped
-        var cmdArgSuffixContent = $( cmdArgSuffixes[index] ).attr("data-argSuffix");
+        var cmdArgPreSuffContent = $( cmdArgPreSuff[index] ).attr(dataArgPreSuff);
         //if the content of the suffix contains a single or double quote
-        if ( cmdArgSuffixContent.indexOf("'") != -1 || cmdArgSuffixContent.indexOf('"') != -1 ) {
+        if ( cmdArgPreSuffContent.indexOf("'") != -1 || cmdArgPreSuffContent.indexOf('"') != -1 ) {
             //add a warning at the top of the page
             $.get("_markup/ugui-noquotes.htm", function( noQuotesMarkup ){
                 //Put alert mesage at top of page
@@ -226,12 +210,12 @@ function noPrefixSuffixQuotes() {
             });
             //Throw a console warning too, why not :)
             console.warn( "/////////////////////////////////////////////////////////////" );
-            console.warn( "// Do not place single or double quotes in data-argSuffix. //" );
+            console.warn( "// Do not place single or double quotes in " + dataArgPreSuff + ". //" );
             console.warn( "/////////////////////////////////////////////////////////////" );
             return;
         }
     }
-};
+}
 
 //Run once on page load
 noPrefixSuffixQuotes();
@@ -247,11 +231,13 @@ noPrefixSuffixQuotes();
 //          PREVENT USER FROM ENTERING QUOTES IN FORMS         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-//                                                             //
+// In all input text fields and textareas, remove both single  //
+// and double quotes as they are typed, on page load, and when //
+// the form is submitted.                                      //
 /////////////////////////////////////////////////////////////////
 
 //Get all text fields where a quote could be entered
-var textFields = $( "textarea, input[type=text]" ).toArray();
+var textFields = $( "#argsForm textarea[data-argOrder], #argsForm input[data-argOrder][type=text]" ).toArray();
 
 //Remove all quotes on every textfield whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
@@ -268,7 +254,7 @@ function removeTypedQuotes() {
             $( textFields[i] ).val( $( textFields[i] ).val().replace(/['"]/g, '') );
         }
     }
-};
+}
 
 removeTypedQuotes();
 
