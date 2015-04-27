@@ -68,29 +68,75 @@ function readAFile(filePathAndName) {
 // easier. Cow & Taco examples below to make life simpler.     //
 //                                                             //
 // $("#taco").click( function(){                               //
-//   runcmd("pngquant", ["--force", "file.png"]);              //
+//   runcmd('pngquant --force "file.png"');                    //
 // });                                                         //
 //                                                             //
-// runcmd("node", ["--version"], function(data){               //
+// runcmd('node --version', function(data) {                   //
 //   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
 // });                                                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function runcmd( executable, args, callback ) {
-    var spawn = require("child_process").spawn;
-    console.log( executable, args );
-    var child = spawn( executable, args );
+function runcmd ( executableAndArgs, callback ) {
+    var exec = require("child_process").exec;
+    var child = exec( executableAndArgs,
+        //Throw errors and information into console
+        function (error, stdout, stderr) {
+            console.log(executableAndArgs);
+            console.log('stdout: ' + stdout);
+            console.log('stderr: ' + stderr);
+            if (error !== null) {
+                console.log('Executable Error: ' + error);
+            }
+            console.log("---------------------");
+        }
+    );
+    //Return data from command line
     child.stdout.on("data", function(chunk) {
         if (typeof callback === "function"){
             callback(chunk);
         }
     });
+}
 
-    child.stderr.on("data", function (data) {
-      console.log("stderr: " + data);
-    });
-};
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                       RUN CMD CLASSIC                       //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This is the older way of running commands using "spawn".    //
+// Cow & Taco examples below to make life simpler.             //
+//                                                             //
+// $("#taco").click( function(){                               //
+//   runcmdClassic("pngquant", ["--force", "file.png"]);       //
+// });                                                         //
+//                                                             //
+// runcmdClassic("node", ["--version"], function(data){        //
+//   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
+// });                                                         //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+function runcmdClassic( executable, args, callback ) {
+   var spawn = require("child_process").spawn;
+   console.log( executable, args );
+   var child = spawn( executable, args );
+   child.stdout.on("data", function(chunk) {
+       if (typeof callback === "function"){
+           callback(chunk);
+       }
+   });
+
+   child.stderr.on("data", function (data) {
+     console.log("stderr: " + data);
+   });
+}
 
 
 
@@ -155,7 +201,7 @@ for (var index = 0; index < cmdArgs.length; index++) {
 }
 
 //Create a new array with duplicate argOrders removed
-cmdArgs = new Array();
+cmdArgs = [];
 for ( var key in duplicatesArray )
     cmdArgs.push(duplicatesArray[key]);
 
@@ -287,7 +333,7 @@ function unlockSubmit() {
             $("#sendCmdArgs").prop("disabled",true);
             return;
         }
-    };
+    }
     //If all the required elements are filled out, enable the submit button
     $("#sendCmdArgs").prop("disabled",false);
 }
@@ -561,17 +607,17 @@ function getAboutModal() {
 //Clicking View > Command Line Output in the Nav Bar
 $(".navbar a[href='#cmdoutput']").click( function(){
     $("#uguiDevTools nav span[data-nav='uguiCommand']").trigger("click");
-})
+});
 
 //Clicking View > Console in the Nav Bar
 $(".navbar a[href='#console']").click( function(){
     require('nw.gui').Window.get().showDevTools();
-})
+});
 
 //Clicking View > Fullscreen
 $(".navbar a[href='#fullscreen']").click( function(){
     require('nw.gui').Window.get().toggleFullscreen();
-})
+});
 
 //Clicking "About" in the Nav Bar
 $(".navbar a[href='#about']").click( function() {
@@ -669,10 +715,10 @@ if ( $("body").hasClass("prod") ) {
                 $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
             } else {
                 $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").removeClass('selected');
-                $("#uguiDevTools section." + sectionClicked).addClass("shrink")
-                $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink")
+                $("#uguiDevTools section." + sectionClicked).addClass("shrink");
+                $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink");
             }
-        })
+        });
 
         swatchSwapper();
     });
@@ -752,9 +798,9 @@ function swatchSwapper() {
         if (!err)
             //check each file and put it in the dropdown box
             for (var index = 0; index < files.length; index++) {
-                var fileName = files[index];
-                var swatchName = files[index].split(".min.css")[0];
-                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + fileName + "'>" + swatchName + "</option>");
+                var cssFileName = files[index];                     //cerulean.min.css
+                var swatchName = files[index].split(".min.css")[0]; //cerulean
+                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + cssFileName + "'>" + swatchName + "</option>");
             }
         else
             console.warn("Could not return list of style swatches.");
@@ -793,7 +839,7 @@ function keyBindings() {
         ///Check CTRL + F key and do nothing :(
         if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
             pressed.preventDefault();
-            console.info("NW.js currently has no 'Find' feature built in. Sorry :(")
+            console.info("NW.js currently has no 'Find' feature built in. Sorry :(");
             return false;
         //Check CTRL+F5, CTRL+R, or CMD+R keys and hard refresh the page
         } else if (
@@ -824,8 +870,8 @@ function keyBindings() {
                 win.showDevTools();
                 return false;
         }
-    }
-};
+    };
+}
 
 
 
@@ -856,8 +902,8 @@ function openDefaultBrowser() {
         var url = $(this).attr('href');
         //launch the user's default browser and load the URL for the link they clicked
         gui.Shell.openExternal( url );
-    })
-};
+    });
+}
 //Run once on page load
 openDefaultBrowser();
 
@@ -879,59 +925,61 @@ openDefaultBrowser();
 
 $(function() {
 
-  $('#DropZone').on('dragover', function() {
-    $('#DropZone label').removeClass('text-info');    //Static
-    $('#DropZone label').removeClass('text-success'); //Dropped
-    $('#DropZone label').addClass('text-warning');    //Hover
-  });
+    $('#DropZone').on('dragover', function() {
+        $('#DropZone label').removeClass('text-info');    //Static
+        $('#DropZone label').removeClass('text-success'); //Dropped
+        $('#DropZone label').addClass('text-warning');    //Hover
+    });
 
-  $('#DropZone').on('dragleave', function() {
-    $('#DropZone label').removeClass('text-success'); //Dropped
-    $('#DropZone label').removeClass('text-warning'); //Hover
-    $('#DropZone label').addClass('text-info');       //Static
-  });
+    $('#DropZone').on('dragleave', function() {
+        $('#DropZone label').removeClass('text-success'); //Dropped
+        $('#DropZone label').removeClass('text-warning'); //Hover
+        $('#DropZone label').addClass('text-info');       //Static
+    });
 
-  // After dropping a file in the DropZone, put the file name in
-  // the DropZone. If the file is an image, display a thumbnail.
-  $('#DropZone input').on('change', function( event ) {
-    var file = this.files[0];
+    // After dropping a file in the DropZone, put the file name in
+    // the DropZone. If the file is an image, display a thumbnail.
+    $('#DropZone input').on('change', function( event ) {
+        var file = this.files[0];
 
-    $('#DropZone label').removeClass('text-info');    //Static
-    $('#DropZone label').removeClass('text-warning'); //Hover
+        $('#DropZone label').removeClass('text-info');    //Static
+        $('#DropZone label').removeClass('text-warning'); //Hover
 
-    if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
-      return alert('File type not allowed.');
-    }
+        if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
+            return alert('File type not allowed.');
+        }
 
-    $('#DropZone label').addClass('text-success');   //Dropped
-    $('#DropZone img').remove();
+        $('#DropZone label').addClass('text-success');   //Dropped
+        $('#DropZone img').remove();
 
-    if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
-      var reader = new FileReader(file);
+        if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
+            var reader = new FileReader(file);
 
-      reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
 
-      reader.onload = function( event ) {
-        var data = event.target.result;
-        var $img = $('<img />').attr('src', data).fadeIn();
+            reader.onload = function( event ) {
+                var data = event.target.result;
+                var $img = $('<img />').attr('src', data).fadeIn();
 
-        $('#DropZone img').attr('alt', "Thumbnail of dropped image.");
-        $('#DropZone span').html($img);
-      };
-    }
+                $('#DropZone img').attr('alt', "Thumbnail of dropped image.");
+                $('#DropZone span').html($img);
+            };
+        }
 
-    //Detect if in darwin, freebsd, linux, sunos or win32
-    var platform = process.platform;
-    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
-    if (platform == "win32") {
-       var filename = $("#DropZone input[type=file]").val().split('\\').pop();
-    } else {
-       var filename = $("#DropZone input[type=file]").val().split('/').pop();
-    }
-    var droppedFilename = filename + " selected";
-    $('#DropZone label').html(droppedFilename);
+        //Detect if in darwin, freebsd, linux, sunos or win32
+        var platform = process.platform;
+        //Create filename variable to be used below
+        var filename = '';
+        //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+        if (platform == "win32") {
+            filename = $("#DropZone input[type=file]").val().split('\\').pop();
+        } else {
+            filename = $("#DropZone input[type=file]").val().split('/').pop();
+        }
+        var droppedFilename = filename + " selected";
+        $('#DropZone label').html(droppedFilename);
 
-  });
+    });
 });
 
 
