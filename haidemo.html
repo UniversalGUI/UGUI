@@ -1,0 +1,29 @@
+<input type="text"  data-argName="set_of_characters"    value="qowiejaslwefas" />
+<input type="text"  data-argName="message"              value="this is a message" />
+<input type="range" data-argName="speed"                value="3" />
+<input type="file"  data-argName="inputfile"            value="c:\inputfilealdjfs\aldjf.jpg" required="required" />
+<input type="file"  data-argName="newfilename"          value="C:\asdfasdf\asdfasdf\newfilename.jpg" required="required" />
+
+<arguments exectuble="defluff">
+    <arg name="set_of_characters">-randomize ((value))</arg>
+    <arg name="message">-m "((value))"</arg>
+    <arg name="speed">--speed ((value))</arg>
+    
+    <!--auto-->
+    <arg name="input_file">&gt;((value)) &lt;((path))((name)).new.((ext))</arg>
+
+    <arg name="input_file">&gt;((value))</arg>
+    <arg name="input_file">&lt;((path))((name)).new.((ext))</arg>
+    
+    <!--user specified-->
+    <arg name="input_file">&gt;((value[,])) &lt;((path))((newfilename[;])).((newfilename.ext))</arg>
+    
+    <arg name="combobox">--constalation [[value(,)]]</arg>
+    <arg name="combobox" separator=",">--constalation ((value))</arg>
+    <arg name="combobox">--constalation ((value))</arg>
+    
+    <arg name="combobox">
+        ((allvalue)
+        <subarg>((value)),</subarg>
+    </arg>
+</arguments>
