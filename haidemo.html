@@ -4,26 +4,38 @@
 <input type="file"  data-argName="inputfile"            value="c:\inputfilealdjfs\aldjf.jpg" required="required" />
 <input type="file"  data-argName="newfilename"          value="C:\asdfasdf\asdfasdf\newfilename.jpg" required="required" />
 
-<arguments exectuble="defluff">
+<arguments exectuble="defluff"> <!-- Executable type is a future feature not intended for V1.0 -->
     <arg name="set_of_characters">-randomize ((value))</arg>
     <arg name="message">-m "((value))"</arg>
     <arg name="speed">--speed ((value))</arg>
-    
+
     <!--auto-->
     <arg name="input_file">&gt;((value)) &lt;((path))((name)).new.((ext))</arg>
 
     <arg name="input_file">&gt;((value))</arg>
     <arg name="input_file">&lt;((path))((name)).new.((ext))</arg>
-    
+
     <!--user specified-->
     <arg name="input_file">&gt;((value[,])) &lt;((path))((newfilename[;])).((newfilename.ext))</arg>
-    
+
     <arg name="combobox">--constalation [[value(,)]]</arg>
     <arg name="combobox" separator=",">--constalation ((value))</arg>
     <arg name="combobox">--constalation ((value))</arg>
-    
+
     <arg name="combobox">
         ((allvalue)
         <subarg>((value)),</subarg>
     </arg>
 </arguments>
+
+<!--
+
+  Create array of <arg>'s that will have them in the approriate order.
+  Run each arg through a function that detects all its info and builds out what gets added to the command line
+  in that function, check if it is a a Checkbox. If the checkbox is not checked move on to the next <arg>
+  if the checkbox is checked, then process the <arg> normally.
+  ...
+
+http://jsfiddle.net/mugthmsx/2/
+
+-->

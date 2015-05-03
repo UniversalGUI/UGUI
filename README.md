@@ -12,7 +12,7 @@ Create your own cross-platform desktop applications in minutes using UGUI.
 
 Download UGUI to use it for your project:
 
-* Version 1.0 (Coming *very* soon) | Tutorial for Version 1.0 (Coming Soon)
+* Version 1.0 (Coming soon) | Tutorial for Version 1.0 (Coming Soon)
 
 * * *
 
@@ -26,7 +26,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version:** V0.99999999 (so close!)  
+**Current Version:** V0.75
 **Status:** You know when you have to break something first before you can fix it? Wellll, that parts accomplished!
 
 **Phase 1: The library and framwork.**
@@ -42,7 +42,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Test in OSX, Linux, and Windows~~
 * V1.0 ~~Clean up UGUI About section to have github credits icons appear dynamically or work offline.~~
 * V1.0 ~~Add in basic form validation to prevent the user from breaking the command line with bad characters~~
-* V1.0 Bug found: Redo the UGUI engine to accept sub-arguments properly.
+* V1.0 Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.
 * V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
