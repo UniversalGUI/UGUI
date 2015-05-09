@@ -664,8 +664,7 @@ centerNavLogo();
 
 //When you click on the X in the top corner, close this instance of Node-Webkit
 $(".navbar a[href='#exit']").click( function() {
-    var win = gui.Window.get();
-    win.close(true);
+    require('nw.gui').Window.get().close(true);
 });
 
 

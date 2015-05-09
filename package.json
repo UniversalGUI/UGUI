@@ -12,6 +12,7 @@
         "toolbar": true,             // Most set this to false for distribution & true when in development
         "resizable": true,           // Window can be resized by user
         "visible": true,             // False for tray icon apps, this requires setting up and linking to the tray.js file (advanced)
+        "transparent": false,        // If no background colors are set your app will be transparent, see NW.js wiki for details
         "width": 900,                // Starting width of application
         "height": 550,               // Starting height of application
         "min_width": 400,
