@@ -1,12 +1,3 @@
-/*
-
-TODO:
-
-1. don't send out a commnd for unchecked checkbox or radio dial
-2. don't send out command for an empty value
-
-*/
-
 
 //Wait for the document to load before running ugui.js
 $(document).ready( ugui );
@@ -149,6 +140,9 @@ var allArgElements = $("arguments arg");
 //Create an object containing all elements with an argOrder.
 var cmdArgs = $("#argsForm *[data-argName]");
 
+//Get all text fields where a quote could be entered
+var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
+
 //Access the contents of the package.json file
 var packageJSON = require('nw.gui').App.manifest;
 
@@ -185,9 +179,6 @@ var authorName = packageJSON.author;
 // and double quotes as they are typed, on page load, and when //
 // the form is submitted.                                      //
 /////////////////////////////////////////////////////////////////
-
-//Get all text fields where a quote could be entered
-var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
 
 //Remove all quotes on every textfield whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
@@ -315,21 +306,6 @@ $("#sendCmdArgs").click( function( event ){
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
 
-//This section needs updated//////////////////////////////////????
-    //If an element is an unchecked checkbox, it gets skipped, otherwise it gets processed.
-    for (var index = 0; index < cmdArgs.length; index++) {
-        var cmdArg = $(cmdArgs[index]);
-
-        //skips extraction if checkbox not checked.
-        if ( cmdArg.is(":checkbox") && !cmdArg.prop("checked") ) continue;
-
-        //skips extraction if radio dial is not selected
-        if ( cmdArg.is(":radio") && !cmdArg.prop("checked") ) continue;
-
-        //All elements other than unchecked checkboxes get ran through this function.
-        //extractSwitchString(cmdArg);
-    }
-
     console.log( buildCommandArray() );
     console.log("---------------------");
 
@@ -347,26 +323,21 @@ function buildCommandArray() {
         var formTag = formTagCaps.toLowerCase();
         var formElementType = $("#argsForm *[data-argName=" + argName + "]").attr("type");
         var formElementValue = $("#argsForm *[data-argName=" + argName + "]").val();
+        var formElementRadioCheckbox = "";
+        if (formElementType === "checkbox" || formElementType === "radio") {
+            formElementRadioCheckbox = $("#argsForm *[data-argName=" + argName + "]");
+        }
 
         var argCommand = $(allArgElements[i]).text();
         argCommand = argCommand.replace("((value))", formElementValue);
 
-        //Detect if input or textarea
-        if (formTag === "input") {
-            processInputArg();
-        } else if (formTag === "textarea") {
-            processTextareaArg();
+        //if it has a value and is a checked checkbox
+        if (formElementValue !== "" && $(formElementRadioCheckbox).prop("checked")) {
+            cmds.push(argCommand);
+        } else if (formElementValue !== "" && formElementType !== "radio" && formElementType !== "checkbox" ) {
+            cmds.push(argCommand);
         }
 
-        cmds.push(argCommand);
-    }
-
-    function processInputArg() {
-        //console.log(formTag, argName, formElementType, formElementValue);
-    }
-
-    function processTextareaArg() {
-        //console.log(formTag, argName, formElementValue);
     }
 
     return cmds;
