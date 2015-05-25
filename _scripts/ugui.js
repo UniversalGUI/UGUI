@@ -1,18 +1,9 @@
 /*
 
-UGUI TODO:
+TODO:
 
-1. ~~Form validation to prevent end users from adding in Quotes to text box~~
-2. ~~Detect if prefix or suffix has a quote in it and display a UGUI Dev Warning error if it does~~
-3. Automatically prepend and append quotes to the value of textboxes if data-argWrapQuotes="true"
-    http://jsfiddle.net/9vayf6f4/5
-4. Detect if prefix ends in space, if not combine with value
-5. Detect if suffix starts with space, if not combine with value
-6. Then push to an array, this array could have 1, 2, or 3 items in it depending on the big if statement above
-7. That array is put in an object with a key that equals the argOrder, and a value that is the array (containing 1, 2, or 3 items)
-8. Those arrays get sorted and then pushed into a big array in the correct order
-9. Then do a loop based on length of items in big array. in that loop do another loop based on length of items in small array, then push each item in the small array into a new array
-10. that new array is what is sent to the command line
+1. don't send out a commnd for unchecked checkbox or radio dial
+2. don't send out command for an empty value
 
 */
 
@@ -233,9 +224,9 @@ removeTypedQuotes();
 /////////////////////////////////////////////////////////////////
 
 //When you click out of a form element
-$("#argsForm *[data-argName]").keyup  ( unlockSubmit );
-$("#argsForm *[data-argName]").mouseup( unlockSubmit );
-$("#argsForm *[data-argName]").change ( unlockSubmit );
+$(cmdArgs).keyup  ( unlockSubmit );
+$(cmdArgs).mouseup( unlockSubmit );
+$(cmdArgs).change ( unlockSubmit );
 
 function unlockSubmit() {
     //check if any of the required elements aren't filled out
@@ -273,15 +264,24 @@ unlockSubmit();
 
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
+    //If any of the form elements with a data-argName change
+    $(cmdArgs).change( updateUGUIDevCommandLine );
+    //If the user types anything in a form
+    $(textFields).keyup( updateUGUIDevCommandLine );
+    $(textFields).blur( updateUGUIDevCommandLine );
+}
 
-    $(".thing").change( function() {
-        //clear out the commandLine box every time this is ran
-        $("#commandLine").html(" ");
+function updateUGUIDevCommandLine(){
+    //Get an array of all the commands being sent out
+    var devCommandOutput = buildCommandArray();
+    var devCommandOutputSpaces = [];
 
-        //Create the list
-        
-    });
+    for (var i = 0;i < devCommandOutput.length;i++) {
+        devCommandOutputSpaces.push(" " + devCommandOutput[i]);
+    }
 
+    //Replace the text in the command line box in UGUI dev tools
+    $("#commandLine").html( devCommandOutputSpaces );
 }
 
 
@@ -330,11 +330,13 @@ $("#sendCmdArgs").click( function( event ){
         //extractSwitchString(cmdArg);
     }
 
+    console.log( buildCommandArray() );
+    console.log("---------------------");
+
+});
 
 
-
-
-
+function buildCommandArray() {
     //Set up commands to be sent to command line
     var cmds = [ executable ];
 
@@ -347,7 +349,7 @@ $("#sendCmdArgs").click( function( event ){
         var formElementValue = $("#argsForm *[data-argName=" + argName + "]").val();
 
         var argCommand = $(allArgElements[i]).text();
-        var argCommand = argCommand.replace("((value))", formElementValue);
+        argCommand = argCommand.replace("((value))", formElementValue);
 
         //Detect if input or textarea
         if (formTag === "input") {
@@ -367,19 +369,8 @@ $("#sendCmdArgs").click( function( event ){
         //console.log(formTag, argName, formElementValue);
     }
 
-    console.log(cmds);
-    console.log("---------------------");
-
-
-
-
-
-
-
-
-
-
-});
+    return cmds;
+}
 
 
 /*
