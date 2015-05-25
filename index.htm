@@ -1,21 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <title class="applicationTitle">Your Application Name</title>
+
     <link rel="icon" type="image/x-icon" href="_img/favicon.ico">
     <link rel="stylesheet" href="_style/ven.bootstrap.css">
     <!-- Change this next line from cerulean to whatever swatch you pick. -->
     <link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">
     <link rel="stylesheet" href="_style/style.css">
+
     <!-- UGUI requires jQuery 1.9.1 or above. -->
     <script type="text/javascript" src="_scripts/ven.jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-3.2.0.min.js"></script>
     <script type="text/javascript" src="_scripts/ven.dropdowns-enhancement.js"></script>
     <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
+
+    <arguments>
+      <arg name="catSoundsMeow">((value))</arg>
+      <arg name="catSoundsPurr">((value))</arg>
+      <arg name="catSoundsNyan">((value))</arg>
+      <arg name="speedVsQuality">--speed ((value))mph</arg>
+      <arg name="fruitPlum">((value))</arg>
+      <arg name="fruitKiwi">((value))</arg>
+      <arg name="fruitPear">((value))</arg>
+      <arg name="vegPotato">((value))</arg>
+      <arg name="vegCarrot">((value))</arg>
+      <arg name="vegCelery">((value))</arg>
+      <arg name="vegGinger">((value))</arg>
+      <arg name="userMessage">-m "((value))"</arg>
+      <arg name="fileToProcess">"((value))"</arg>
+    </arguments>
+
   </head>
+
+
+
+
+
+
+
   <!-- Change the class form dev to prod when you're ready to distribute your application. -->
   <body role="document" class="dev">
+
+
+
+
+
+
+
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -60,6 +94,13 @@
       </div>
     </nav>
 
+
+
+
+
+
+
+
     <div class="container" role="main">
 
       <header>
@@ -69,34 +110,41 @@
         </h3>
       </header>
 
+
+
+
+
+
+
+
       <section>
         <form id="argsForm" role="form-inline">
 
           <div id="DropZone" class="form-group jumbotron text-center well h3" title="Click to browse for your file.">
             <span class="imageContainer"></span>
             <label class="text-info h3 truncate" data-content="Dropped">Drag and Drop your file here.</label>
-            <input data-argOrder="99" required="required" type="file" />
+            <input data-argName="fileToProcess" required="required" type="file" />
           </div>
 
           <div class="row">
             <div class="col-xs-6 col-s-4 col-md-4 col-l-4 radio">
-              <label><input type="radio" name="radioDials" data-argOrder="1" value="-meow" /> Radio dial</label><br />
-              <label><input type="radio" name="radioDials" data-argOrder="2" value="-purr" /> choices</label><br />
-              <label><input type="radio" name="radioDials" data-argOrder="3" value="-nyan" /> for arguments</label>
+              <label><input type="radio" name="radioDials" data-argName="catSoundsMeow" value="-meow" /> Radio dial</label><br />
+              <label><input type="radio" name="radioDials" data-argName="catSoundsPurr" value="-purr" /> choices</label><br />
+              <label><input type="radio" name="radioDials" data-argName="catSoundsNyan" value="-nyan" /> for arguments</label>
             </div>
             <div class="col-xs-6 col-s-4 col-md-4 col-l-4 checkbox">
-              <label><input type="checkbox" data-argOrder="21" value="-plum" />Several checkboxes</label><br />
-              <label><input type="checkbox" data-argOrder="22" value="-kiwi" />that each add a</label><br />
-              <label><input type="checkbox" data-argOrder="23" value="-pear" />different argument</label>
+              <label><input type="checkbox" data-argName="fruitPlum" value="-plum" />Several checkboxes</label><br />
+              <label><input type="checkbox" data-argName="fruitKiwi" value="-kiwi" />that each add a</label><br />
+              <label><input type="checkbox" data-argName="fruitPear" value="-pear" />different argument</label>
             </div>
             <div class="col-xs-12 col-s-4 col-md-4 col-l-4">
               <div class="btn-group">
                 <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Dropdown List <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><input type="radio" name="dropdown" data-argOrder="24" id="potato" value="--potato" /><label for="potato">List of items</label></li>
-                  <li><input type="radio" name="dropdown" data-argOrder="25" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
-                  <li><input type="radio" name="dropdown" data-argOrder="26" id="celery" value="--celery" /><label for="celery">that will send</label></li>
-                  <li><input type="radio" name="dropdown" data-argOrder="27" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
+                  <li><input type="radio" name="dropdown" data-argName="vegPotato" id="potato" value="--potato" /><label for="potato">List of items</label></li>
+                  <li><input type="radio" name="dropdown" data-argName="vegCarrot" id="carrot" value="--carrot" /><label for="carrot">in a dropdown</label></li>
+                  <li><input type="radio" name="dropdown" data-argName="vegCelery" id="celery" value="--celery" /><label for="celery">that will send</label></li>
+                  <li><input type="radio" name="dropdown" data-argName="vegGinger" id="ginger" value="--ginger" /><label for="ginger">specific arguments</label></li>
                 </ul>
               </div>
             </div>
@@ -106,14 +154,14 @@
               <table>
                 <tr>
                   <td class="text-center"><span>High Quality (Slower)</span></td>
-                  <td><input class="slider" type="text" id="speed" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="6" data-argOrder="5" data-argPrefix="--speed " data-argSuffix="mph" /></td>
+                  <td><input class="slider" type="text" id="speed" data-argName="speedVsQuality" data-slider-id="speedSlider" data-slider-min="1" data-slider-max="11" data-slider-step="1" data-slider-value="6" /></td>
                   <td class="text-center"><span>Low Quality (Faster)</span></td>
                 </tr>
               </table>
             </div>
             <div class="col-xs-12 col-s-6 col-md-6 col-l-6">
               <label for="message">Message:</label>
-              <textarea id="message" class="form-control" required="required" data-argOrder="40" data-argPrefix="-m "></textarea>
+              <textarea id="message" class="form-control" required="required" data-argName="userMessage"></textarea>
             </div>
           </div>
 
@@ -124,8 +172,26 @@
           </div>
 
         </form>
-
       </section>
+
+
+
+
+
+
+
+      <!--
+        /////////////////////////////////////////////////////////////////
+        //                                                             //
+        //                         ABOUT MODAL                         //
+        //                                                             //
+        /////////////////////////////////////////////////////////////////
+        // This content is displayed when the user clicks Help in the  //
+        // top navigation, then About. Some parts of the about modal   //
+        // are automatically replaced by the content defined in your   //
+        // package.json file, such as Application Name and Version.    //
+        /////////////////////////////////////////////////////////////////
+      -->
 
       <div id="aboutModal" class="modal">
         <div class="modal-dialog">
@@ -157,6 +223,12 @@
         </div>
       </div>
 
-    </div>
+
+
+
+
+
+
+    </div> <!-- end container -->
   </body>
 </html>

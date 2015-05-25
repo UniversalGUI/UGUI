@@ -152,11 +152,11 @@ function runcmdClassic( executable, args, callback ) {
 // Listing of Variables used throughout this library.          //
 /////////////////////////////////////////////////////////////////
 
-//Create an object for all the command line switches
-var cmdSwitches = [];
+//All arguments
+var allArgElements = $("arguments arg");
 
 //Create an object containing all elements with an argOrder.
-var cmdArgs = $("#argsForm *[data-argOrder]");
+var cmdArgs = $("#argsForm *[data-argName]");
 
 //Access the contents of the package.json file
 var packageJSON = require('nw.gui').App.manifest;
@@ -187,93 +187,6 @@ var authorName = packageJSON.author;
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                 WARN IF IDENTICAL ARGORDERS                 //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// If the designer/developer uses the same data-argOrder value //
-// for multiple elements, display a warning.                   //
-/////////////////////////////////////////////////////////////////
-
-var duplicatesArray = {};
-
-for (var index = 0; index < cmdArgs.length; index++) {
-    duplicatesArray[cmdArgs[index].dataset.argorder] = cmdArgs[index];
-}
-
-//Create a new array with duplicate argOrders removed
-cmdArgs = [];
-for ( var key in duplicatesArray )
-    cmdArgs.push(duplicatesArray[key]);
-
-//If the new array had any duplicates removed display a warning.
-if ( cmdArgs.length < $("#argsForm *[data-argOrder]").length ) {
-    $.get("_markup/ugui-multiargorders.htm", function( multiArgOrdersMarkup ){
-        //Put alert mesage at top of page
-        $("body.dev").prepend( multiArgOrdersMarkup );
-    });
-    console.warn( "///////////////////////////////////////////////////////////////" );
-    console.warn( "// You have more than one data-argOrder with the same value. //" );
-    console.warn( "///////////////////////////////////////////////////////////////" );
-}
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//             WARN IF QUOTES IN PREFIX OR SUFFIX              //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Detect if the developer put single or double quotes in the  //
-// the data-argPrefix or data-argSuffix and display a warning  //
-// when in development mode.                                   //
-/////////////////////////////////////////////////////////////////
-
-function noPrefixSuffixQuotes() {
-    //Grab up all elements that have a prefix/suffix
-    var cmdArgPrefixes = $("#argsForm *[data-argPrefix]");
-    var cmdArgSuffixes = $("#argsForm *[data-argSuffix]");
-
-    //Run the function below once for prefixes and once for suffixes
-    prefixSuffixQuoteRemoval(cmdArgPrefixes, "data-argPrefix");
-    prefixSuffixQuoteRemoval(cmdArgSuffixes, "data-argSuffix");
-}
-
-function prefixSuffixQuoteRemoval(cmdArgPreSuff, dataArgPreSuff) {
-    //Loop through them all
-    for ( var index = 0; index < cmdArgPreSuff.length; index++ ) {
-        //make a var of the suffix content for the current item being looped
-        var cmdArgPreSuffContent = $( cmdArgPreSuff[index] ).attr(dataArgPreSuff);
-        //if the content of the suffix contains a single or double quote
-        if ( cmdArgPreSuffContent.indexOf("'") != -1 || cmdArgPreSuffContent.indexOf('"') != -1 ) {
-            //add a warning at the top of the page
-            $.get("_markup/ugui-noquotes.htm", function( noQuotesMarkup ){
-                //Put alert mesage at top of page
-                $("body.dev").prepend( noQuotesMarkup );
-            });
-            //Throw a console warning too, why not :)
-            console.warn( "/////////////////////////////////////////////////////////////" );
-            console.warn( "// Do not place single or double quotes in " + dataArgPreSuff + ". //" );
-            console.warn( "/////////////////////////////////////////////////////////////" );
-            return;
-        }
-    }
-}
-
-//Run once on page load
-noPrefixSuffixQuotes();
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
 //          PREVENT USER FROM ENTERING QUOTES IN FORMS         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -283,7 +196,7 @@ noPrefixSuffixQuotes();
 /////////////////////////////////////////////////////////////////
 
 //Get all text fields where a quote could be entered
-var textFields = $( "#argsForm textarea[data-argOrder], #argsForm input[data-argOrder][type=text]" ).toArray();
+var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
 
 //Remove all quotes on every textfield whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
@@ -320,9 +233,9 @@ removeTypedQuotes();
 /////////////////////////////////////////////////////////////////
 
 //When you click out of a form element
-$("#argsForm *[data-argOrder]").keyup  ( unlockSubmit );
-$("#argsForm *[data-argOrder]").mouseup( unlockSubmit );
-$("#argsForm *[data-argOrder]").change ( unlockSubmit );
+$("#argsForm *[data-argName]").keyup  ( unlockSubmit );
+$("#argsForm *[data-argName]").mouseup( unlockSubmit );
+$("#argsForm *[data-argName]").change ( unlockSubmit );
 
 function unlockSubmit() {
     //check if any of the required elements aren't filled out
@@ -340,6 +253,36 @@ function unlockSubmit() {
 
 //on page load have this run once
 unlockSubmit();
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//          REALTIME UPDATING DEV TOOL COMMAND OUTPUT          //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// In the UGUI Dev Tools there is a Command Output tab. This   //
+// section updates the contents of that section whenever the   //
+// developer interacts with any form elements rather than only //
+// updating it on submit.                                      //
+/////////////////////////////////////////////////////////////////
+
+//Make sure we're in dev mode first
+if( $("body").hasClass("dev") ) {
+
+    $(".thing").change( function() {
+        //clear out the commandLine box every time this is ran
+        $("#commandLine").html(" ");
+
+        //Create the list
+        
+    });
+
+}
 
 
 
@@ -372,36 +315,7 @@ $("#sendCmdArgs").click( function( event ){
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
 
-});
-
-function argWrapQuotes() {
-
-    //If an element is an unchecked checkbox, it gets skipped, otherwise it gets processed.
-    for (var index = 0; index < cmdArgs.length; index++) {
-        var cmdArg = $(cmdArgs[index]);
-
-        //if ( $( cmdArgs[index]. ) ) {
-        //}
-
-    }
-}
-
-/*
-//When you click the Compress button.
-$("#sendCmdArgs").click( function( event ){
-
-    //Prevent the form from sending like a normal website.
-    event.preventDefault();
-
-    //Remove all single/double quotes from any text fields
-    removeTypedQuotes();
-
-    //clear out the commandLine box every time sendCmdArgs is clicked.
-    $("#commandLine").html(" ");
-
-    var unsortedDevCmds = new Object();
-    var unsortedCmds = new Object();
-
+//This section needs updated//////////////////////////////////????
     //If an element is an unchecked checkbox, it gets skipped, otherwise it gets processed.
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
@@ -413,8 +327,64 @@ $("#sendCmdArgs").click( function( event ){
         if ( cmdArg.is(":radio") && !cmdArg.prop("checked") ) continue;
 
         //All elements other than unchecked checkboxes get ran through this function.
-        extractSwitchString(cmdArg);
+        //extractSwitchString(cmdArg);
     }
+
+
+
+
+
+
+    //Set up commands to be sent to command line
+    var cmds = [ executable ];
+
+    //Cycle through all DOM Arguments
+    for (var i = 0; i < allArgElements.length; i++) {
+        var argName = $(allArgElements[i]).attr("name");
+        var formTagCaps = $("#argsForm *[data-argName=" + argName + "]").prop("tagName");
+        var formTag = formTagCaps.toLowerCase();
+        var formElementType = $("#argsForm *[data-argName=" + argName + "]").attr("type");
+        var formElementValue = $("#argsForm *[data-argName=" + argName + "]").val();
+
+        var argCommand = $(allArgElements[i]).text();
+        var argCommand = argCommand.replace("((value))", formElementValue);
+
+        //Detect if input or textarea
+        if (formTag === "input") {
+            processInputArg();
+        } else if (formTag === "textarea") {
+            processTextareaArg();
+        }
+
+        cmds.push(argCommand);
+    }
+
+    function processInputArg() {
+        //console.log(formTag, argName, formElementType, formElementValue);
+    }
+
+    function processTextareaArg() {
+        //console.log(formTag, argName, formElementValue);
+    }
+
+    console.log(cmds);
+    console.log("---------------------");
+
+
+
+
+
+
+
+
+
+
+});
+
+
+/*
+//When you click the Compress button.
+$("#sendCmdArgs").click( function( event ){
 
     //Intentionally generic code used to sort objects
     function sortObject(obj) {
@@ -567,6 +537,7 @@ function getAboutModal() {
         $(".authorName").html(authorName);
         $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
         $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
+        $("#aboutModal .iojsVersion").append(" (Version " + process.versions['node'] + ")");
 
         //After all content is loaded, detect all links that should open in the default browser
         openDefaultBrowser();
@@ -575,6 +546,10 @@ function getAboutModal() {
         function removeModal() {
             $("#aboutModal").slideUp("slow", function(){
                 $("body").css("overflow","auto");
+                //If the navigation is expanded, then close it after exiting the modal
+                if ( !$(".navbar-toggle").hasClass("collapsed") ) {
+                    $(".navbar-toggle").trigger('click');
+                }
             });
         }
 
@@ -917,7 +892,9 @@ openDefaultBrowser();
 //                          DROPZONE                           //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// Code for drag/drop/browse box.                              //
+// Code for drag/drop/browse box. This was originally based on //
+// EZDZ, but has been heavily modified for Bootstrap and NW.js //
+// for cross-platform and Bootswatch compatibility.            //
 /////////////////////////////////////////////////////////////////
 // https://github.com/jaysalvat/ezdz                           //
 /////////////////////////////////////////////////////////////////
