@@ -1,6 +1,6 @@
 
 //Wait for the document to load before running ugui.js
-$(document).ready( ugui );
+$(document).ready( runUGUI );
 
 
 
@@ -9,7 +9,7 @@ $(document).ready( ugui );
 
 
 //Container for all UGUI components
-function ugui() {
+function runUGUI(ugui) {
 
 
 
@@ -43,16 +43,16 @@ var executable = packageJSON.executable;
 //Name of the developer's application, set in package.json
 var appName = packageJSON.name;
 
-//Window Title
+//Window Title, set in package.json
 var appTitle = packageJSON.window.title;
 
 //Version of the developer's application, set in package.json
 var appVersion = packageJSON.version;
 
-//Description or tagline for application
+//Description or tagline for application, set in package.json
 var appDescription = packageJSON.description;
 
-//Name of the app developer or development team
+//Name of the app developer or development team, set in package.json
 var authorName = packageJSON.author;
 
 
@@ -596,18 +596,18 @@ if ( $("body").hasClass("prod") ) {
 
 function warnIfDuplicateArgNames() {
     var duplicatesArray = {};
-debugger;
+
     for (var index = 0; index < cmdArgs.length; index++) {
-        duplicatesArray[cmdArgs[index].dataset.argorder] = cmdArgs[index];
+        duplicatesArray[cmdArgs[index].dataset.argname] = cmdArgs[index];
     }
 
     //Create a new array with duplicate argOrders removed
-    cmdArgs = [];
+    cmdArgsWithoutDuplicates = [];
     for ( var key in duplicatesArray )
-        cmdArgs.push(duplicatesArray[key]);
+        cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
 
     //If the new array had any duplicates removed display a warning.
-    if ( cmdArgs.length < $("#argsForm *[data-argName]").length ) {
+    if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
         $.get("_markup/ugui-multiargnames.htm", function( multiArgNamesMarkup ){
             //Put alert mesage at top of page
             $("body.dev").prepend( multiArgNamesMarkup );
@@ -649,7 +649,7 @@ function putExeHelpInDevTools() {
         executableHelpChoice = $(this).val();
 
         //Run the executable using the user's chosen argument to get it's help info
-        runcmd(executable, [ executableHelpChoice ], function( returnedHelpInfo ){
+        runcmd(executable + " " + executableHelpChoice, function( returnedHelpInfo ){
             //Put the help info in a <pre>
             $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
         });
