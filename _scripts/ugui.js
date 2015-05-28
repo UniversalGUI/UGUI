@@ -574,6 +574,48 @@ if ( $("body").hasClass("prod") ) {
     //Keyboard shortcuts
     keyBindings();
 
+    //Check for duplicat Arg Names
+    warnIfDuplicateArgNames();
+
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//               WARN IF IDENTICAL DATA-ARGNAMES               //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// If the designer/developer uses the same data-argName value  //
+// for multiple elements, display a warning.                   //
+/////////////////////////////////////////////////////////////////
+
+function warnIfDuplicateArgNames() {
+    var duplicatesArray = {};
+debugger;
+    for (var index = 0; index < cmdArgs.length; index++) {
+        duplicatesArray[cmdArgs[index].dataset.argorder] = cmdArgs[index];
+    }
+
+    //Create a new array with duplicate argOrders removed
+    cmdArgs = [];
+    for ( var key in duplicatesArray )
+        cmdArgs.push(duplicatesArray[key]);
+
+    //If the new array had any duplicates removed display a warning.
+    if ( cmdArgs.length < $("#argsForm *[data-argName]").length ) {
+        $.get("_markup/ugui-multiargnames.htm", function( multiArgNamesMarkup ){
+            //Put alert mesage at top of page
+            $("body.dev").prepend( multiArgNamesMarkup );
+        });
+        console.warn( "//////////////////////////////////////////////////////////////" );
+        console.warn( "// You have more than one data-argName with the same value. //" );
+        console.warn( "//////////////////////////////////////////////////////////////" );
+    }
 }
 
 
