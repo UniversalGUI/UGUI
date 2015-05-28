@@ -2,6 +2,7 @@
 <html>
   <head>
 
+    <!-- Automatically updated by your package.json file. -->
     <title class="applicationTitle">Your Application Name</title>
 
     <link rel="icon" type="image/x-icon" href="_img/favicon.ico">
@@ -17,20 +18,45 @@
     <script type="text/javascript" src="_scripts/ven.bootstrap-slider.min.js"></script>
     <script type="text/javascript" src="_scripts/ugui.js"></script>
 
+
+
+
+
+
+
+    <!--
+      /////////////////////////////////////////////////////////////////
+      //                                                             //
+      //              COMMAND LINE ARGUMENT UI BINDINGS              //
+      //                                                             //
+      /////////////////////////////////////////////////////////////////
+      // The order of these arguments controls the order they will   //
+      // be sent out to the command line. Their names must match the //
+      // data-argName of elements in the argsForm below.             //
+      /////////////////////////////////////////////////////////////////
+    -->
+
     <arguments>
+
       <arg name="catSoundsMeow">((value))</arg>
       <arg name="catSoundsPurr">((value))</arg>
       <arg name="catSoundsNyan">((value))</arg>
+
       <arg name="speedVsQuality">--speed ((value))mph</arg>
+
       <arg name="fruitPlum">((value))</arg>
       <arg name="fruitKiwi">((value))</arg>
       <arg name="fruitPear">((value))</arg>
+
       <arg name="vegPotato">((value))</arg>
       <arg name="vegCarrot">((value))</arg>
       <arg name="vegCelery">((value))</arg>
       <arg name="vegGinger">((value))</arg>
+
       <arg name="userMessage">-m "((value))"</arg>
+
       <arg name="fileToProcess">"((value))"</arg>
+
     </arguments>
 
   </head>
@@ -49,6 +75,18 @@
 
 
 
+
+      <!--
+        /////////////////////////////////////////////////////////////////
+        //                                                             //
+        //                         NAVIGATION                          //
+        //                                                             //
+        /////////////////////////////////////////////////////////////////
+        // Top bar navigation. Some parts are only visible when in dev //
+        // mode. Be sure to change the body class to prod before you   //
+        // distribute your app.                                        //
+        /////////////////////////////////////////////////////////////////
+      -->
 
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -100,6 +138,16 @@
 
 
 
+      <!--
+        /////////////////////////////////////////////////////////////////
+        //                                                             //
+        //              APPLICATION NAME AND DESCRIPTION               //
+        //                                                             //
+        /////////////////////////////////////////////////////////////////
+        // This is automatically replaced by the content in your       //
+        // package.json file.                                          //
+        /////////////////////////////////////////////////////////////////
+      -->
 
     <div class="container" role="main">
 
@@ -116,6 +164,16 @@
 
 
 
+      <!--
+        /////////////////////////////////////////////////////////////////
+        //                                                             //
+        //                      CLI FORM ELEMENTS                      //
+        //                                                             //
+        /////////////////////////////////////////////////////////////////
+        // All form elements used to send commands to your executable  //
+        // must be placed in the argsForm below.                       //
+        /////////////////////////////////////////////////////////////////
+      -->
 
       <section>
         <form id="argsForm" role="form-inline">
@@ -211,10 +269,10 @@
                   <p class="well well-sm">A detailed explanation of what your application does or is used for.</p>
                   <p>
                     <span class="applicationName">Your Application Name</span> created by <span class="authorName">Your Name</span><br />
-                  <!--
-                    Be sure to credit whoever made the command line executable.<br />
-                    You should probably <a href="http://theirsite.com" class="external-link">link to their site</a> and give a version number for the CLI program.
-                  -->
+                    <!--
+                      Be sure to credit whoever made the command line executable.<br />
+                      You should probably <a href="http://theirsite.com" class="external-link">link to their site</a> and give a version number for the CLI program.
+                    -->
                   </p>
                 </div>
               </div>

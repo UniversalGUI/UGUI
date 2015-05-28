@@ -19,6 +19,50 @@ function ugui() {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
+//                        UGUI VARIABLES                       //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Listing of Variables used throughout this library.          //
+/////////////////////////////////////////////////////////////////
+
+//All arguments
+var allArgElements = $("arguments arg");
+
+//Create an object containing all elements with an argOrder.
+var cmdArgs = $("#argsForm *[data-argName]");
+
+//Get all text fields where a quote could be entered
+var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
+
+//Access the contents of the package.json file
+var packageJSON = require('nw.gui').App.manifest;
+
+//The file.exe defined by the developer in the package.json file
+var executable = packageJSON.executable;
+
+//Name of the developer's application, set in package.json
+var appName = packageJSON.name;
+
+//Window Title
+var appTitle = packageJSON.window.title;
+
+//Version of the developer's application, set in package.json
+var appVersion = packageJSON.version;
+
+//Description or tagline for application
+var appDescription = packageJSON.description;
+
+//Name of the app developer or development team
+var authorName = packageJSON.author;
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
 //                         READ A FILE                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -128,50 +172,6 @@ function runcmdClassic( executable, args, callback ) {
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                        UGUI VARIABLES                       //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Listing of Variables used throughout this library.          //
-/////////////////////////////////////////////////////////////////
-
-//All arguments
-var allArgElements = $("arguments arg");
-
-//Create an object containing all elements with an argOrder.
-var cmdArgs = $("#argsForm *[data-argName]");
-
-//Get all text fields where a quote could be entered
-var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
-
-//Access the contents of the package.json file
-var packageJSON = require('nw.gui').App.manifest;
-
-//The file.exe defined by the developer in the package.json file
-var executable = packageJSON.executable;
-
-//Name of the developer's application, set in package.json
-var appName = packageJSON.name;
-
-//Window Title
-var appTitle = packageJSON.window.title;
-
-//Version of the developer's application, set in package.json
-var appVersion = packageJSON.version;
-
-//Description or tagline for application
-var appDescription = packageJSON.description;
-
-//Name of the app developer or development team
-var authorName = packageJSON.author;
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
 //          PREVENT USER FROM ENTERING QUOTES IN FORMS         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
@@ -214,13 +214,8 @@ removeTypedQuotes();
 // filled out.                                                 //
 /////////////////////////////////////////////////////////////////
 
-//When you click out of a form element
-$(cmdArgs).keyup  ( unlockSubmit );
-$(cmdArgs).mouseup( unlockSubmit );
-$(cmdArgs).change ( unlockSubmit );
-
 function unlockSubmit() {
-    //check if any of the required elements aren't filled out
+    //Check if any of the required elements aren't filled out
     for (var index = 0; index < cmdArgs.length; index++) {
         var cmdArg = $(cmdArgs[index]);
         //If a required element wasn't filled out, make the submit button gray
@@ -233,7 +228,12 @@ function unlockSubmit() {
     $("#sendCmdArgs").prop("disabled",false);
 }
 
-//on page load have this run once
+//When you click out of a form element
+$(cmdArgs).keyup  ( unlockSubmit );
+$(cmdArgs).mouseup( unlockSubmit );
+$(cmdArgs).change ( unlockSubmit );
+
+//On page load have this run once to unlock submit if nothing is required.
 unlockSubmit();
 
 
@@ -260,9 +260,10 @@ if( $("body").hasClass("dev") ) {
     //If the user types anything in a form
     $(textFields).keyup( updateUGUIDevCommandLine );
     $(textFields).blur( updateUGUIDevCommandLine );
+    $(".slider").on( "slide", updateUGUIDevCommandLine );
 }
 
-function updateUGUIDevCommandLine(){
+function updateUGUIDevCommandLine() {
     //Get an array of all the commands being sent out
     var devCommandOutput = buildCommandArray();
     var devCommandOutputSpaces = [];
@@ -311,7 +312,6 @@ $("#sendCmdArgs").click( function( event ){
 
 });
 
-
 function buildCommandArray() {
     //Set up commands to be sent to command line
     var cmds = [ executable ];
@@ -319,23 +319,26 @@ function buildCommandArray() {
     //Cycle through all DOM Arguments
     for (var i = 0; i < allArgElements.length; i++) {
         var argName = $(allArgElements[i]).attr("name");
-        var formTagCaps = $("#argsForm *[data-argName=" + argName + "]").prop("tagName");
-        var formTag = formTagCaps.toLowerCase();
-        var formElementType = $("#argsForm *[data-argName=" + argName + "]").attr("type");
-        var formElementValue = $("#argsForm *[data-argName=" + argName + "]").val();
+        var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
+        //var formTag = $(matchingFormElement).prop("tagName");
+        //    formTag = formTag.toLowerCase();
+        var formElementType = $(matchingFormElement).attr("type");
+        var formElementValue = $(matchingFormElement).val();
         var formElementRadioCheckbox = "";
         if (formElementType === "checkbox" || formElementType === "radio") {
-            formElementRadioCheckbox = $("#argsForm *[data-argName=" + argName + "]");
+            formElementRadioCheckbox = $(matchingFormElement);
         }
 
         var argCommand = $(allArgElements[i]).text();
         argCommand = argCommand.replace("((value))", formElementValue);
 
-        //if it has a value and is a checked checkbox
+        //if it has a value and is a checked checkbox or selected radio dial
         if (formElementValue !== "" && $(formElementRadioCheckbox).prop("checked")) {
             cmds.push(argCommand);
+        //else if it has a value and isn't a checkbox or radio dial
         } else if (formElementValue !== "" && formElementType !== "radio" && formElementType !== "checkbox" ) {
             cmds.push(argCommand);
+        //no "else" statment, as we don't want to process unchecked radio/checkbox
         }
 
     }
@@ -343,112 +346,16 @@ function buildCommandArray() {
     return cmds;
 }
 
-
 /*
-//When you click the Compress button.
-$("#sendCmdArgs").click( function( event ){
-
-    //Intentionally generic code used to sort objects
-    function sortObject(obj) {
-        var theSwitchArray = [];
-        for (var prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
-                theSwitchArray.push({
-                    "key": prop,
-                    "value": obj[prop]
-                });
-            }
-        }
-        theSwitchArray.sort(function(a, b) { return a.key - b.key; });
-        //theSwitchArray.sort(function(a, b) { a.value.toLowerCase().localeCompare(b.value.toLowerCase()); }); //use this to sort as strings
-        return theSwitchArray; // returns array
-    }
-
-    function extractSwitchString(argumentElement) {
-
-        //1. Create a variable based on the elements argPrefix data.
-        var prefix = htmlEscape(argumentElement.data("argprefix"));
-        var prefixCmd = argumentElement.data("argprefix");
-
-        //2. Create a variable based on the value of the element, if no value present log error.
-        var value = htmlEscape(argumentElement.val());
-        var valueCmd = argumentElement.val();
-        if (!value) { console.warn("Something not good happend! The value for argumentElement is null.") }
-
-        //3. Create a variable based on the elements argSuffix data.
-        var suffix = htmlEscape(argumentElement.data("argsuffix"));
-        var suffixCmd = argumentElement.data("argsuffix");
-
-        //4. Combine the above 3 variables into one new variable in the proper order and skipping Pre/Suf if not supplied.
-        var theSwitchString = (prefix || "") + value + (suffix || "");
-        var theSwitchStringCmd = (prefixCmd || "") + valueCmd + (suffixCmd || "");
-
-        //5. Create a variable with the numeral value of the order the arguments should be outputted in.
-        var argOrder = argumentElement.data("argorder");
-
-        //6. Create a variable named using the argOrder and setting it to the combined Pre/Val/Suf. Like so: cmdSwitch6 = "--speed 9mph";
-        window["devSwitch" + argOrder] = theSwitchString;
-        window["cmdSwitch" + argOrder] = theSwitchStringCmd;
-
-        //7. Plug above variables in to the unsortedCmds object to be sorted later
-        unsortedDevCmds[argOrder] = theSwitchString;
-        unsortedCmds[argOrder] = theSwitchStringCmd;
-    }
-
-    function htmlEscape(str) {
-        if (!str) return;
-        return String(str)
-            .replace(/&/g, "&amp;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-    }
-/*
-    /* The user can just use the prefix and suffix if something needs to be in quotes
-    String.prototype.hasWhiteSpace = function() {
-        return /\s/g.test(this);
-    }
-
-    //Wrap text with spaces in quotes
-    function handleWhiteSpaces(text) {
-        if (!text) return;
-        if (text.hasWhiteSpace()) {
-            return "\"" + text + "\"";
-        }
-        return text;
-    }
-    */
-/*
-    //Create an array with the sorted content
-    var theSwitchArray = sortObject(unsortedDevCmds);
-    var theSwitchArrayCmd = sortObject(unsortedCmds);
-
-
-    //Creat an array to fill with the arguments to be sent to the cmd line
-    var cmdSwitchArray = [];
-
-    //Get the value of each element and send it to be outputted.
-    for (var index = 0; index < theSwitchArray.length; index++) {
-
-        //add the arguments for #commandLine dev tool
-        outputCmd(theSwitchArray[index].value);
-
-        //push arguments to the command line
-        cmdSwitchArray.push(theSwitchArrayCmd[index].value);
-
-    }
-
-    //Output the commands arguments in the correct order in the #commandLine dev tool
-    function outputCmd(cmdSwitch) {
-        $("#commandLine").append(cmdSwitch + " ");
-    }
-
-    $("#commandLine").prepend(executable);
-
-    runcmd(executable, cmdSwitchArray);
-
-});
+function htmlEscape(str) {
+    if (!str) return;
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
 */
 
 
