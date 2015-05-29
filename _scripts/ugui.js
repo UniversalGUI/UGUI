@@ -863,6 +863,22 @@ $(function() {
         } else {
             filename = $("#DropZone input[type=file]").val().split('/').pop();
         }
+
+        //Split "cows.new.png" into ["cows", "new", "png"]
+        var filenameSplit = filename.split('.');
+        //Remove last item in array, ["cows", "new"]
+        filenameSplit.pop();
+        //Combine them back together as a string putting the . back in, "cows.new"
+        var filenameNoExt = filenameSplit.join('.');
+        //cows.new
+        window.ugui.fileName = filenameNoExt;
+        //png
+        window.ugui.fileExtension = filename.split('.').pop();
+        //cows.new.png
+        window.ugui.fileNameExtension = filename;
+        //C:/users/bob/cows.new.png
+        window.ugui.filePath = $("#DropZone input[type=file]").val();
+
         var droppedFilename = filename + " selected";
         $('#DropZone label').html(droppedFilename);
 
@@ -982,5 +998,32 @@ $(function() {
         menu.popup(event.originalEvent.x, event.originalEvent.y);
     });
 });
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+
+window.ugui = {
+    "allArgElements": allArgElements,
+    "appDescription": appDescription,
+    "appName": appName,
+    "appTitle": appTitle,
+    "appVersion": appVersion,
+    "authorName": authorName,
+    "cmdArgs": cmdArgs,
+    "executable": executable,
+    "fileExtension": '',
+    "fileName": '',
+    "fileNameExtension": '',
+    "filePath": '',
+    "packageJSON": packageJSON,
+    "platform": process.platform,
+    "textFields": textFields
+};
+
 
 }// end ugui();
