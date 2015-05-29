@@ -800,7 +800,7 @@ openDefaultBrowser();
 
 /////////////////////////////////////////////////////////////////
 //                                                             //
-//                          DROPZONE                           //
+//                     EZDZ: DRAG AND DROP                     //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // Code for drag/drop/browse box. This was originally based on //
@@ -812,32 +812,32 @@ openDefaultBrowser();
 
 $(function() {
 
-    $('#DropZone').on('dragover', function() {
-        $('#DropZone label').removeClass('text-info');    //Static
-        $('#DropZone label').removeClass('text-success'); //Dropped
-        $('#DropZone label').addClass('text-warning');    //Hover
+    $('.ezdz').on('dragover', function() {
+        $('.ezdz label').removeClass('text-info');    //Static
+        $('.ezdz label').removeClass('text-success'); //Dropped
+        $('.ezdz label').addClass('text-warning');    //Hover
     });
 
-    $('#DropZone').on('dragleave', function() {
-        $('#DropZone label').removeClass('text-success'); //Dropped
-        $('#DropZone label').removeClass('text-warning'); //Hover
-        $('#DropZone label').addClass('text-info');       //Static
+    $('.ezdz').on('dragleave', function() {
+        $('.ezdz label').removeClass('text-success'); //Dropped
+        $('.ezdz label').removeClass('text-warning'); //Hover
+        $('.ezdz label').addClass('text-info');       //Static
     });
 
     // After dropping a file in the DropZone, put the file name in
     // the DropZone. If the file is an image, display a thumbnail.
-    $('#DropZone input').on('change', function( event ) {
+    $('.ezdz input').on('change', function( event ) {
         var file = this.files[0];
 
-        $('#DropZone label').removeClass('text-info');    //Static
-        $('#DropZone label').removeClass('text-warning'); //Hover
+        $('.ezdz label').removeClass('text-info');    //Static
+        $('.ezdz label').removeClass('text-warning'); //Hover
 
         if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
             return alert('File type not allowed.');
         }
 
-        $('#DropZone label').addClass('text-success');   //Dropped
-        $('#DropZone img').remove();
+        $('.ezdz label').addClass('text-success');   //Dropped
+        $('.ezdz img').remove();
 
         if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
             var reader = new FileReader(file);
@@ -848,19 +848,21 @@ $(function() {
                 var data = event.target.result;
                 var $img = $('<img />').attr('src', data).fadeIn();
 
-                $('#DropZone img').attr('alt', "Thumbnail of dropped image.");
-                $('#DropZone span').html($img);
+                $('.ezdz img').attr('alt', "Thumbnail of dropped image.");
+                $('.ezdz span').html($img);
             };
         }
 
         //Detect if in darwin, freebsd, linux, sunos or win32
         var platform = process.platform;
+
         //Create filename and filepath variables to be used below
         var filename = '';
         var filepath = '';
-        //Grab full filename and path
-        //C:/users/bob/cows.new.png
-        var fullFilepath = $("#DropZone input[type=file]").val();
+
+        //Grab full filename and path, C:/users/bob/cows.new.png
+        var fullFilepath = $(".ezdz input[type=file]").val();
+
         //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
         if (platform == "win32") {
             //Get the index of the final backslash so we can split the name from the path
@@ -878,12 +880,17 @@ $(function() {
             filename = fullFilepath.substring(lastSlash+1);
         }
 
+        //Update the text on screen to display the name of the file that was dropped
+        var droppedFilename = filename + " selected";
+        $('.ezdz label').html(droppedFilename);
+
         //Split "cows.new.png" into ["cows", "new", "png"]
         var filenameSplit = filename.split('.');
         //Remove last item in array, ["cows", "new"]
         filenameSplit.pop();
         //Combine them back together as a string putting the . back in, "cows.new"
         var filenameNoExt = filenameSplit.join('.');
+
         //cows.new
         window.ugui.fileName = filenameNoExt;
         //png
@@ -892,10 +899,8 @@ $(function() {
         window.ugui.fileNameExtension = filename;
         //C:/users/bob/ or C:\users\bob\
         window.ugui.filePath = filepath;
-
-        var droppedFilename = filename + " selected";
-        $('#DropZone label').html(droppedFilename);
-
+        //C:/users/bob/cows.new.png or C:\users\bob\cows.new.png
+        window.ugui.filePathFull = fullFilepath;
     });
 });
 
@@ -1034,6 +1039,7 @@ window.ugui = {
     "fileName": '',
     "fileNameExtension": '',
     "filePath": '',
+    "filePathFull": '',
     "packageJSON": packageJSON,
     "platform": process.platform,
     "textFields": textFields

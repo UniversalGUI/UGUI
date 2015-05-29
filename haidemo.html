@@ -3,6 +3,7 @@
   <input type="range" data-argName="speed"                value="3" />
   <input type="file"  data-argName="inputfile"            value="c:\inputfilealdjfs\aldjf.jpg" required="required" />
   <input type="file"  data-argName="newfilename"          value="C:\asdfasdf\asdfasdf\newfilename.jpg" required="required" />
+  <cats               data-argName="name"                 value="asdf"></cats>
 
 <arguments exectuble="defluff"> <!-- Executable type is a future feature not intended for V1.0 -->
     <arg name="set_of_characters">-randomize ((value))</arg>
@@ -10,12 +11,13 @@
     <arg name="speed">--speed ((value))</arg>
 
     <!--auto-->
+    c:\users\bob\desktop\kitten.png
     <arg name="input_file">&gt;((value)) &lt;((path))((name)).new.((ext))</arg>
     <arg name="input_file">&gt;((value))</arg>
     <arg name="input_file">&lt;((path))((name)).new.((ext))</arg>
 
-    <!--user specified-->
-    <arg name="input_file">&gt;((value[,])) &lt;((path))((newfilename[;])).((newfilename.ext))</arg>
+    <arg name="double_slider" subargs="((min)),((max))">--quality ((min))-((max))</arg>
+    <arg name="control" subargs="Value is ((potato))">--potato ((potato))</arg>
 
     <arg name="combobox">--constalation [[value(,)]]</arg>
     <arg name="combobox" separator=",">--constalation ((value))</arg>
