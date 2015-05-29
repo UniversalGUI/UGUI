@@ -855,13 +855,25 @@ $(function() {
 
         //Detect if in darwin, freebsd, linux, sunos or win32
         var platform = process.platform;
-        //Create filename variable to be used below
+        //Create filename and filepath variables to be used below
         var filename = '';
+        var filepath = '';
+        //Grab full filename and path
+        //C:/users/bob/cows.new.png
+        var fullFilepath = $("#DropZone input[type=file]").val();
         //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
         if (platform == "win32") {
-            filename = $("#DropZone input[type=file]").val().split('\\').pop();
+            var lastBackslash = fullFilepath.lastIndexOf('\\');
+            //C:/users/bob/
+            filepath = fullFilepath.substring(0, lastBackslash+1);
+            //cows.new.png
+            filename = fullFilepath.substring(lastBackslash+1);
         } else {
-            filename = $("#DropZone input[type=file]").val().split('/').pop();
+            var lastSlash = fullFilepath.lastIndexOf('/');
+            //C:/users/bob/
+            filepath = fullFilepath.substring(0, lastSlash+1);
+            //cows.new.png
+            filename = fullFilepath.substring(lastSlash+1);
         }
 
         //Split "cows.new.png" into ["cows", "new", "png"]
@@ -876,8 +888,19 @@ $(function() {
         window.ugui.fileExtension = filename.split('.').pop();
         //cows.new.png
         window.ugui.fileNameExtension = filename;
-        //C:/users/bob/cows.new.png
-        window.ugui.filePath = $("#DropZone input[type=file]").val();
+        //C:/users/bob/
+        window.ugui.filePath = filePath;
+
+
+        function getFilePath(path) {
+            if (platform == "win32") {
+                var lastBackslash = path.lastIndexOf('\\');
+                return path.substring(0, lastBackslash+1);
+            } else {
+                var lastSlash = path.lastIndexOf('/');
+                return path.substring(0, lastSlash+1);
+            }
+        };
 
         var droppedFilename = filename + " selected";
         $('#DropZone label').html(droppedFilename);
