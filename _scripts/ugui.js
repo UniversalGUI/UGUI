@@ -863,12 +863,14 @@ $(function() {
         var fullFilepath = $("#DropZone input[type=file]").val();
         //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
         if (platform == "win32") {
+            //Get the index of the final backslash so we can split the name from the path
             var lastBackslash = fullFilepath.lastIndexOf('\\');
-            //C:/users/bob/
+            //C:\users\bob\
             filepath = fullFilepath.substring(0, lastBackslash+1);
             //cows.new.png
             filename = fullFilepath.substring(lastBackslash+1);
         } else {
+            //Get the index of the final backslash so we can split the name from the path
             var lastSlash = fullFilepath.lastIndexOf('/');
             //C:/users/bob/
             filepath = fullFilepath.substring(0, lastSlash+1);
@@ -888,19 +890,8 @@ $(function() {
         window.ugui.fileExtension = filename.split('.').pop();
         //cows.new.png
         window.ugui.fileNameExtension = filename;
-        //C:/users/bob/
-        window.ugui.filePath = filePath;
-
-
-        function getFilePath(path) {
-            if (platform == "win32") {
-                var lastBackslash = path.lastIndexOf('\\');
-                return path.substring(0, lastBackslash+1);
-            } else {
-                var lastSlash = path.lastIndexOf('/');
-                return path.substring(0, lastSlash+1);
-            }
-        };
+        //C:/users/bob/ or C:\users\bob\
+        window.ugui.filePath = filepath;
 
         var droppedFilename = filename + " selected";
         $('#DropZone label').html(droppedFilename);
