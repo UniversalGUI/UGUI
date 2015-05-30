@@ -332,7 +332,16 @@ function buildCommandArray() {
         }
 
         var argCommand = $(allArgElements[i]).text();
-        argCommand = argCommand.replace("((value))", formElementValue);
+
+        if (argCommand.indexOf("((value))") !== -1) {
+            argCommand = argCommand.replace("((value))", formElementValue);
+        }
+
+        if (window.ugui && window.ugui.filePath !== "") {
+            argCommand = argCommand.replace("((path))", window.ugui.filePath);
+            argCommand = argCommand.replace("((file))", window.ugui.fileName);
+            argCommand = argCommand.replace("((ext))", window.ugui.fileExtension);
+        }
 
         //if it has a value and is a checked checkbox or selected radio dial
         if (formElementValue !== "" && $(formElementRadioCheckbox).prop("checked")) {
