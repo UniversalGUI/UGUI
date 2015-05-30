@@ -9,7 +9,9 @@ $(document).ready( runUGUI );
 
 
 //Container for all UGUI components
-function runUGUI(ugui) {
+function runUGUI() {
+
+var uguiVersion = "0.9.0";
 
 
 
@@ -404,6 +406,7 @@ function getAboutModal() {
         $(".applicationName").html(appName);
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
+        $(".versionUGUI").html(uguiVersion);
         $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
         $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
         $("#aboutModal .iojsVersion").append(" (Version " + process.versions['node'] + ")");
@@ -1042,7 +1045,8 @@ window.ugui = {
     "filePathFull": '',
     "packageJSON": packageJSON,
     "platform": process.platform,
-    "textFields": textFields
+    "textFields": textFields,
+    "version": uguiVersion
 };
 
 
