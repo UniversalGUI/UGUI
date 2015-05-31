@@ -1048,7 +1048,15 @@ $(function() {
 
 
 
-////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                       THE UGUI OBJECT                       //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// We expose parts of UGUI to developers via the UGUI object.  //
+// To quickly access what is available type 'ugui' into the    //
+// NW.js Developer Tools console.                              //
+/////////////////////////////////////////////////////////////////
 
 window.ugui = {
     "allArgElements": allArgElements,
@@ -1069,6 +1077,11 @@ window.ugui = {
     "textFields": textFields,
     "version": uguiVersion
 };
+
+
+
+
+
 
 
 }// end ugui();

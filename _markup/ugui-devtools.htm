@@ -1,4 +1,5 @@
 <div id="uguiDevTools" class="slideHide">
+
   <nav>
     <span data-nav="uguiAbout">About</span>
     <span data-nav="uguiSwapper">Style Swapper</span>
@@ -6,6 +7,7 @@
     <span data-nav="uguiCommand">CMD Output</span>
     <span data-nav="uguiExecutable">Executable</span>
   </nav>
+
   <section class="uguiAbout">
 <!--
     <object>
@@ -24,10 +26,13 @@
     <h3>UGUI Developer Tools</h3>
     <p>Watch <a href="#">the UGUI Introduction video</a> in fullscreen.</p>
     <p>To hide the UGUI Developer Tools change the <code>&lt;body role="document" class="dev"&gt;</code> to <code>&lt;body role="document" class="prod"&gt;</code>.</p>
+    <p>You are using version <span class="versionUGUI">1.0.0</span> of UGUI.</p>
   </section>
+
   <section class="uguiCommand">
     <pre id="commandLine"></pre>
   </section>
+
   <section class="uguiShortcuts">
     <p>Active key bindings while in developer mode:</p>
     <ul>
@@ -37,10 +42,12 @@
       <li><strong>F12</strong> or <strong>CTRL+Shift+I</strong> Open Webkit's Developer Tools</li>
     </ul>
   </section>
+
   <section class="uguiSwapper">
     <p>Test out different looks for your application. Change the style in the header to the swatch you like best!</p>
     <select id="swatchSwapper"></select>
   </section>
+
   <section class="uguiExecutable">
     <div class="helpIntro">Get information from <span class="executableName"></span>
       <select class="helpDropdown">
@@ -61,4 +68,5 @@
     </div>
     <pre class="executableHelp"></pre>
   </section>
+
 </div>
