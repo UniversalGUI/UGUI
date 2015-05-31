@@ -336,7 +336,7 @@ function buildCommandArray() {
         if (argCommand.indexOf("((value))") !== -1) {
             argCommand = argCommand.replace("((value))", formElementValue);
         }
-
+//debugger;
         if (window.ugui && window.ugui.filePath !== "") {
             argCommand = argCommand.replace("((path))", window.ugui.filePath);
             argCommand = argCommand.replace("((file))", window.ugui.fileName);
