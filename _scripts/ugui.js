@@ -258,7 +258,18 @@ unlockSubmit();
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
     //If any of the form elements with a data-argName change
-    $(cmdArgs).change( updateUGUIDevCommandLine );
+    $(cmdArgs).change( function() {
+        //check if it was the drag/drop input box
+        if ( $(this).parent().hasClass("ezdz") ) {
+            var file = this.files[0];
+            //run a custom function before updating dev tools
+            ezdz(file);
+        } else {
+            //otherwise just go ahead and update the dev tools
+            updateUGUIDevCommandLine();
+        }
+    });
+
     //If the user types anything in a form
     $(textFields).keyup( updateUGUIDevCommandLine );
     $(textFields).blur( updateUGUIDevCommandLine );
@@ -336,10 +347,10 @@ function buildCommandArray() {
         if (argCommand.indexOf("((value))") !== -1) {
             argCommand = argCommand.replace("((value))", formElementValue);
         }
-//debugger;
+
         if (window.ugui && window.ugui.filePath !== "") {
             argCommand = argCommand.replace("((path))", window.ugui.filePath);
-            argCommand = argCommand.replace("((file))", window.ugui.fileName);
+            argCommand = argCommand.replace("((name))", window.ugui.fileName);
             argCommand = argCommand.replace("((ext))", window.ugui.fileExtension);
         }
 
@@ -818,103 +829,104 @@ openDefaultBrowser();
 // Code for drag/drop/browse box. This was originally based on //
 // EZDZ, but has been heavily modified for Bootstrap and NW.js //
 // for cross-platform and Bootswatch compatibility.            //
+//                                                             //
+// After dropping a file in the EZDZ box, put the file name in //
+// the EZDZ box. If the file is an image, display a thumbnail. //
 /////////////////////////////////////////////////////////////////
 // https://github.com/jaysalvat/ezdz                           //
 /////////////////////////////////////////////////////////////////
 
-$(function() {
-
-    $('.ezdz').on('dragover', function() {
-        $('.ezdz label').removeClass('text-info');    //Static
-        $('.ezdz label').removeClass('text-success'); //Dropped
-        $('.ezdz label').addClass('text-warning');    //Hover
-    });
-
-    $('.ezdz').on('dragleave', function() {
-        $('.ezdz label').removeClass('text-success'); //Dropped
-        $('.ezdz label').removeClass('text-warning'); //Hover
-        $('.ezdz label').addClass('text-info');       //Static
-    });
-
-    // After dropping a file in the DropZone, put the file name in
-    // the DropZone. If the file is an image, display a thumbnail.
-    $('.ezdz input').on('change', function( event ) {
-        var file = this.files[0];
-
-        $('.ezdz label').removeClass('text-info');    //Static
-        $('.ezdz label').removeClass('text-warning'); //Hover
-
-        if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
-            return alert('File type not allowed.');
-        }
-
-        $('.ezdz label').addClass('text-success');   //Dropped
-        $('.ezdz img').remove();
-
-        if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
-            var reader = new FileReader(file);
-
-            reader.readAsDataURL(file);
-
-            reader.onload = function( event ) {
-                var data = event.target.result;
-                var $img = $('<img />').attr('src', data).fadeIn();
-
-                $('.ezdz img').attr('alt', "Thumbnail of dropped image.");
-                $('.ezdz span').html($img);
-            };
-        }
-
-        //Detect if in darwin, freebsd, linux, sunos or win32
-        var platform = process.platform;
-
-        //Create filename and filepath variables to be used below
-        var filename = '';
-        var filepath = '';
-
-        //Grab full filename and path, C:/users/bob/cows.new.png
-        var fullFilepath = $(".ezdz input[type=file]").val();
-
-        //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
-        if (platform == "win32") {
-            //Get the index of the final backslash so we can split the name from the path
-            var lastBackslash = fullFilepath.lastIndexOf('\\');
-            //C:\users\bob\
-            filepath = fullFilepath.substring(0, lastBackslash+1);
-            //cows.new.png
-            filename = fullFilepath.substring(lastBackslash+1);
-        } else {
-            //Get the index of the final backslash so we can split the name from the path
-            var lastSlash = fullFilepath.lastIndexOf('/');
-            //C:/users/bob/
-            filepath = fullFilepath.substring(0, lastSlash+1);
-            //cows.new.png
-            filename = fullFilepath.substring(lastSlash+1);
-        }
-
-        //Update the text on screen to display the name of the file that was dropped
-        var droppedFilename = filename + " selected";
-        $('.ezdz label').html(droppedFilename);
-
-        //Split "cows.new.png" into ["cows", "new", "png"]
-        var filenameSplit = filename.split('.');
-        //Remove last item in array, ["cows", "new"]
-        filenameSplit.pop();
-        //Combine them back together as a string putting the . back in, "cows.new"
-        var filenameNoExt = filenameSplit.join('.');
-
-        //cows.new
-        window.ugui.fileName = filenameNoExt;
-        //png
-        window.ugui.fileExtension = filename.split('.').pop();
-        //cows.new.png
-        window.ugui.fileNameExtension = filename;
-        //C:/users/bob/ or C:\users\bob\
-        window.ugui.filePath = filepath;
-        //C:/users/bob/cows.new.png or C:\users\bob\cows.new.png
-        window.ugui.filePathFull = fullFilepath;
-    });
+$('.ezdz').on('dragover', function() {
+    $('.ezdz label').removeClass('text-info');    //Static
+    $('.ezdz label').removeClass('text-success'); //Dropped
+    $('.ezdz label').addClass('text-warning');    //Hover
 });
+
+$('.ezdz').on('dragleave', function() {
+    $('.ezdz label').removeClass('text-success'); //Dropped
+    $('.ezdz label').removeClass('text-warning'); //Hover
+    $('.ezdz label').addClass('text-info');       //Static
+});
+
+function ezdz(fileInfo) {
+
+    var file = fileInfo;
+
+    $('.ezdz label').removeClass('text-info');    //Static
+    $('.ezdz label').removeClass('text-warning'); //Hover
+
+    if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
+        return alert('File type not allowed.');
+    }
+
+    $('.ezdz label').addClass('text-success');   //Dropped
+    $('.ezdz img').remove();
+
+    if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
+        var reader = new FileReader(file);
+
+        reader.readAsDataURL(file);
+
+        reader.onload = function( event ) {
+            var data = event.target.result;
+            var $img = $('<img />').attr('src', data).fadeIn();
+
+            $('.ezdz img').attr('alt', "Thumbnail of dropped image.");
+            $('.ezdz span').html($img);
+        };
+    }
+
+    //Detect if in darwin, freebsd, linux, sunos or win32
+    var platform = process.platform;
+
+    //Create filename and filepath variables to be used below
+    var filename = '';
+    var filepath = '';
+
+    //Grab full filename and path, C:/users/bob/cows.new.png
+    var fullFilepath = $(".ezdz input[type=file]").val();
+
+    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    if (platform == "win32") {
+        //Get the index of the final backslash so we can split the name from the path
+        var lastBackslash = fullFilepath.lastIndexOf('\\');
+        //C:\users\bob\
+        filepath = fullFilepath.substring(0, lastBackslash+1);
+        //cows.new.png
+        filename = fullFilepath.substring(lastBackslash+1);
+    } else {
+        //Get the index of the final backslash so we can split the name from the path
+        var lastSlash = fullFilepath.lastIndexOf('/');
+        //C:/users/bob/
+        filepath = fullFilepath.substring(0, lastSlash+1);
+        //cows.new.png
+        filename = fullFilepath.substring(lastSlash+1);
+    }
+
+    //Update the text on screen to display the name of the file that was dropped
+    var droppedFilename = filename + " selected";
+    $('.ezdz label').html(droppedFilename);
+
+    //Split "cows.new.png" into ["cows", "new", "png"]
+    var filenameSplit = filename.split('.');
+    //Remove last item in array, ["cows", "new"]
+    filenameSplit.pop();
+    //Combine them back together as a string putting the . back in, "cows.new"
+    var filenameNoExt = filenameSplit.join('.');
+
+    //cows.new
+    window.ugui.fileName = filenameNoExt;
+    //png
+    window.ugui.fileExtension = filename.split('.').pop();
+    //cows.new.png
+    window.ugui.fileNameExtension = filename;
+    //C:/users/bob/ or C:\users\bob\
+    window.ugui.filePath = filepath;
+    //C:/users/bob/cows.new.png or C:\users\bob\cows.new.png
+    window.ugui.filePathFull = fullFilepath;
+
+    updateUGUIDevCommandLine();
+}
 
 
 
