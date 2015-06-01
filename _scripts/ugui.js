@@ -264,6 +264,8 @@ if( $("body").hasClass("dev") ) {
             var file = this.files[0];
             //run a custom function before updating dev tools
             ezdz(file);
+            //now that the variables have been set by the above function
+            updateUGUIDevCommandLine();
         } else {
             //otherwise just go ahead and update the dev tools
             updateUGUIDevCommandLine();
@@ -274,6 +276,13 @@ if( $("body").hasClass("dev") ) {
     $(textFields).keyup( updateUGUIDevCommandLine );
     $(textFields).blur( updateUGUIDevCommandLine );
     $(".slider").on( "slide", updateUGUIDevCommandLine );
+} else {
+    //If we're not in Dev mode, make sure the ezdz can still run
+    $(".ezdz input").change(function(){
+        var file = this.files[0];
+        //run a custom function before updating dev tools
+        ezdz(file);
+    });
 }
 
 function updateUGUIDevCommandLine() {
@@ -924,8 +933,6 @@ function ezdz(fileInfo) {
     window.ugui.filePath = filepath;
     //C:/users/bob/cows.new.png or C:\users\bob\cows.new.png
     window.ugui.filePathFull = fullFilepath;
-
-    updateUGUIDevCommandLine();
 }
 
 
