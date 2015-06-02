@@ -53,6 +53,8 @@
       <arg name="vegCelery">((value))</arg>
       <arg name="vegGinger">((value))</arg>
 
+      <arg name="quality" custom="((min)),((max))">((min))-((max))</arg>
+
       <arg name="userMessage">-m "((value))"</arg>
 
       <arg name="fileToProcess">"((path))((name)).new.((ext))"</arg>
@@ -217,6 +219,18 @@
                 </tr>
               </table>
             </div>
+
+            <div class="col-xs-12 col-s-6 col-md-6 col-l-6">
+              <label for="speed">Quality:</label><br />
+              <table>
+                <tr>
+                  <td class="text-center"><span>Minimum</span></td>
+                  <td><input class="slider" type="text" id="quality" data-argName="quality" data-slider-id="qualitySlider" data-slider-min="0" data-slider-max="100" data-slider-step="25" data-slider-value="[0,100]" /></td>
+                  <td class="text-center"><span>Maximum</span></td>
+                </tr>
+              </table>
+            </div>
+
             <div class="col-xs-12 col-s-6 col-md-6 col-l-6">
               <label for="message">Message:</label>
               <textarea id="message" class="form-control" required="required" data-argName="userMessage"></textarea>

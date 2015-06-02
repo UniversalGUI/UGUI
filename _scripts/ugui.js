@@ -329,8 +329,8 @@ $("#sendCmdArgs").click( function( event ){
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
 
-    console.log( buildCommandArray() );
-    console.log("---------------------");
+    //Create an array with the executable and all the arguments then run the executable with those args
+    runcmd( buildCommandArray() );
 
 });
 
@@ -340,27 +340,51 @@ function buildCommandArray() {
 
     //Cycle through all DOM Arguments
     for (var i = 0; i < allArgElements.length; i++) {
+
+        //get "bob" from <arg name="bob">((value))</arg>
         var argName = $(allArgElements[i]).attr("name");
+        //find the form element with the same argName
         var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
+
+        //get "input" from <input type="text">
         //var formTag = $(matchingFormElement).prop("tagName");
         //    formTag = formTag.toLowerCase();
+
+        //get "text" from <input type="text">
         var formElementType = $(matchingFormElement).attr("type");
+        //get "22" from <textarea>22</textarea>
         var formElementValue = $(matchingFormElement).val();
+
+        //detect if the current form element is a radio dial or checkbox
         var formElementRadioCheckbox = "";
         if (formElementType === "checkbox" || formElementType === "radio") {
             formElementRadioCheckbox = $(matchingFormElement);
         }
 
+        //get "--speed ((value))" from <arg name="quality">--speed ((value))</arg>
         var argCommand = $(allArgElements[i]).text();
 
+        //replace the ((value)) with 22
         if (argCommand.indexOf("((value))") !== -1) {
             argCommand = argCommand.replace("((value))", formElementValue);
         }
 
+        //If the <arg> is for the ezdz file input box, get the path/name/ext
         if (window.ugui && window.ugui.filePath !== "") {
             argCommand = argCommand.replace("((path))", window.ugui.filePath);
             argCommand = argCommand.replace("((name))", window.ugui.fileName);
             argCommand = argCommand.replace("((ext))", window.ugui.fileExtension);
+        }
+
+        //get "((min)),((max))" from <arg name="range" custom="((min)),((max))">((min))-((max))</arg>
+        var customValue = $(allArgElements[i]).attr("custom");
+
+        //If there are no <arg>'s with custom values, skip this section
+        if (customValue) {
+            //Subtract the length of characters from the length of characters after all instances of "((" are removed, but not "(", then divide by 2 since each "((" represents one value.
+            var findNumberOfValues = (customValue.length - customValue.replace(/\B(\(\()/g,"").length)/2;
+            console.log(customValue);
+            console.log("There are " + findNumberOfValues + " user defined custom values to parse.");
         }
 
         //if it has a value and is a checked checkbox or selected radio dial
