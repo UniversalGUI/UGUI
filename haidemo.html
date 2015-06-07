@@ -40,3 +40,39 @@
 http://jsfiddle.net/mugthmsx/7/
 
 -->
+
+
+Test out form elements
+
+<arguments>
+
+    <def name="cow">((min)),((max))</def>
+
+    <arg>((cow.min))-((cow.max))</arg>
+    <arg>((cat.value))</arg>
+    <arg>--quality ((dog.value))mph</arg>
+    <arg>-m ((message.value))</arg>
+
+</arguments>
+
+ugui.args {
+    "cat": {
+        "value": "--force"
+    },
+    "dog": {
+        "value": "9"
+    },
+    "message": {
+        "value": "This is my message"
+    },
+    "cow": {
+        "min": "25",
+        "max": "75",
+        "value": "25,75"
+    }
+}
+
+1. Create ugui.args with all values
+2. if input type="file" then pass through a different function that will create the .path/.name/.ext values in it's object
+3. get the def info and produce .min and .max on the object
+4. replace the arg ((asdf.value)) stuff with the correct things from args obj

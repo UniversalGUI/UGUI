@@ -57,6 +57,16 @@ var appDescription = packageJSON.description;
 //Name of the app developer or development team, set in package.json
 var authorName = packageJSON.author;
 
+//Make sure the ugui and ugui.args objects exist, if not create them
+if (!window.ugui) {
+    window.ugui = {};
+    window.ugui.args = {};
+    console.log("defining ugui and args");
+} else if (!window.ugui.args) {
+    window.ugui.args = {};
+    console.log("defining args");
+}
+
 
 
 
@@ -338,6 +348,8 @@ function buildCommandArray() {
     //Set up commands to be sent to command line
     var cmds = [ executable ];
 
+    putElementValuesInArgObj();
+
     //Cycle through all DOM Arguments
     for (var i = 0; i < allArgElements.length; i++) {
 
@@ -399,6 +411,19 @@ function buildCommandArray() {
     }
 
     return cmds;
+}
+
+function putElementValuesInArgObj() {
+    //Cycle through all elements with a data-argName in #argsForm
+    for (var i = 0; i < cmdArgs.length; i++) {
+        //get "bob" from <input data-argName="bob" value="--kitten" />
+        var argName = $(cmdArgs[i]).attr("data-argName");
+        //get "--kitten" from <input data-argName="bob" value="--kitten" />
+        var argValue = $(cmdArgs[i]).val();
+        if (argValue) {
+            window.ugui.args[argName] = { "value": argValue };
+        }
+    }
 }
 
 /*
@@ -1095,6 +1120,7 @@ window.ugui = {
     "appName": appName,
     "appTitle": appTitle,
     "appVersion": appVersion,
+    "args": window.ugui.args,
     "authorName": authorName,
     "cmdArgs": cmdArgs,
     "executable": executable,
