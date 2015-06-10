@@ -39,9 +39,6 @@ var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argN
 //Access the contents of the package.json file
 var packageJSON = require('nw.gui').App.manifest;
 
-//The file.exe defined by the developer in the package.json file
-var executable = packageJSON.executable;
-
 //Name of the developer's application, set in package.json
 var appName = packageJSON.name;
 
@@ -61,6 +58,13 @@ var authorName = packageJSON.author;
 if (!window.ugui) {
     window.ugui = {};
     window.ugui.args = {};
+}
+
+//All executables
+var executable = [];
+for (var i = 0; i < $("cmd").length; i++) {
+    var currentCommandBlock = $("cmd")[i];
+    executable.push($(currentCommandBlock).attr("executable"));
 }
 
 
@@ -228,12 +232,12 @@ function unlockSubmit() {
         var cmdArg = $(cmdArgs[index]);
         //If a required element wasn't filled out, make the submit button gray
         if ( cmdArg.is(":invalid") ) {
-            $("#sendCmdArgs").prop("disabled",true);
+            $(".sendCmdArgs").prop("disabled",true);
             return;
         }
     }
     //If all the required elements are filled out, enable the submit button
-    $("#sendCmdArgs").prop("disabled",false);
+    $(".sendCmdArgs").prop("disabled",false);
 }
 
 //When you click out of a form element
@@ -327,7 +331,10 @@ function updateUGUIDevCommandLine() {
 /////////////////////////////////////////////////////////////////
 
 //When you click the Compress button.
-$("#sendCmdArgs").click( function( event ){
+$(".sendCmdArgs").click( function( event ){
+
+    //Get the correct executable to use based on the form you clicked on
+    var thisExecutable = $(this).closest(form).attr("id");
 
     //Prevent the form from sending like a normal website.
     event.preventDefault();
@@ -336,15 +343,17 @@ $("#sendCmdArgs").click( function( event ){
     removeTypedQuotes();
 
     //Create an array with the executable and all the arguments then run the executable with those args
-    runcmd( buildCommandArray() );
+    runcmd( buildCommandArray(thisExecutable) );
 
 });
 
-function buildCommandArray() {
+function buildCommandArray(thisExecutable) {
     //Set up commands to be sent to command line
-    var cmds = [ executable ];
+    var cmds = [ thisExecutable ];
 
     putElementValuesInArgObj();
+
+    var argsForm = $("form#" + thisExecutable);
 
     //Cycle through all DOM Arguments
     for (var i = 0; i < allArgElements.length; i++) {
@@ -683,7 +692,7 @@ if ( $("body").hasClass("prod") ) {
         $("#uguiDevTools section *").addClass("shrink");
         $("#uguiDevTools").show();
 
-        $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $("#sendCmdArgs").html() + "</em> button to see output.</span>");
+        $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $(".sendCmdArgs").html() + "</em> button to see output.</span>");
 
         //Hide/Show based on UGUI Dev Tools navigation
         $("#uguiDevTools nav span").click( function(){
