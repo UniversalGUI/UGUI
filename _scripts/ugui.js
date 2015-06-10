@@ -27,8 +27,8 @@ var uguiVersion = "0.9.0";
 // Listing of Variables used throughout this library.          //
 /////////////////////////////////////////////////////////////////
 
-//All arguments
-var allArgElements = $("arguments arg");
+//All arguments sent in the command
+var allArgElements = $("command arg");
 
 //Create an object containing all elements with an argOrder.
 var cmdArgs = $("#argsForm *[data-argName]");
