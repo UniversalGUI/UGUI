@@ -46,9 +46,7 @@
       /////////////////////////////////////////////////////////////////
     -->
 
-    <command>
-
-      <executable>cli_filename</executable>
+    <cmd executable="cli_filename">
 
       <arg>((catSoundsMeow))</arg>
       <arg>((catSoundsPurr))</arg>
@@ -66,14 +64,13 @@
       <arg>((vegGinger))</arg>
 
       <def name="quality">((min)),((max))</def>
-
       <arg>((quality.min))-((quality.max))</arg>
 
       <arg>-m "((userMessage))"</arg>
 
       <arg>"((fileToProcess.path))((fileToProcess.name)).new.((fileToProcess.ext))"</arg>
 
-    </command>
+    </cmd>
 
   </head>
 
