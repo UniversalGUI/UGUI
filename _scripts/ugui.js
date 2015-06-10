@@ -61,10 +61,6 @@ var authorName = packageJSON.author;
 if (!window.ugui) {
     window.ugui = {};
     window.ugui.args = {};
-    console.log("defining ugui and args");
-} else if (!window.ugui.args) {
-    window.ugui.args = {};
-    console.log("defining args");
 }
 
 
@@ -420,9 +416,72 @@ function putElementValuesInArgObj() {
         var argName = $(cmdArgs[i]).attr("data-argName");
         //get "--kitten" from <input data-argName="bob" value="--kitten" />
         var argValue = $(cmdArgs[i]).val();
-        if (argValue) {
+        //get checkbox from <input data-argName="bob" type="checkbox" />
+        var argType = $(cmdArgs[i]).attr("type");
+
+        if (argType === "file") {
+            setInputFilePathNameExt(cmdArgs[i], argName);
+        } else if (argValue) {
             window.ugui.args[argName] = { "value": argValue };
         }
+    }
+}
+
+function setInputFilePathNameExt(currentElement, argName) {
+    //Create a variable that contains all the file information supplied by webkit
+    var fileAttributes = currentElement.files[0];
+
+    //Before continuing, verify that the user has selected a file
+    if (fileAttributes) {
+
+        //Detect if in darwin, freebsd, linux, sunos or win32
+        var platform = process.platform;
+
+        //Create filename and filepath variables to be used below
+        var filename = '';
+        var filepath = '';
+
+        // Either C:\users\bob\desktop\cows.new.png or /home/bob/desktop/cows.new.png
+        var fullFilepath = fileAttributes.path;
+
+        //cows.new.png
+        filename = fileAttributes.name;
+
+        //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+        if (platform == "win32") {
+            //Get the index of the final backslash so we can split the name from the path
+            var lastBackslash = fullFilepath.lastIndexOf('\\');
+            // C:\users\bob\desktop\
+            filepath = fullFilepath.substring(0, lastBackslash+1);
+        } else {
+            //Get the index of the final backslash so we can split the name from the path
+            var lastSlash = fullFilepath.lastIndexOf('/');
+            // /home/bob/desktop/
+            filepath = fullFilepath.substring(0, lastSlash+1);
+        }
+
+        //Split "cows.new.png" into ["cows", "new", "png"]
+        var filenameSplit = filename.split('.');
+        //Remove last item in array, ["cows", "new"]
+        filenameSplit.pop();
+        //Combine them back together as a string putting the . back in, "cows.new"
+        var filenameNoExt = filenameSplit.join('.');
+
+        //create the args object parameters on the ugui object
+        window.ugui.args[argName] = {
+            "fullpath": fileAttributes.path,
+            "path": filepath,
+            "name": filenameNoExt,
+            "nameExt": filename,
+            "ext": filename.split('.').pop(),
+            "lastModified": fileAttributes.lastModified,
+            "lastModifiedDate": fileAttributes.lastModifiedDate,
+            "size": fileAttributes.size,
+            "type": fileAttributes.type,
+            "value": fileAttributes.path,
+            "webkitRelativePath": fileAttributes.webkitRelativePath
+        };
+        console.log(ugui.args);
     }
 }
 
@@ -934,54 +993,10 @@ function ezdz(fileInfo) {
         };
     }
 
-    //Detect if in darwin, freebsd, linux, sunos or win32
-    var platform = process.platform;
-
-    //Create filename and filepath variables to be used below
-    var filename = '';
-    var filepath = '';
-
-    //Grab full filename and path, C:/users/bob/cows.new.png
-    var fullFilepath = $(".ezdz input[type=file]").val();
-
-    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
-    if (platform == "win32") {
-        //Get the index of the final backslash so we can split the name from the path
-        var lastBackslash = fullFilepath.lastIndexOf('\\');
-        //C:\users\bob\
-        filepath = fullFilepath.substring(0, lastBackslash+1);
-        //cows.new.png
-        filename = fullFilepath.substring(lastBackslash+1);
-    } else {
-        //Get the index of the final backslash so we can split the name from the path
-        var lastSlash = fullFilepath.lastIndexOf('/');
-        //C:/users/bob/
-        filepath = fullFilepath.substring(0, lastSlash+1);
-        //cows.new.png
-        filename = fullFilepath.substring(lastSlash+1);
-    }
-
     //Update the text on screen to display the name of the file that was dropped
-    var droppedFilename = filename + " selected";
+    var droppedFilename = file.name + " selected";
     $('.ezdz label').html(droppedFilename);
 
-    //Split "cows.new.png" into ["cows", "new", "png"]
-    var filenameSplit = filename.split('.');
-    //Remove last item in array, ["cows", "new"]
-    filenameSplit.pop();
-    //Combine them back together as a string putting the . back in, "cows.new"
-    var filenameNoExt = filenameSplit.join('.');
-
-    //cows.new
-    window.ugui.fileName = filenameNoExt;
-    //png
-    window.ugui.fileExtension = filename.split('.').pop();
-    //cows.new.png
-    window.ugui.fileNameExtension = filename;
-    //C:/users/bob/ or C:\users\bob\
-    window.ugui.filePath = filepath;
-    //C:/users/bob/cows.new.png or C:\users\bob\cows.new.png
-    window.ugui.filePathFull = fullFilepath;
 }
 
 
@@ -1124,11 +1139,6 @@ window.ugui = {
     "authorName": authorName,
     "cmdArgs": cmdArgs,
     "executable": executable,
-    "fileExtension": '',
-    "fileName": '',
-    "fileNameExtension": '',
-    "filePath": '',
-    "filePathFull": '',
     "packageJSON": packageJSON,
     "platform": process.platform,
     "textFields": textFields,

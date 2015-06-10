@@ -26,7 +26,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version:** V0.75
+**Current Version:** V0.9
 **Status:** You know when you have to break something first before you can fix it? Wellll, that parts accomplished!
 
 **Phase 1: The library and framwork.**
@@ -93,8 +93,9 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 ###Credits
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
-* [Hai Nguyen](http://github.com/nmhai3) - Javascript Expert
+* [Hai Nguyen](http://github.com/nmhai3) - JavaScript Expert
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
+* [Dan O'Dea](http://github.com/DanOdea) - JavaScript Contributor
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)
