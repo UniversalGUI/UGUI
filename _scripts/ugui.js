@@ -30,8 +30,20 @@ var uguiVersion = "0.9.0";
 //All arguments sent in the command
 var allArgElements = $("command arg");
 
-//Create an object containing all elements with an argOrder.
-var cmdArgs = $("#argsForm *[data-argName]");
+//All executables
+var executable = [];
+for (var i = 0; i < $("cmd").length; i++) {
+    var currentCommandBlock = $("cmd")[i];
+    executable.push($(currentCommandBlock).attr("executable"));
+}
+
+//Create the cmdArgs object containing all elements with an argOrder for each executable form.
+var argsForm = [];
+for (var i = 0; i < executable.length; i++) {
+    argsForm.push( $("#" + executable[i] + " *[data-argName]" ) );
+}
+
+//var cmdArgs = $("#argsForm *[data-argName]");
 
 //Get all text fields where a quote could be entered
 var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
@@ -58,13 +70,6 @@ var authorName = packageJSON.author;
 if (!window.ugui) {
     window.ugui = {};
     window.ugui.args = {};
-}
-
-//All executables
-var executable = [];
-for (var i = 0; i < $("cmd").length; i++) {
-    var currentCommandBlock = $("cmd")[i];
-    executable.push($(currentCommandBlock).attr("executable"));
 }
 
 
@@ -227,26 +232,43 @@ removeTypedQuotes();
 /////////////////////////////////////////////////////////////////
 
 function unlockSubmit() {
+    //Find the id name for the form containing what triggered this function (id=executable name)
+    var whichExecutable = $(this).closest("form").attr("id");
+    var formClicked = "";
+    var index = 0;
+
+    //cycle through all the executables in case they're using more than one.
+    for (index = 0; index < executable.length; index++) {
+        //if the form arg executable matches the cmd arg excutable
+        if (whichExecutable === executable[index]) {
+            //Set all the data-argNames for the correct form to formClicked
+            formClicked = argsForm[index];
+        }
+    }
+
     //Check if any of the required elements aren't filled out
-    for (var index = 0; index < cmdArgs.length; index++) {
-        var cmdArg = $(cmdArgs[index]);
+    for (index = 0; index < formClicked.length; index++) {
+        var cmdArg = $(formClicked[index]);
         //If a required element wasn't filled out, make the submit button gray
         if ( cmdArg.is(":invalid") ) {
-            $(".sendCmdArgs").prop("disabled",true);
+            $("#" + whichExecutable + " .sendCmdArgs").prop("disabled",true);
             return;
         }
     }
+
     //If all the required elements are filled out, enable the submit button
-    $(".sendCmdArgs").prop("disabled",false);
+    $("#" + whichExecutable + " .sendCmdArgs").prop("disabled",false);
 }
 
-//When you click out of a form element
-$(cmdArgs).keyup  ( unlockSubmit );
-$(cmdArgs).mouseup( unlockSubmit );
-$(cmdArgs).change ( unlockSubmit );
+for (var index = 0; index < argsForm.length; index++) {
+    //When you click out of a form element
+    $(argsForm[index]).keyup  ( unlockSubmit );
+    $(argsForm[index]).mouseup( unlockSubmit );
+    $(argsForm[index]).change ( unlockSubmit );
+}
 
 //On page load have this run once to unlock submit if nothing is required.
-unlockSubmit();
+$('.sendCmdArgs').each( unlockSubmit );
 
 
 
@@ -296,8 +318,12 @@ if( $("body").hasClass("dev") ) {
 }
 
 function updateUGUIDevCommandLine() {
+console.log("asdf");
+    //Give the UGUI Dev tools the first executable for now
+    var thisExecutable = executable[0];
+console.log(thisExecutable);
     //Get an array of all the commands being sent out
-    var devCommandOutput = buildCommandArray();
+    var devCommandOutput = buildCommandArray(thisExecutable);
     var devCommandOutputSpaces = [];
 
     for (var i = 0;i < devCommandOutput.length;i++) {
@@ -353,8 +379,8 @@ function buildCommandArray(thisExecutable) {
 
     putElementValuesInArgObj();
 
-    var argsForm = $("form#" + thisExecutable);
-
+    var argsForm = $("#" + thisExecutable);
+console.log(argsForm);
     //Cycle through all DOM Arguments
     for (var i = 0; i < allArgElements.length; i++) {
 
@@ -1146,7 +1172,7 @@ window.ugui = {
     "appVersion": appVersion,
     "args": window.ugui.args,
     "authorName": authorName,
-    "cmdArgs": cmdArgs,
+    "cmdArgs": "cmdArgs",
     "executable": executable,
     "packageJSON": packageJSON,
     "platform": process.platform,
