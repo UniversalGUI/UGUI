@@ -30,20 +30,21 @@ var uguiVersion = "0.9.0";
 //All arguments sent in the command
 var allArgElements = $("command arg");
 
+var index = 0;
+
 //All executables
 var executable = [];
-for (var i = 0; i < $("cmd").length; i++) {
-    var currentCommandBlock = $("cmd")[i];
+for (index = 0; index < $("cmd").length; index++) {
+    var currentCommandBlock = $("cmd")[index];
     executable.push($(currentCommandBlock).attr("executable"));
 }
 
 //Create the cmdArgs object containing all elements with an argOrder for each executable form.
-var argsForm = [];
-for (var i = 0; i < executable.length; i++) {
-    argsForm.push( $("#" + executable[i] + " *[data-argName]" ) );
-}
-
 //var cmdArgs = $("#argsForm *[data-argName]");
+var argsForm = [];
+for (index = 0; index < executable.length; index++) {
+    argsForm.push( $("#" + executable[index] + " *[data-argName]" ) );
+}
 
 //Get all text fields where a quote could be entered
 var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
@@ -110,7 +111,7 @@ function readAFile(filePathAndName) {
 // This is what makes running your CLI program and arguments   //
 // easier. Cow & Taco examples below to make life simpler.     //
 //                                                             //
-// $("#taco").click( function(){                               //
+// $("#taco").click( function() {                              //
 //   runcmd('pngquant --force "file.png"');                    //
 // });                                                         //
 //                                                             //
@@ -120,11 +121,11 @@ function readAFile(filePathAndName) {
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function runcmd ( executableAndArgs, callback ) {
+function runcmd(executableAndArgs, callback) {
     var exec = require("child_process").exec;
     var child = exec( executableAndArgs,
         //Throw errors and information into console
-        function (error, stdout, stderr) {
+        function(error, stdout, stderr) {
             console.log(executableAndArgs);
             console.log('stdout: ' + stdout);
             console.log('stderr: ' + stderr);
@@ -156,17 +157,17 @@ function runcmd ( executableAndArgs, callback ) {
 // This is the older way of running commands using "spawn".    //
 // Cow & Taco examples below to make life simpler.             //
 //                                                             //
-// $("#taco").click( function(){                               //
+// $("#taco").click( function() {                              //
 //   runcmdClassic("pngquant", ["--force", "file.png"]);       //
 // });                                                         //
 //                                                             //
-// runcmdClassic("node", ["--version"], function(data){        //
+// runcmdClassic("node", ["--version"], function(data) {       //
 //   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
 // });                                                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function runcmdClassic( executable, args, callback ) {
+function runcmdClassic(executable, args, callback) {
    var spawn = require("child_process").spawn;
    console.log( executable, args );
    var child = spawn( executable, args );
@@ -176,7 +177,7 @@ function runcmdClassic( executable, args, callback ) {
        }
    });
 
-   child.stderr.on("data", function (data) {
+   child.stderr.on("data", function(data) {
      console.log("stderr: " + data);
    });
 }
@@ -203,13 +204,13 @@ $(textFields).blur( removeTypedQuotes );
 
 function removeTypedQuotes() {
     //Loop through all text fields on the page
-    for ( var i = 0; i < textFields.length; i++ ){
+    for (index = 0; index < textFields.length; index++) {
         //User entered text of current text field
-        var textFieldValue = $( textFields[i] ).val();
+        var textFieldValue = $( textFields[index] ).val();
         //If the current text field has a double or single quote in it
         if ( textFieldValue.indexOf('"') != -1 || textFieldValue.indexOf("'") != -1 ) {
             //Remove quotes in current text field
-            $( textFields[i] ).val( $( textFields[i] ).val().replace(/['"]/g, '') );
+            $( textFields[index] ).val( $( textFields[index] ).val().replace(/['"]/g, '') );
         }
     }
 }
@@ -235,7 +236,6 @@ function unlockSubmit() {
     //Find the id name for the form containing what triggered this function (id=executable name)
     var whichExecutable = $(this).closest("form").attr("id");
     var formClicked = "";
-    var index = 0;
 
     //cycle through all the executables in case they're using more than one.
     for (index = 0; index < executable.length; index++) {
@@ -260,7 +260,7 @@ function unlockSubmit() {
     $("#" + whichExecutable + " .sendCmdArgs").prop("disabled",false);
 }
 
-for (var index = 0; index < argsForm.length; index++) {
+for (index = 0; index < argsForm.length; index++) {
     //When you click out of a form element
     $(argsForm[index]).keyup  ( unlockSubmit );
     $(argsForm[index]).mouseup( unlockSubmit );
@@ -289,20 +289,23 @@ $('.sendCmdArgs').each( unlockSubmit );
 
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
-    //If any of the form elements with a data-argName change
-    $(cmdArgs).change( function() {
-        //check if it was the drag/drop input box
-        if ( $(this).parent().hasClass("ezdz") ) {
-            var file = this.files[0];
-            //run a custom function before updating dev tools
-            ezdz(file);
-            //now that the variables have been set by the above function
-            updateUGUIDevCommandLine();
-        } else {
-            //otherwise just go ahead and update the dev tools
-            updateUGUIDevCommandLine();
-        }
-    });
+
+    for (index = 0; index < executable.length; index++) {
+        //If any of the form elements with a data-argName change
+        $(argsForm[index]).change( function() {
+            //check if it was the drag/drop input box
+            if ( $(this).parent().hasClass("ezdz") ) {
+                var file = this.files[0];
+                //run a custom function before updating dev tools
+                ezdz(file);
+                //now that the variables have been set by the above function
+                updateUGUIDevCommandLine();
+            } else {
+                //otherwise just go ahead and update the dev tools
+                updateUGUIDevCommandLine();
+            }
+        });
+    }
 
     //If the user types anything in a form
     $(textFields).keyup( updateUGUIDevCommandLine );
@@ -310,7 +313,7 @@ if( $("body").hasClass("dev") ) {
     $(".slider").on( "slide", updateUGUIDevCommandLine );
 } else {
     //If we're not in Dev mode, make sure the ezdz can still run
-    $(".ezdz input").change(function(){
+    $(".ezdz input").change( function() {
         var file = this.files[0];
         //run a custom function before updating dev tools
         ezdz(file);
@@ -318,7 +321,6 @@ if( $("body").hasClass("dev") ) {
 }
 
 function updateUGUIDevCommandLine() {
-console.log("asdf");
     //Give the UGUI Dev tools the first executable for now
     var thisExecutable = executable[0];
 console.log(thisExecutable);
@@ -326,8 +328,8 @@ console.log(thisExecutable);
     var devCommandOutput = buildCommandArray(thisExecutable);
     var devCommandOutputSpaces = [];
 
-    for (var i = 0;i < devCommandOutput.length;i++) {
-        devCommandOutputSpaces.push(" " + devCommandOutput[i]);
+    for (index = 0; index < devCommandOutput.length; index++) {
+        devCommandOutputSpaces.push(" " + devCommandOutput[index]);
     }
 
     //Replace the text in the command line box in UGUI dev tools
@@ -357,7 +359,7 @@ console.log(thisExecutable);
 /////////////////////////////////////////////////////////////////
 
 //When you click the Compress button.
-$(".sendCmdArgs").click( function( event ){
+$(".sendCmdArgs").click( function(event) {
 
     //Get the correct executable to use based on the form you clicked on
     var thisExecutable = $(this).closest(form).attr("id");
@@ -382,10 +384,10 @@ function buildCommandArray(thisExecutable) {
     var argsForm = $("#" + thisExecutable);
 console.log(argsForm);
     //Cycle through all DOM Arguments
-    for (var i = 0; i < allArgElements.length; i++) {
+    for (index = 0; index < allArgElements.length; index++) {
 
         //get "bob" from <arg name="bob">((value))</arg>
-        var argName = $(allArgElements[i]).attr("name");
+        var argName = $(allArgElements[index]).attr("name");
         //find the form element with the same argName
         var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
 
@@ -405,10 +407,10 @@ console.log(argsForm);
         }
 
         //get "--speed ((value))" from <arg name="quality">--speed ((value))</arg>
-        var argCommand = $(allArgElements[i]).text();
+        var argCommand = $(allArgElements[index]).text();
 
         //replace the ((value)) with 22
-        if (argCommand.indexOf("((value))") !== -1) {
+        if ( argCommand.indexOf("((value))") !== -1 ) {
             argCommand = argCommand.replace("((value))", formElementValue);
         }
 
@@ -420,10 +422,10 @@ console.log(argsForm);
         }
 
         //get "((min)),((max))" from <arg name="range" custom="((min)),((max))">((min))-((max))</arg>
-        var customValue = $(allArgElements[i]).attr("custom");
+        var customValue = $(allArgElements[index]).attr("custom");
 
         //If there are no <arg>'s with custom values, skip this section
-        if (customValue) {
+        if ( customValue ) {
             //Subtract the length of characters from the length of characters after all instances of "((" are removed, but not "(", then divide by 2 since each "((" represents one value.
             var findNumberOfValues = (customValue.length - customValue.replace(/\B(\(\()/g,"").length)/2;
             console.log(customValue);
@@ -431,10 +433,10 @@ console.log(argsForm);
         }
 
         //if it has a value and is a checked checkbox or selected radio dial
-        if (formElementValue !== "" && $(formElementRadioCheckbox).prop("checked")) {
+        if ( formElementValue !== "" && $(formElementRadioCheckbox).prop("checked") ) {
             cmds.push(argCommand);
         //else if it has a value and isn't a checkbox or radio dial
-        } else if (formElementValue !== "" && formElementType !== "radio" && formElementType !== "checkbox" ) {
+        } else if ( formElementValue !== "" && formElementType !== "radio" && formElementType !== "checkbox" ) {
             cmds.push(argCommand);
         //no "else" statment, as we don't want to process unchecked radio/checkbox
         }
@@ -445,21 +447,26 @@ console.log(argsForm);
 }
 
 function putElementValuesInArgObj() {
-    //Cycle through all elements with a data-argName in #argsForm
-    for (var i = 0; i < cmdArgs.length; i++) {
-        //get "bob" from <input data-argName="bob" value="--kitten" />
-        var argName = $(cmdArgs[i]).attr("data-argName");
-        //get "--kitten" from <input data-argName="bob" value="--kitten" />
-        var argValue = $(cmdArgs[i]).val();
-        //get checkbox from <input data-argName="bob" type="checkbox" />
-        var argType = $(cmdArgs[i]).attr("type");
 
-        if (argType === "file") {
-            setInputFilePathNameExt(cmdArgs[i], argName);
-        } else if (argValue) {
-            window.ugui.args[argName] = { "value": argValue };
+    for (index = 0; index < executable.length; index++) {
+        var cmdArgs = argsForm[index];
+        //Cycle through all elements with a data-argName in #argsForm
+        for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+            //get "bob" from <input data-argName="bob" value="--kitten" />
+            var argName = $(cmdArgs[subindex]).attr("data-argName");
+            //get "--kitten" from <input data-argName="bob" value="--kitten" />
+            var argValue = $(cmdArgs[subindex]).val();
+            //get checkbox from <input data-argName="bob" type="checkbox" />
+            var argType = $(cmdArgs[subindex]).attr("type");
+
+            if (argType === "file") {
+                setInputFilePathNameExt(cmdArgs[subindex], argName);
+            } else if (argValue) {
+                window.ugui.args[argName] = { "value": argValue };
+            }
         }
     }
+
 }
 
 function setInputFilePathNameExt(currentElement, argName) {
@@ -483,7 +490,7 @@ function setInputFilePathNameExt(currentElement, argName) {
         filename = fileAttributes.name;
 
         //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
-        if (platform == "win32") {
+        if ( platform == "win32" ) {
             //Get the index of the final backslash so we can split the name from the path
             var lastBackslash = fullFilepath.lastIndexOf('\\');
             // C:\users\bob\desktop\
@@ -588,7 +595,7 @@ function getAboutModal() {
 
         //Remove modal, enable scrollbar
         function removeModal() {
-            $("#aboutModal").slideUp("slow", function(){
+            $("#aboutModal").slideUp("slow", function() {
                 $("body").css("overflow","auto");
                 //If the navigation is expanded, then close it after exiting the modal
                 if ( !$(".navbar-toggle").hasClass("collapsed") ) {
@@ -624,17 +631,17 @@ function getAboutModal() {
 /////////////////////////////////////////////////////////////////
 
 //Clicking View > Command Line Output in the Nav Bar
-$(".navbar a[href='#cmdoutput']").click( function(){
+$(".navbar a[href='#cmdoutput']").click( function() {
     $("#uguiDevTools nav span[data-nav='uguiCommand']").trigger("click");
 });
 
 //Clicking View > Console in the Nav Bar
-$(".navbar a[href='#console']").click( function(){
+$(".navbar a[href='#console']").click( function() {
     require('nw.gui').Window.get().showDevTools();
 });
 
 //Clicking View > Fullscreen
-$(".navbar a[href='#fullscreen']").click( function(){
+$(".navbar a[href='#fullscreen']").click( function() {
     require('nw.gui').Window.get().toggleFullscreen();
 });
 
@@ -710,7 +717,7 @@ if ( $("body").hasClass("prod") ) {
     $("#uguiDevTools").remove();
 } else if ( $("body").hasClass("dev") ){
     //Create UGUI Dev Tools markup
-    $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ){
+    $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ) {
         //Put Dev Tool Markup on the page
         $("body.dev").append( uguiDevToolsMarkup );
         putExeHelpInDevTools();
@@ -721,7 +728,7 @@ if ( $("body").hasClass("prod") ) {
         $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $(".sendCmdArgs").html() + "</em> button to see output.</span>");
 
         //Hide/Show based on UGUI Dev Tools navigation
-        $("#uguiDevTools nav span").click( function(){
+        $("#uguiDevTools nav span").click( function() {
             var sectionClicked = $(this).attr("data-nav");
             $("#uguiDevTools nav span").removeClass("selected");
 
@@ -771,9 +778,13 @@ if ( $("body").hasClass("prod") ) {
 
 function warnIfDuplicateArgNames() {
     var duplicatesArray = {};
+    var cmdArgs = [];
 
-    for (var index = 0; index < cmdArgs.length; index++) {
-        duplicatesArray[cmdArgs[index].dataset.argname] = cmdArgs[index];
+    for (index = 0; index < executable.length; index++) {
+        cmdArgs = argsForm[index];
+        for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+            duplicatesArray[cmdArgs[subindex].dataset.argname] = cmdArgs[subindex];
+        }
     }
 
     //Create a new array with duplicate argOrders removed
@@ -783,7 +794,7 @@ function warnIfDuplicateArgNames() {
 
     //If the new array had any duplicates removed display a warning.
     if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
-        $.get("_markup/ugui-multiargnames.htm", function( multiArgNamesMarkup ){
+        $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
             //Put alert mesage at top of page
             $("body.dev").prepend( multiArgNamesMarkup );
         });
@@ -818,13 +829,13 @@ function putExeHelpInDevTools() {
     var executableHelpChoice;
 
     //Everytime the dropdown changes update the <pre>
-    $("#uguiDevTools .helpDropdown").change( function(){
+    $("#uguiDevTools .helpDropdown").change( function() {
 
         //Update the variable to match the user's choice
         executableHelpChoice = $(this).val();
 
         //Run the executable using the user's chosen argument to get it's help info
-        runcmd(executable + " " + executableHelpChoice, function( returnedHelpInfo ){
+        runcmd( executable + " " + executableHelpChoice, function(returnedHelpInfo) {
             //Put the help info in a <pre>
             $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
         });
@@ -853,11 +864,11 @@ function swatchSwapper() {
     //Allow access to the filesystem
     var fs = require("fs");
     //Grab all the files in the ven.bootswatch folder and put them in an array
-    var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files){
+    var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files) {
         //if that works
         if (!err)
             //check each file and put it in the dropdown box
-            for (var index = 0; index < files.length; index++) {
+            for (index = 0; index < files.length; index++) {
                 var cssFileName = files[index];                     //cerulean.min.css
                 var swatchName = files[index].split(".min.css")[0]; //cerulean
                 $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + cssFileName + "'>" + swatchName + "</option>");
@@ -867,7 +878,7 @@ function swatchSwapper() {
     });
 
     //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
-    $("#swatchSwapper").change(function (){
+    $("#swatchSwapper").change( function() {
         $("head link[data-swatch]").attr( "href", $("#swatchSwapper").val() );
         //Nav logo wasn't vertically centering after changing a stylesheet because the function was being ran after
         //the stylesheet was swapped instead of after the page rendered the styles. Unfortunately a delay had to be used.
@@ -895,7 +906,7 @@ function swatchSwapper() {
 
 function keyBindings() {
     //Keyboard shortcuts
-    document.onkeydown = function (pressed) {
+    document.onkeydown = function(pressed) {
         ///Check CTRL + F key and do nothing :(
         if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
             pressed.preventDefault();
@@ -955,7 +966,7 @@ function openDefaultBrowser() {
     var gui = require('nw.gui');
 
     // Open URL with default browser.
-    $(".external-link").click( function( event ){
+    $(".external-link").click( function( event ) {
         //prevent the link from loading in NW.js
         event.preventDefault();
         //get the href url for the current link
@@ -1019,7 +1030,7 @@ function ezdz(fileInfo) {
 
         reader.readAsDataURL(file);
 
-        reader.onload = function( event ) {
+        reader.onload = function(event) {
             var data = event.target.result;
             var $img = $('<img />').attr('src', data).fadeIn();
 
@@ -1142,7 +1153,7 @@ $(function() {
   }
 
     var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
-    $(document).on("contextmenu", function( event ) {
+    $(document).on("contextmenu", function(event) {
         event.preventDefault();
         menu.popup(event.originalEvent.x, event.originalEvent.y);
     });
