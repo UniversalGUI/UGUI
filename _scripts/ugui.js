@@ -28,7 +28,7 @@ var uguiVersion = "0.9.0";
 /////////////////////////////////////////////////////////////////
 
 //All arguments sent in the command
-var allArgElements = $("command arg");
+var allArgElements = $("cmd arg");
 
 var index = 0;
 
@@ -321,19 +321,21 @@ if( $("body").hasClass("dev") ) {
 }
 
 function updateUGUIDevCommandLine() {
-    //Give the UGUI Dev tools the first executable for now
-    var thisExecutable = executable[0];
-console.log(thisExecutable);
-    //Get an array of all the commands being sent out
-    var devCommandOutput = buildCommandArray(thisExecutable);
-    var devCommandOutputSpaces = [];
+    //clear it out first
+    $("#commandLine").empty();
 
-    for (index = 0; index < devCommandOutput.length; index++) {
-        devCommandOutputSpaces.push(" " + devCommandOutput[index]);
+    for (index = 0; index < executable.length; index++) {
+        //Get an array of all the commands being sent out
+        var devCommandOutput = buildCommandArray(executable[index]);
+        var devCommandOutputSpaces = [];
+
+        for (var subindex = 0; subindex < devCommandOutput.length; subindex++) {
+            devCommandOutputSpaces.push(" " + devCommandOutput[subindex]);
+        }
+
+        //Replace the text in the command line box in UGUI dev tools
+        $("#commandLine").html( devCommandOutputSpaces );
     }
-
-    //Replace the text in the command line box in UGUI dev tools
-    $("#commandLine").html( devCommandOutputSpaces );
 }
 
 
@@ -379,17 +381,20 @@ function buildCommandArray(thisExecutable) {
     //Set up commands to be sent to command line
     var cmds = [ thisExecutable ];
 
+    //fill out window.ugui.args {}
     putElementValuesInArgObj();
 
+    //$("#executable")
     var argsForm = $("#" + thisExecutable);
-console.log(argsForm);
-    //Cycle through all DOM Arguments
-    for (index = 0; index < allArgElements.length; index++) {
 
-        //get "bob" from <arg name="bob">((value))</arg>
+    //Cycle through all $("cmd arg")
+    for (index = 0; index < allArgElements.length; index++) {
+debugger;
+
+        //get "bob" from <arg>((bob))</arg>
         var argName = $(allArgElements[index]).attr("name");
         //find the form element with the same argName
-        var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
+        //var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
 
         //get "input" from <input type="text">
         //var formTag = $(matchingFormElement).prop("tagName");
@@ -469,7 +474,8 @@ function putElementValuesInArgObj() {
 
 }
 
-function setInputFilePathNameExt(currentElement, argName) {
+function setInputFilePathNameExt(){}
+function setInputFilePathNameExtBackup(currentElement, argName) {
     //Create a variable that contains all the file information supplied by webkit
     var fileAttributes = currentElement.files[0];
 
