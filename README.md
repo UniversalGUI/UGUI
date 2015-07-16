@@ -95,7 +95,8 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Hai Nguyen](http://github.com/nmhai3) - JavaScript Expert
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
-* [Dan O'Dea](http://github.com/DanOdea) - JavaScript Contributor
+* [Dan O'Dea](http://github.com/DanOdea) - Definition Pattern Matching Engine Architect
+* Grahammer - UGUI Engine Architechture Consultant
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)

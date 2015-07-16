@@ -1,4 +1,3 @@
-
 //Wait for the document to load before running ugui.js
 $(document).ready( runUGUI );
 
@@ -47,7 +46,7 @@ for (index = 0; index < executable.length; index++) {
 }
 
 //Get all text fields where a quote could be entered
-var textFields = $( "#argsForm textarea[data-argName], #argsForm input[data-argName][type=text]" ).toArray();
+var textFields = $( "textarea[data-argName], input[data-argName][type=text]" ).toArray();
 
 //Access the contents of the package.json file
 var packageJSON = require('nw.gui').App.manifest;
@@ -363,11 +362,11 @@ function updateUGUIDevCommandLine() {
 //When you click the Compress button.
 $(".sendCmdArgs").click( function(event) {
 
-    //Get the correct executable to use based on the form you clicked on
-    var thisExecutable = $(this).closest(form).attr("id");
-
     //Prevent the form from sending like a normal website.
     event.preventDefault();
+
+    //Get the correct executable to use based on the form you clicked on
+    var thisExecutable = $(this).closest(form).attr("id");
 
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
@@ -382,100 +381,78 @@ function buildCommandArray(thisExecutable) {
     var cmds = [ thisExecutable ];
 
     //fill out window.ugui.args {}
-    putElementValuesInArgObj();
+    buildUGUIArgObject();
 
-    //$("#executable")
+    //$("#pngquant") targets <form id="pngquant">
     var argsForm = $("#" + thisExecutable);
+
+    var thing ="";
 
     //Cycle through all $("cmd arg")
     for (index = 0; index < allArgElements.length; index++) {
-debugger;
-
-        //get "bob" from <arg>((bob))</arg>
-        var argName = $(allArgElements[index]).attr("name");
-        //find the form element with the same argName
-        //var matchingFormElement = $("#argsForm *[data-argName=" + argName + "]");
-
-        //get "input" from <input type="text">
-        //var formTag = $(matchingFormElement).prop("tagName");
-        //    formTag = formTag.toLowerCase();
-
-        //get "text" from <input type="text">
-        var formElementType = $(matchingFormElement).attr("type");
-        //get "22" from <textarea>22</textarea>
-        var formElementValue = $(matchingFormElement).val();
-
-        //detect if the current form element is a radio dial or checkbox
-        var formElementRadioCheckbox = "";
-        if (formElementType === "checkbox" || formElementType === "radio") {
-            formElementRadioCheckbox = $(matchingFormElement);
-        }
-
-        //get "--speed ((value))" from <arg name="quality">--speed ((value))</arg>
-        var argCommand = $(allArgElements[index]).text();
-
-        //replace the ((value)) with 22
-        if ( argCommand.indexOf("((value))") !== -1 ) {
-            argCommand = argCommand.replace("((value))", formElementValue);
-        }
-
-        //If the <arg> is for the ezdz file input box, get the path/name/ext
-        if (window.ugui && window.ugui.filePath !== "") {
-            argCommand = argCommand.replace("((path))", window.ugui.filePath);
-            argCommand = argCommand.replace("((name))", window.ugui.fileName);
-            argCommand = argCommand.replace("((ext))", window.ugui.fileExtension);
-        }
-
-        //get "((min)),((max))" from <arg name="range" custom="((min)),((max))">((min))-((max))</arg>
-        var customValue = $(allArgElements[index]).attr("custom");
-
-        //If there are no <arg>'s with custom values, skip this section
-        if ( customValue ) {
-            //Subtract the length of characters from the length of characters after all instances of "((" are removed, but not "(", then divide by 2 since each "((" represents one value.
-            var findNumberOfValues = (customValue.length - customValue.replace(/\B(\(\()/g,"").length)/2;
-            console.log(customValue);
-            console.log("There are " + findNumberOfValues + " user defined custom values to parse.");
-        }
-
-        //if it has a value and is a checked checkbox or selected radio dial
-        if ( formElementValue !== "" && $(formElementRadioCheckbox).prop("checked") ) {
-            cmds.push(argCommand);
-        //else if it has a value and isn't a checkbox or radio dial
-        } else if ( formElementValue !== "" && formElementType !== "radio" && formElementType !== "checkbox" ) {
-            cmds.push(argCommand);
-        //no "else" statment, as we don't want to process unchecked radio/checkbox
-        }
-
     }
 
     return cmds;
 }
 
-function putElementValuesInArgObj() {
+function buildUGUIArgObject() {
+    //Reset the Args Object to remove any stragglers
+    window.ugui.args = {};
 
+    //Since UGUI allows for multiple executables, we need to process all args in each <cmd> block
     for (index = 0; index < executable.length; index++) {
+        //argsForm[0] will match executable[0]
+        //so this sets cmdArgs to all the elements with a data-argName in the form with an ID that matches the right executable
         var cmdArgs = argsForm[index];
-        //Cycle through all elements with a data-argName in #argsForm
+
+        //Cycle through all elements with a data-argName in <form id="currentexecutable">
         for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+
             //get "bob" from <input data-argName="bob" value="--kitten" />
             var argName = $(cmdArgs[subindex]).attr("data-argName");
+
             //get "--kitten" from <input data-argName="bob" value="--kitten" />
             var argValue = $(cmdArgs[subindex]).val();
+
             //get checkbox from <input data-argName="bob" type="checkbox" />
             var argType = $(cmdArgs[subindex]).attr("type");
 
-            if (argType === "file") {
-                setInputFilePathNameExt(cmdArgs[subindex], argName);
-            } else if (argValue) {
-                window.ugui.args[argName] = { "value": argValue };
+            //get input from <input data-argName="bob" type="checkbox" />
+            var argTag = $(cmdArgs[subindex]).prop("tagName").toLowerCase();
+
+            //Before building the object for this element, make sure it actually has a value
+            if (argValue) {
+                //Basic info put on every object
+                window.ugui.args[argName] = {
+                    "value": argValue,
+                    "htmltag": argTag,
+                    "htmltype": argType
+                };
+
+                //Special info just for <input type="file">
+                if (argType === "file") {
+                    setInputFilePathNameExt(cmdArgs[subindex], argName);
+                    window.ugui.args[argName].htmltag = argTag;
+                    window.ugui.args[argName].htmltype = argType;
+                }
+
+                //For checkboxes and radio dials, add special info
+                if (argType === "checkbox" || argType === "radio") {
+                    if ( $(cmdArgs[subindex]).prop("checked") ) {
+                        window.ugui.args[argName].htmlticked = true;
+                    } else {
+                        window.ugui.args[argName].htmlticked = false;
+                    }
+                }
             }
+
         }
+
     }
 
 }
 
-function setInputFilePathNameExt(){}
-function setInputFilePathNameExtBackup(currentElement, argName) {
+function setInputFilePathNameExt(currentElement, argName) {
     //Create a variable that contains all the file information supplied by webkit
     var fileAttributes = currentElement.files[0];
 
@@ -529,7 +506,7 @@ function setInputFilePathNameExtBackup(currentElement, argName) {
             "value": fileAttributes.path,
             "webkitRelativePath": fileAttributes.webkitRelativePath
         };
-        console.log(ugui.args);
+
     }
 }
 
