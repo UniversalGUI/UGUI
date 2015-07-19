@@ -1,7 +1,11 @@
 //Wait for the document to load before running ugui.js
-$(document).ready( runUGUI );
 
+$(document).ready( waitUGUI );
 
+function waitUGUI() {
+    require('nw.gui').Window.get().showDevTools();
+    setTimeout(runUGUI, 6000);
+}
 
 
 
@@ -376,6 +380,22 @@ $(".sendCmdArgs").click( function(event) {
 
 });
 
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                  BUILDING THE COMMAND ARRAY                 //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// What happens when you click the submit button or when the   //
+// UGUI Dev Tools are updated to preview the outputted command //
+// that would be sent to the cmd line/terminal.                //
+/////////////////////////////////////////////////////////////////
+
 function buildCommandArray(thisExecutable) {
     //Set up commands to be sent to command line
     var cmds = [ thisExecutable ];
@@ -383,17 +403,37 @@ function buildCommandArray(thisExecutable) {
     //fill out window.ugui.args {}
     buildUGUIArgObject();
 
-    //$("#pngquant") targets <form id="pngquant">
-    var argsForm = $("#" + thisExecutable);
-
-    var thing ="";
-
-    //Cycle through all $("cmd arg")
-    for (index = 0; index < allArgElements.length; index++) {
+    //Setting up arrays
+    var cmdArgsText = [];
+    for (var i = 0; i < $("cmd arg").length; i++) {
+        cmdArgsText.push( $(allArgElements[i]).text() );
     }
 
+    //loop through all phrases and add processed versions to output array
+    for (var i = 0; i < cmdArgsText.length; i++) {
+        //cmdArgsText[i] is "--quality ((meow)) to ((oink.min))"
+        cmds.push( parseArgument(cmdArgsText[i]) );
+    }
+
+    //After all the processing is done and the array is built, return it
     return cmds;
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                    BUILD UGUI ARG OBJECT                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This grabs all the data about the elements on the page that //
+// have a data-argName and puts that information on the window //
+// object, located here: window.ugui.args                      //
+/////////////////////////////////////////////////////////////////
 
 function buildUGUIArgObject() {
     //Reset the Args Object to remove any stragglers
@@ -451,6 +491,116 @@ function buildUGUIArgObject() {
     }
 
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                       FIND KEY VALUE                        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This is a general purpose function that allows retrieving   //
+// information from an object. Here is an example object and   //
+// how findKeyValue() works to return data from it:            //
+//                                                             //
+//     var a = {                                               //
+//         "b": "dog",                                         //
+//         "c": {                                              //
+//             "d": "cat",                                     //
+//             "e": "bat"                                      //
+//         }                                                   //
+//     };                                                      //
+//     var ab  = ["b"];                                        //
+//     var acd = ["c","d"];                                    //
+//                                                             //
+//     console.log( findKeyValue(a,ab) );  //dog               //
+//     console.log( findKeyValue(a,acd) ); //cat               //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+function findKeyValue(obj, arr) {
+console.log(obj, arr);
+    for (var i = 0; i < arr.length; i++) {
+        obj = obj[arr[i]];
+    }
+    //For stuff like ((moo)), assume the user means ((moo.value))
+    if (typeof obj === "object") {
+        obj = obj.value;
+    }
+console.log(obj);
+    return obj;
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                       PARSE ARGUMENT                        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This takes the argument from the <cmd><arg>, finds all the  //
+// ((keywords)) and replaces them with the information on the  //
+// UGUI Args Object found here: window.ugui.args               //
+/////////////////////////////////////////////////////////////////
+
+function parseArgument(argumentText) {
+    //argumentText = "and ((meow)), with ((oink)) too. "
+    var regexToMatch = /\(\((.*?)\)\)/;
+    //match = ["((meow))","meow"]
+    var match = regexToMatch.exec(argumentText);
+    var uguiArgObj = window.ugui.args;
+
+    var regExMatch = RegExp( '\\(\\(' + match[1] + '\\)\\)' );
+    //matched = uguiArgObj.meow
+    var matched = uguiArgObj[match[1]];
+    if (matched === undefined){
+        matched = match[1].split('.')[0];
+    }
+
+    //Run all the non-checkbox and non-radio elements first,
+    //then all checked checkboxes and checked radio dials.
+    if (
+        (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
+        (matched.htmltype === "checkbox" && matched.htmlticked === "true") ||
+        (matched.htmltype === "radio" && matched.htmlticked === "true")
+       ) {
+        //Replace the "--quality ((meow))" with "--quality 9"
+        argumentText = argumentText.replace(
+            regExMatch,
+            findKeyValue( uguiArgObj, match[1].split('.') )
+        );
+    //Then do special stuff if things aren't checked!
+    } else if (!matched.htmlticked) {
+        //Replace the "--quality ((meow))" with "--quality 9" with ""
+        argumentText = "";
+    }
+
+    return argumentText;
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//        SET INPUT FILE PATH, FILE NAME, AND EXTENSION        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This processes everything elements with a data-argName that //
+// are also <input type="file">. It creates special properties //
+// for it on the UGUI args object found here: window.ugui.args //
+/////////////////////////////////////////////////////////////////
 
 function setInputFilePathNameExt(currentElement, argName) {
     //Create a variable that contains all the file information supplied by webkit
