@@ -451,11 +451,23 @@ function buildUGUIArgObject() {
             //get "bob" from <input data-argName="bob" value="--kitten" />
             var argName = $(cmdArgs[subindex]).attr("data-argName");
 
-            //get "--kitten" from <input data-argName="bob" value="--kitten" />
-            var argValue = $(cmdArgs[subindex]).val();
+            var argValue = "";
+            var argType = "";
 
-            //get checkbox from <input data-argName="bob" type="checkbox" />
-            var argType = $(cmdArgs[subindex]).attr("type");
+            //See if the current item is a range slider
+            if ( $(cmdArgs[subindex]).hasClass('slider') ) {
+                //get "6" from <input data-argname="bob" data-slider-value="6" type="text" class="slider" />
+                argValue = $(cmdArgs[subindex]).data('slider-value');
+
+                //get checkbox from <input data-argName="bob" type="checkbox" />
+                argType = "range";
+            } else {
+                //get "--kitten" from <input data-argName="bob" value="--kitten" />
+                argValue = $(cmdArgs[subindex]).val();
+
+                //get checkbox from <input data-argName="bob" type="checkbox" />
+                argType = $(cmdArgs[subindex]).attr("type");
+            }
 
             //get input from <input data-argName="bob" type="checkbox" />
             var argTag = $(cmdArgs[subindex]).prop("tagName").toLowerCase();
@@ -561,6 +573,7 @@ function parseArgument(argumentText) {
     var regExMatch = RegExp( '\\(\\(' + match[1] + '\\)\\)' );
     //matched = uguiArgObj.meow
     var matched = uguiArgObj[match[1]];
+    console.log(matched);
     if (matched === undefined){
         matched = match[1].split('.')[0];
     }
@@ -570,8 +583,10 @@ function parseArgument(argumentText) {
     if (
         (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
         (matched.htmltype === "checkbox" && matched.htmlticked === "true") ||
-        (matched.htmltype === "radio" && matched.htmlticked === "true")
+        (matched.htmltype === "radio" && matched.htmlticked === "true") ||
+        (matched.htmltype === "file" && matched.htmltype === "file")
        ) {
+console.log("find a way to verify that file has a value before running");
         //Replace the "--quality ((meow))" with "--quality 9"
         argumentText = argumentText.replace(
             regExMatch,
