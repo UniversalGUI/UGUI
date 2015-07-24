@@ -473,7 +473,7 @@ function buildUGUIArgObject() {
             var argTag = $(cmdArgs[subindex]).prop("tagName").toLowerCase();
 
             //Before building the object for this element, make sure it actually has a value
-            if (argValue) {
+            //if (argValue) {
                 //Basic info put on every object
                 window.ugui.args[argName] = {
                     "value": argValue,
@@ -496,7 +496,7 @@ function buildUGUIArgObject() {
                         window.ugui.args[argName].htmlticked = false;
                     }
                 }
-            }
+            //}
 
         }
 
@@ -535,7 +535,10 @@ function buildUGUIArgObject() {
 /////////////////////////////////////////////////////////////////
 
 function findKeyValue(obj, arr) {
-console.log(obj, arr);
+if (arr == ["fileToProcess","ext"]) {
+    debugger;
+}
+//console.log(obj, arr);
     for (var i = 0; i < arr.length; i++) {
         obj = obj[arr[i]];
     }
@@ -543,7 +546,7 @@ console.log(obj, arr);
     if (typeof obj === "object") {
         obj = obj.value;
     }
-console.log(obj);
+//console.log(obj);
     return obj;
 }
 
@@ -566,36 +569,43 @@ console.log(obj);
 function parseArgument(argumentText) {
     //argumentText = "and ((meow)), with ((oink)) too. "
     var regexToMatch = /\(\((.*?)\)\)/;
-    //match = ["((meow))","meow"]
-    var match = regexToMatch.exec(argumentText);
-    var uguiArgObj = window.ugui.args;
 
-    var regExMatch = RegExp( '\\(\\(' + match[1] + '\\)\\)' );
-    //matched = uguiArgObj.meow
-    var matched = uguiArgObj[match[1]];
-    console.log(matched);
-    if (matched === undefined){
-        matched = match[1].split('.')[0];
-    }
+    while ( regexToMatch.test(argumentText) ) {
 
-    //Run all the non-checkbox and non-radio elements first,
-    //then all checked checkboxes and checked radio dials.
-    if (
-        (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
-        (matched.htmltype === "checkbox" && matched.htmlticked === "true") ||
-        (matched.htmltype === "radio" && matched.htmlticked === "true") ||
-        (matched.htmltype === "file" && matched.htmltype === "file")
-       ) {
-console.log("find a way to verify that file has a value before running");
-        //Replace the "--quality ((meow))" with "--quality 9"
-        argumentText = argumentText.replace(
-            regExMatch,
-            findKeyValue( uguiArgObj, match[1].split('.') )
-        );
-    //Then do special stuff if things aren't checked!
-    } else if (!matched.htmlticked) {
-        //Replace the "--quality ((meow))" with "--quality 9" with ""
-        argumentText = "";
+        //match = ["((meow))","meow"]
+        var match = regexToMatch.exec(argumentText);
+        var uguiArgObj = window.ugui.args;
+
+        var regExMatch = RegExp( '\\(\\(' + match[1] + '\\)\\)' );
+        //matched = uguiArgObj.meow
+        var matched = uguiArgObj[match[1]];
+
+        if (matched === undefined){
+            matched = match[1].split('.')[0];
+        }
+
+        //Run all the non-checkbox and non-radio elements first,
+        //then all checked checkboxes and checked radio dials.
+        if (
+            (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
+            (matched.htmltype === "checkbox" && matched.htmlticked === true) ||
+            (matched.htmltype === "radio" && matched.htmlticked === true)
+           ) {
+            //Replace the "--quality ((meow))" with "--quality 9"
+            argumentText = argumentText.replace(
+                regExMatch,
+                findKeyValue( uguiArgObj, match[1].split('.') )
+            );
+        //Then do special stuff if things aren't checked!
+        } else if (!matched.htmlticked) {
+            //Replace the "--quality ((meow))" with ""
+            argumentText = "";
+        }
+
+        //if argument text = "and cat, with ((oink)) too." rerun this to get value for ((oink))
+        console.log(argumentText);
+        console.log(regexToMatch.test(argumentText));
+        console.log("-----------------");
     }
 
     return argumentText;
