@@ -370,7 +370,7 @@ $(".sendCmdArgs").click( function(event) {
     event.preventDefault();
 
     //Get the correct executable to use based on the form you clicked on
-    var thisExecutable = $(this).closest(form).attr("id");
+    var thisExecutable = $(this).closest("form").attr("id");
 
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
