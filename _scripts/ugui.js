@@ -363,7 +363,7 @@ function updateUGUIDevCommandLine() {
 // executable.                                                 //
 /////////////////////////////////////////////////////////////////
 
-//When you click the Compress button.
+//When you click the submit button.
 $(".sendCmdArgs").click( function(event) {
 
     //Prevent the form from sending like a normal website.
@@ -570,6 +570,7 @@ function parseArgument(argumentText) {
     //argumentText = "and ((meow)), with ((oink)) too. "
     var regexToMatch = /\(\((.*?)\)\)/;
 
+    //Keep rerunning this until all ((keywords)) in argumentText are replaced with their actual values
     while ( regexToMatch.test(argumentText) ) {
 
         //match = ["((meow))","meow"]
@@ -584,28 +585,40 @@ function parseArgument(argumentText) {
             matched = match[1].split('.')[0];
         }
 
-        //Run all the non-checkbox and non-radio elements first,
-        //then all checked checkboxes and checked radio dials.
+console.log("-----------------");
+console.log( "value: ", matched.value );
+
+        //Skip all unchecked checkboxes and unchecked radio dials.
         if (
-            (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
+            (matched.htmltype === "checkbox" && matched.htmlticked === false) ||
+            (matched.htmltype === "radio" && matched.htmlticked === false)
+           ) {
+            //Replace the "--quality ((meow))" with ""
+            argumentText = "";
+            return argumentText;
+        } else if ( typeof(matched.value) === 'undefined' ) {
+            //Replace the "--quality ((meow))" with ""
+            argumentText = "";
+            return argumentText;
+        //Run all the non-checkbox/radio/file elements,
+        //all checked checkboxes and checked radio dials
+        } else if (
+            (matched.htmltype !== "checkbox" && matched.htmltype !== "radio" && matched.htmltype !== "file") ||
             (matched.htmltype === "checkbox" && matched.htmlticked === true) ||
             (matched.htmltype === "radio" && matched.htmlticked === true)
            ) {
+            //Find the correct value from the UGUI Args Object
+            var foundKeyValue = findKeyValue( uguiArgObj, match[1].split('.') );
             //Replace the "--quality ((meow))" with "--quality 9"
-            argumentText = argumentText.replace(
-                regExMatch,
-                findKeyValue( uguiArgObj, match[1].split('.') )
-            );
-        //Then do special stuff if things aren't checked!
-        } else if (!matched.htmlticked) {
+            argumentText = argumentText.replace( regExMatch, foundKeyValue );
+        //And whatever's left
+        } else {
             //Replace the "--quality ((meow))" with ""
             argumentText = "";
         }
 
-        //if argument text = "and cat, with ((oink)) too." rerun this to get value for ((oink))
         console.log(argumentText);
-        console.log(regexToMatch.test(argumentText));
-        console.log("-----------------");
+
     }
 
     return argumentText;
