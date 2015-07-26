@@ -596,7 +596,10 @@ console.log( "value: ", matched.value );
             //Replace the "--quality ((meow))" with ""
             argumentText = "";
             return argumentText;
-        } else if ( typeof(matched.value) === 'undefined' ) {
+        } else if (
+            (typeof(matched.value) === 'undefined') ||
+            (matched.value === "")
+           ) {
             //Replace the "--quality ((meow))" with ""
             argumentText = "";
             return argumentText;
