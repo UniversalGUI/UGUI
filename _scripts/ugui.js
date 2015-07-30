@@ -333,7 +333,9 @@ function updateUGUIDevCommandLine() {
         var devCommandOutputSpaces = [];
 
         for (var subindex = 0; subindex < devCommandOutput.length; subindex++) {
-            devCommandOutputSpaces.push(" " + devCommandOutput[subindex]);
+            if (devCommandOutput[subindex] !== "") {
+                devCommandOutputSpaces.push(" " + devCommandOutput[subindex]);
+            }
         }
 
         //Replace the text in the command line box in UGUI dev tools
@@ -456,8 +458,8 @@ function buildUGUIArgObject() {
 
             //See if the current item is a range slider
             if ( $(cmdArgs[subindex]).hasClass('slider') ) {
-                //get "6" from <input data-argname="bob" data-slider-value="6" type="text" class="slider" />
-                argValue = $(cmdArgs[subindex]).data('slider-value');
+                //get "6" from <input data-argname="bob" value="6" type="text" class="slider" />
+                argValue = $(cmdArgs[subindex]).val();
 
                 //get checkbox from <input data-argName="bob" type="checkbox" />
                 argType = "range";
@@ -589,14 +591,10 @@ console.log("-----------------");
 console.log( "value: ", matched.value );
 
         //Skip all unchecked checkboxes and unchecked radio dials.
+        //Skip everything without a value
         if (
             (matched.htmltype === "checkbox" && matched.htmlticked === false) ||
-            (matched.htmltype === "radio" && matched.htmlticked === false)
-           ) {
-            //Replace the "--quality ((meow))" with ""
-            argumentText = "";
-            return argumentText;
-        } else if (
+            (matched.htmltype === "radio" && matched.htmlticked === false) ||
             (typeof(matched.value) === 'undefined') ||
             (matched.value === "")
            ) {
@@ -606,7 +604,7 @@ console.log( "value: ", matched.value );
         //Run all the non-checkbox/radio/file elements,
         //all checked checkboxes and checked radio dials
         } else if (
-            (matched.htmltype !== "checkbox" && matched.htmltype !== "radio" && matched.htmltype !== "file") ||
+            (matched.htmltype !== "checkbox" && matched.htmltype !== "radio") ||
             (matched.htmltype === "checkbox" && matched.htmlticked === true) ||
             (matched.htmltype === "radio" && matched.htmlticked === true)
            ) {
@@ -972,9 +970,9 @@ function warnIfDuplicateArgNames() {
             //Put alert mesage at top of page
             $("body.dev").prepend( multiArgNamesMarkup );
         });
-        console.warn( "//////////////////////////////////////////////////////////////" );
-        console.warn( "// You have more than one data-argName with the same value. //" );
-        console.warn( "//////////////////////////////////////////////////////////////" );
+        console.warn( "////////////////////////////////////////" );
+        console.warn( "// All data-argName's must be unique. //" );
+        console.warn( "////////////////////////////////////////" );
     }
 }
 
