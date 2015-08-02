@@ -377,8 +377,14 @@ $(".sendCmdArgs").click( function(event) {
     //Remove all single/double quotes from any text fields
     removeTypedQuotes();
 
-    //Create an array with the executable and all the arguments then run the executable with those args
-    runcmd( buildCommandArray(thisExecutable) );
+    //Build the command line array with the executable and all commands
+    var builtCommandArray = buildCommandArray(thisExecutable);
+
+    //Convert the array to a string that can be ran in a command line using the runcmd function
+    var builtCommandString = convertCommandArraytoString(builtCommandArray);
+
+    //Run the command!
+    runcmd( builtCommandString );
 
 });
 
@@ -474,31 +480,36 @@ function buildUGUIArgObject() {
             //get input from <input data-argName="bob" type="checkbox" />
             var argTag = $(cmdArgs[subindex]).prop("tagName").toLowerCase();
 
-            //Before building the object for this element, make sure it actually has a value
-            //if (argValue) {
-                //Basic info put on every object
+            //Basic info put on every object
+            window.ugui.args[argName] = {
+                "value": argValue,
+                "htmltag": argTag,
+                "htmltype": argType
+            };
+
+            //Special info just for <input type="file">
+            if (argType === "file") {
+                setInputFilePathNameExt(cmdArgs[subindex], argName);
+                window.ugui.args[argName].htmltag = argTag;
+                window.ugui.args[argName].htmltype = argType;
+            }
+
+            //For checkboxes and radio dials, add special info
+            if (argType === "checkbox" || argType === "radio") {
+                if ( $(cmdArgs[subindex]).prop("checked") ) {
+                    window.ugui.args[argName].htmlticked = true;
+                } else {
+                    window.ugui.args[argName].htmlticked = false;
+                }
+            }
+
+            if (argTag === "textarea") {
                 window.ugui.args[argName] = {
                     "value": argValue,
                     "htmltag": argTag,
-                    "htmltype": argType
+                    "htmltype": "textarea"
                 };
-
-                //Special info just for <input type="file">
-                if (argType === "file") {
-                    setInputFilePathNameExt(cmdArgs[subindex], argName);
-                    window.ugui.args[argName].htmltag = argTag;
-                    window.ugui.args[argName].htmltype = argType;
-                }
-
-                //For checkboxes and radio dials, add special info
-                if (argType === "checkbox" || argType === "radio") {
-                    if ( $(cmdArgs[subindex]).prop("checked") ) {
-                        window.ugui.args[argName].htmlticked = true;
-                    } else {
-                        window.ugui.args[argName].htmlticked = false;
-                    }
-                }
-            //}
+            }
 
         }
 
@@ -583,12 +594,13 @@ function parseArgument(argumentText) {
         //matched = uguiArgObj.meow
         var matched = uguiArgObj[match[1]];
 
-        if (matched === undefined){
-            matched = match[1].split('.')[0];
+        if (matched === undefined) {
+            var matchName = match[1].split('.')[0];
+            matched = uguiArgObj[matchName];
         }
 
-console.log("-----------------");
-console.log( "value: ", matched.value );
+//console.log( "-----------------" );
+//console.log( "value: ", matched.value );
 
         //Skip all unchecked checkboxes and unchecked radio dials.
         //Skip everything without a value
@@ -618,7 +630,7 @@ console.log( "value: ", matched.value );
             argumentText = "";
         }
 
-        console.log(argumentText);
+//console.log(argumentText);
 
     }
 
@@ -710,6 +722,41 @@ function htmlEscape(str) {
         .replace(/>/g, "&gt;");
 }
 */
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//               CONVERT COMMAND ARRAY TO STRING               //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// Take the array of executable and commands, remove empty     //
+// arguments and put everything into a string to eb sent out   //
+// to the command line.                                        //
+/////////////////////////////////////////////////////////////////
+
+function convertCommandArraytoString ( cmdArray ) {
+    //Create and empty variable
+    var cmdString = "";
+
+    //cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]
+    for (index = 0; index < cmdArray.length; index++) {
+        //Make sure the executable isn't preceeded with a space
+        if (index === 0) {
+            cmdString = cmdArray[0];
+        //add in the rest of the arguments, skipping blank ones
+        } else if (cmdArray[index]) {
+            cmdString = cmdString + " " + cmdArray[index];
+        }
+    }
+
+    //Return the command string that will be ran
+    return cmdString;
+}
 
 
 
