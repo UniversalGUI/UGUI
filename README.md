@@ -90,6 +90,12 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 * * *
 
+###Known Issues
+
+* Range slider value is empty in the UGUI Arg Obj (window.ugui.args) on load. This doesn't matter though as it will get it's value when clicking run or any other form element with a data-argName.
+
+* * *
+
 ###Credits
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
