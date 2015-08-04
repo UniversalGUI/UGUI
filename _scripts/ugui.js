@@ -970,6 +970,15 @@ if ( $("body").hasClass("prod") ) {
         });
 
         swatchSwapper();
+
+        //When the developer clicks "Use this Swatch"
+        $("#setNewSwatch").click( function() {
+            //The currently selected swatch
+            var newSwatch = $("#swatchSwapper").val();
+            //Update index.htm to use the selected swatch as the new default
+            saveNewSwatch(newSwatch);
+        });
+
     });
 
     //get node webkit GUI - WIN
@@ -1130,13 +1139,6 @@ function swatchSwapper() {
 // data so on every load it uses the correct swatch.           //
 /////////////////////////////////////////////////////////////////
 
-$("#setNewSwatch").click(function() {
-    //The currently selected swatch
-    var newSwatch = $("swatchSwapper").val();
-    console.log(newSwatch);
-    saveNewSwatch(newSwatch);
-});
-
 function saveNewSwatch(newSwatch) {
 
     //Set the filename to whatever the page is NW.js opens on launch, like index.htm
@@ -1163,13 +1165,17 @@ function saveNewSwatch(newSwatch) {
             //var currentSwatch = findSwatchLine[52];
 
             //Take the contents of index.htm, find the correct line, and replace that line with the updated swatch
-            data = data.replace(createRegex, '<link rel="stylesheet" href="_style/ven.bootswatch/' + newSwatch + '" data-swatch="swapper">');
+            data = data.replace(createRegex, '<link rel="stylesheet" href="' + newSwatch + '" data-swatch="swapper">');
         }
 
         //With the contents of index.htm update, save over the file
         fs.writeFile(filename, data, function(err) {
             if (err) return console.log(err);
         });
+
+        $(".newSwatchSaved").fadeIn();
+        setTimeout(1000);
+        $(".newSwatchSaved").fadeOut();
     });
 }
 

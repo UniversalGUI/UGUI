@@ -42,8 +42,8 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Test in OSX, Linux, and Windows~~
 * V1.0 ~~Clean up UGUI About section to have github credits icons appear dynamically or work offline.~~
 * V1.0 ~~Add in basic form validation to prevent the user from breaking the command line with bad characters~~
+* V1.0 ~~Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file~~
 * V1.0 Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.
-* V1.5 Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 * V1.5 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
