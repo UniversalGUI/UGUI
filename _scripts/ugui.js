@@ -52,6 +52,9 @@ for (index = 0; index < executable.length; index++) {
 //Get all text fields where a quote could be entered
 var textFields = $( "textarea[data-argName], input[data-argName][type=text]" ).toArray();
 
+//Allow access to the filesystem
+var fs = require("fs");
+
 //Access the contents of the package.json file
 var packageJSON = require('nw.gui').App.manifest;
 
@@ -69,6 +72,9 @@ var appDescription = packageJSON.description;
 
 //Name of the app developer or development team, set in package.json
 var authorName = packageJSON.author;
+
+//Name of the app developer or development team, set in package.json
+var indexFile = packageJSON.main;
 
 //Make sure the ugui and ugui.args objects exist, if not create them
 if (!window.ugui) {
@@ -95,7 +101,6 @@ if (!window.ugui) {
 /////////////////////////////////////////////////////////////////
 
 function readAFile(filePathAndName) {
-    var fs = require("fs");
     var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
     return fileData;
 }
@@ -1080,8 +1085,6 @@ function putExeHelpInDevTools() {
 /////////////////////////////////////////////////////////////////
 
 function swatchSwapper() {
-    //Allow access to the filesystem
-    var fs = require("fs");
     //Grab all the files in the ven.bootswatch folder and put them in an array
     var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files) {
         //if that works
@@ -1106,6 +1109,68 @@ function swatchSwapper() {
         window.setTimeout(sliderHandleColor, 71);
     });
 
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                   SAVE CHOSEN BOOTSWATCH                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// In the UGUI Developer Tools panel under the "Style Swapper" //
+// section, when the user clicks the "Use this style" button,  //
+// read the contents of the index.htm, find the line that sets //
+// which swatch css to use and update it to the new chosen     //
+// swatch. Then replace the contents of index.htm with the new //
+// data so on every load it uses the correct swatch.           //
+/////////////////////////////////////////////////////////////////
+
+$("#setNewSwatch").click(function() {
+    //The currently selected swatch
+    var newSwatch = $("swatchSwapper").val();
+    console.log(newSwatch);
+    saveNewSwatch(newSwatch);
+});
+
+function saveNewSwatch(newSwatch) {
+
+    //Set the filename to whatever the page is NW.js opens on launch, like index.htm
+    var filename = window.ugui.startPage;
+
+    //Read the contents of index.htm like a normal file and put them in the 'data' variable
+    fs.readFile(filename, 'utf8', function(err, data) {
+        //If it can't read it for some reason, throw an error
+        if (err) {
+            return console.log(err);
+        }
+
+        //Set up for the regex
+        var re_start = '(<link rel="stylesheet" href="_style\\/ven\\.bootswatch\\/)';
+        var re_file = '((?:[a-z][a-z\\.\\d_]+)\\.(?:[a-z\\d]{3}))(?![\\w\\.])';
+        var re_end = '(" data-swatch="swapper">)';
+
+        //would match: <link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">
+        var createRegex = RegExp(re_start + re_file + re_end, ["i"]);
+        var findSwatchLine = createRegex.exec(data);
+        //If we could find the line in the file
+        if (findSwatchLine != null) {
+            //Though not currently using this line, it may come in handy some day
+            //var currentSwatch = findSwatchLine[52];
+
+            //Take the contents of index.htm, find the correct line, and replace that line with the updated swatch
+            data = data.replace(createRegex, '<link rel="stylesheet" href="_style/ven.bootswatch/' + newSwatch + '" data-swatch="swapper">');
+        }
+
+        //With the contents of index.htm update, save over the file
+        fs.writeFile(filename, data, function(err) {
+            if (err) return console.log(err);
+        });
+    });
 }
 
 
@@ -1402,6 +1467,7 @@ window.ugui = {
     "appVersion": appVersion,
     "args": window.ugui.args,
     "authorName": authorName,
+    "startPage": indexFile,
     "cmdArgs": "cmdArgs",
     "executable": executable,
     "packageJSON": packageJSON,
