@@ -39,11 +39,14 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Update layout design using Bootstrap.~~
 * V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
 * V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
-* V1.0 ~~Test in OSX, Linux, and Windows~~
 * V1.0 ~~Clean up UGUI About section to have github credits icons appear dynamically or work offline.~~
 * V1.0 ~~Add in basic form validation to prevent the user from breaking the command line with bad characters~~
 * V1.0 ~~Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file~~
-* V1.0 Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.
+* V1.0 ~~Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.~~
+* V1.0 Implement Dan's definition pattern matching engine
+* V1.0 Fix "Saved" bug so it fades in/out correctly
+* V1.0 Test realworld usage of UGUI
+* V1.0 Test in OSX, Linux, and Windows (again)
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 * V1.5 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
@@ -92,7 +95,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 ###Known Issues
 
-* Range slider value is empty in the UGUI Arg Obj (window.ugui.args) on load. This doesn't matter though as it will get it's value when clicking run or any other form element with a data-argName.
+* Range slider value is empty in the UGUI Arg Obj (window.ugui.args) on load. This doesn't matter though as it will get it's value when clicking run or any other form element with a data-argName, which in turn updates the UGUI Developer Toolbar's CMD Output Preview. Will not fix. Will accept pull request.
 
 * * *
 
