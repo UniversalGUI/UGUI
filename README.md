@@ -44,6 +44,8 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file~~
 * V1.0 ~~Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.~~
 * V1.0 Implement Dan's definition pattern matching engine
+* V1.0 Multiple data-argName detection needs fixed
+* V1.0 UGUI Devtools needs to have an exectuable selector
 * V1.0 Fix "Saved" bug so it fades in/out correctly
 * V1.0 Test realworld usage of UGUI
 * V1.0 Test in OSX, Linux, and Windows (again)

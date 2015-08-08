@@ -125,6 +125,11 @@ body.dev
         transition: $quick
     *
         transition: $quick
+    .uguiSwapper p,
+    .uguiCommand span,
+    .helpIntro
+        font-size: 12px
+        color: #444
 
 .shrink
     height: 0px !important
@@ -186,17 +191,9 @@ span[data-nav="uguiExecutable"],
 
 .executableName
     color: #555
-    font-weight: bold
 
 .executableHelp
     max-height: 156px
-
-.helpIntro
-    position: absolute
-    top: 4px
-    right: 12px
-    font-size: 12px
-    color: #444
 
 .modal
     .versionApp,
@@ -226,6 +223,8 @@ body.dev .devNav
         min-height: 115px
     .glyphicon-remove
         cursor: pointer
+    .versionUGUI:before
+        content: "V"
 
 .modal-header.shortScreen
     padding: 0px 9px !important

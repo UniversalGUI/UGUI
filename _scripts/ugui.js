@@ -1,11 +1,21 @@
-//Wait for the document to load before running ugui.js
 
-$(document).ready( waitUGUI );
+//Wait for the document to load before running ugui.js. Use either runUGUI or waitUGUI for immediate or delayed launch.
+$(document).ready( runUGUI );
 
+
+
+
+
+
+
+//Lets you open NW.js, then immediately launch the devtools, then a few seconds later run UGUI.
+//Good for hitting a debugger in time, as often the JS runs before the devtools can open.
 function waitUGUI() {
     require('nw.gui').Window.get().showDevTools();
     setTimeout(runUGUI, 6000);
 }
+
+
 
 
 
@@ -944,6 +954,9 @@ if ( $("body").hasClass("prod") ) {
     $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ) {
         //Put Dev Tool Markup on the page
         $("body.dev").append( uguiDevToolsMarkup );
+        //Update the UGUI version to the correct version
+        $("#uguiDevTools .versionUGUI").html(window.ugui.version);
+        fillExecutableDropdowns();
         putExeHelpInDevTools();
         $("#uguiDevTools section").addClass("shrink");
         $("#uguiDevTools section *").addClass("shrink");
@@ -971,7 +984,7 @@ if ( $("body").hasClass("prod") ) {
 
         swatchSwapper();
 
-        //When the developer clicks "Use this Swatch"
+        //When the developer clicks "Keep"
         $("#setNewSwatch").click( function() {
             //The currently selected swatch
             var newSwatch = $("#swatchSwapper").val();
@@ -992,6 +1005,30 @@ if ( $("body").hasClass("prod") ) {
     //Check for duplicat Arg Names
     warnIfDuplicateArgNames();
 
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//               PUT ALL EXECUTABLES IN DROPDOWNS              //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// In the UGUI Dev Toolbar, there are dropdowns in the "CMD    //
+// Output" and "Exectuable Info" sections that contain all of  //
+// the executables used in the app.                            //
+/////////////////////////////////////////////////////////////////
+
+function fillExecutableDropdowns() {
+    var executables = ugui.executable;
+    //check each file and put it in the dropdown box
+    for (index = 0; index < executables.length; index++) {
+        $(".executableName").append("<option value='" + executables[index] + "'>" + executables[index] + "</option>");
+    }
 }
 
 
@@ -1054,10 +1091,6 @@ function warnIfDuplicateArgNames() {
 /////////////////////////////////////////////////////////////////
 
 function putExeHelpInDevTools() {
-    //Add a new nav item in the Dev Tools based on the name of the user's Executable
-    $("#uguiDevTools span[data-nav=uguiExecutable]").html(executable);
-    $("#uguiDevTools .executableName").html(executable);
-
     //Declare a variable
     var executableHelpChoice;
 
