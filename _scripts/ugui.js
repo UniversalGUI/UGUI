@@ -1145,12 +1145,15 @@ function fillExecutableDropdowns() {
 
 function warnIfDuplicateArgNames() {
     var duplicatesArray = {};
-    var cmdArgs = [];
+    var cmdArgs = "";
+    var cmdArgsWithoutDuplicates = [];
 
     //Cycle through each executable
     for (index = 0; index < executable.length; index++) {
         //all elements with a data-argName in a form with a matching executable ID
+        cmdArgs = "";
         cmdArgs = argsForm[index];
+        duplicatesArray = {};
 
         //loop through all form elements for this executable
         for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
@@ -1170,8 +1173,18 @@ function warnIfDuplicateArgNames() {
                 //Put alert mesage at top of page
                 $("body.dev").prepend( multiArgNamesMarkup );
             });
+            //Keep the console warning formatted nicely for cli filenames under 16 characters in length
+            var spacesNeeded = 16 - executable[index].length;
+            var spaces = "";
+            if (spacesNeeded > 0) {
+                for (subindex = 0; subindex < spacesNeeded; subindex ++){
+                    spaces = spaces + " ";
+                }
+            }
+            console.warn( "" );
             console.warn( "////////////////////////////////////////" );
             console.warn( "// All data-argName's must be unique. //" );
+            console.warn( "// FOUND IN " + executable[index].toUpperCase() + " SECTION. " + spaces + "//" );
             console.warn( "////////////////////////////////////////" );
         }
     }
