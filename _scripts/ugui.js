@@ -428,6 +428,9 @@ function buildCommandArray(thisExecutable) {
     //fill out window.ugui.args {}
     buildUGUIArgObject();
 
+    //Process all definitions and place them in window.ugui.args
+    patternMatchingDefinitionEngine();
+
     //Setting up arrays
     var cmdArgsText = [];
     for (var i = 0; i < $("cmd[executable=" + thisExecutable + "] arg").length; i++) {
@@ -652,6 +655,30 @@ function parseArgument(argumentText) {
     }
 
     return argumentText;
+}
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                 PROCESS ALL CMD DEFINITIONS                 //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// This loops through all <def>'s and processes the value of   //
+// them to create the correct key value pairs on the ugui args //
+// object.                                                     //
+/////////////////////////////////////////////////////////////////
+
+function patternMatchingDefinitionEngine() {
+    // loop there all <def>'s in all <cmd>'s
+    // find the arg name in the <def>
+    // get the value from ugui.args.ARGNAME.value
+    // use the <def> value to parse the ugui.args value
+    // put the values in the window.ugui.args.ARGNAME
 }
 
 
