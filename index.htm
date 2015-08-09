@@ -73,10 +73,7 @@
     </cmd>
 
     <cmd executable="second_cli">
-      <arg>((winewhite)) ((winered)) ((winepink))</arg>
-      <arg>((winewhite))</arg>
-      <arg>((winered))</arg>
-      <arg>((winered))</arg>
+      <arg>((winewhite)) "((winetext))"</arg>
     </cmd>
 
   </head>
@@ -263,19 +260,20 @@
 
         </form>
 
+        <hr />
 
         <form id="second_cli" role="form-inline">
 
           <div class="row">
-            <div class="col-xs-6 col-s-6 col-md-6 col-l-6 checkbox">
-              <label><input type="checkbox" data-argName="winered"   value="-red"   />More checkboxes</label><br />
-              <label><input type="checkbox" data-argName="winewhite" value="-white" />all have</label><br />
-              <label><input type="checkbox" data-argName="winepink"  value="-pink"  />unique arguments</label>
+            <div class="col-xs-12 col-s-12 col-md-6 col-l-6 checkbox">
+              <label><input type="checkbox" data-argName="winewhite" value="-message" required="required" />Don't output the following text unless this is checked</label>
+            </div>
+            <div class="col-xs-12 col-s-12 col-md-6 col-l-6 checkbox">
+              <textarea class="form-control" data-argName="winetext" required="required"></textarea>
             </div>
           </div>
-
           <div class="row">
-            <div class="col-xs-6 col-s-6 col-md-6 col-l-6 text-right">
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12 text-right">
               <button type="submit" class="sendCmdArgs btn btn-default">Go!</button>
             </div>
           </div>

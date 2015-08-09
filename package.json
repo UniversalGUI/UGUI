@@ -1,6 +1,5 @@
 {
     "name": "Your Application Name",                       // "Birds with Arms!"
-    "executable": "cli_filename",                          // If your command line program is called "BirdsWithArms.exe" set this to "BirdsWithArms"
     "main": "index.htm",                                   // The default page that is displayed on launch
     "version": "0.1.0",                                    // MAJOR.MINOR.PATCH more info: semver.org
     "author": "Your Name",                                 // Put your name or your team's name here, this is dynamically placed in the about section of your app

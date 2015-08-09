@@ -422,6 +422,9 @@ $(".sendCmdArgs").click( function(event) {
 /////////////////////////////////////////////////////////////////
 
 function buildCommandArray(thisExecutable) {
+    //If no executable was passed in, just use the first one in <cmd>'s
+    thisExecutable = thisExecutable || executable[0];
+
     //Set up commands to be sent to command line
     var cmds = [ thisExecutable ];
 
@@ -433,14 +436,18 @@ function buildCommandArray(thisExecutable) {
 
     //Setting up arrays
     var cmdArgsText = [];
-    for (var i = 0; i < $("cmd[executable=" + thisExecutable + "] arg").length; i++) {
-        cmdArgsText.push( $(allArgElements[i]).text() );
+    //Loop through all the args in the selected executable
+    for (index = 0; index < $("cmd[executable=" + thisExecutable + "] arg").length; index++) {
+        //set the current arg
+        var currentArg = $("cmd[executable=" + thisExecutable + "] arg")[index];
+        //Put the arg text into an array
+        cmdArgsText.push( $(currentArg).text() );
     }
 
     //loop through all phrases and add processed versions to output array
-    for (var i = 0; i < cmdArgsText.length; i++) {
-        //cmdArgsText[i] is "--quality ((meow)) to ((oink.min))"
-        cmds.push( parseArgument(cmdArgsText[i]) );
+    for (index = 0; index < cmdArgsText.length; index++) {
+        //cmdArgsText[index] is "--quality ((meow)) to ((oink.min))"
+        cmds.push( parseArgument(cmdArgsText[index]) );
     }
 
     //After all the processing is done and the array is built, return it
