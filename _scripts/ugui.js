@@ -1093,22 +1093,25 @@ function warnIfDuplicateArgNames() {
 /////////////////////////////////////////////////////////////////
 
 function putExeHelpInDevTools() {
-    //Declare a variable
-    var executableHelpChoice;
-
     //Everytime the dropdown changes update the <pre>
-    $("#uguiDevTools .helpDropdown").change( function() {
+    $("#uguiDevTools .executableName").change(getHelpInfo);
+    $("#uguiDevTools .helpDropdown").change(getHelpInfo);
 
-        //Update the variable to match the user's choice
-        executableHelpChoice = $(this).val();
+    function getHelpInfo() {
+        //Grab the correct executable from the dropdown
+        var executableChoice = $(".uguiExecutable .executableName").val();
+        //Grab which kind of help argument they chose, like --help or /?
+        var helpChoice = $(".uguiExecutable .helpDropdown").val();
 
-        //Run the executable using the user's chosen argument to get it's help info
-        runcmd( executable + " " + executableHelpChoice, function(returnedHelpInfo) {
-            //Put the help info in a <pre>
-            $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
-        });
-
-    });
+        //Don't run if there isn't a help choice
+        if (helpChoice) {
+            //Run the executable using the user's chosen argument to get it's help info
+            runcmd( executableChoice + " " + helpChoice, function(returnedHelpInfo) {
+                //Put the help info in a <pre>
+                $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
+            });
+        }
+    }
 }
 
 
