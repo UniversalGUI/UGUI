@@ -679,6 +679,67 @@ function patternMatchingDefinitionEngine() {
     // get the value from ugui.args.ARGNAME.value
     // use the <def> value to parse the ugui.args value
     // put the values in the window.ugui.args.ARGNAME
+
+    // a regular expression that matches ((THIS))
+    var re = /\(\((.*?)\)\)/gi;
+
+    $('def').each(function(index, value) {
+        // assign value to def
+        // def = <def name="quality">((min)),((max))</def>
+        var def = value;
+
+        // get the arg name associated with this def
+        // arg = "quality"
+        var arg = $('def').attr('name');
+
+        // get the actual definition from the def
+        // definition = "((min)),((max))"
+        var definition = $('def').html();
+
+        // get the value of the associated arg
+        // argValue = "0,75"
+        var argValue = ugui.args[arg].value;
+
+        var match;
+        var currentIndex = 0;
+        var seperators = [];
+        var args = [];
+        // loop through the definition until the re.exec comes back as null
+        while (true) {
+            if ((match = re.exec(definition)) !== null) {
+                // grab any text seperating the values and push it to a collector
+                seperators.push(definition.slice(currentIndex, match.index));
+                // update the slice start inded for the next iteration
+                currentIndex = re.lastIndex;
+
+                // update the global UGUI object with the arg from the def
+                ugui.args[arg][match[1]] = '';
+
+                // add the arg to the args array for value assignment in next loop
+                args.push(match[1]);
+            } else {
+                seperators.push(definition.slice(currentIndex));
+                break;
+            }
+        };
+
+        splitIndex = 0;
+        for (var i = 0; i < args.length; i++) {
+            firstSeperator = seperators[i];
+            secondSeperator = seperators[i + 1];
+            if (firstSeperator == "" && secondSeperator == "") {
+                ugui.args[arg][args[i]] = argValue;
+            } else if (firstSeperator == "") {
+                ugui.args[arg][args[i]] = argValue.slice(splitIndex, argValue.indexOf(secondSeperator));
+                splitIndex = argValue.indexOf(secondSeperator);
+            } else if (secondSeperator == "") {
+                ugui.args[arg][args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length));
+            } else {
+                ugui.args[arg][args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length), argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length)));
+                splitIndex = argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
+            }
+        }
+    })
 }
 
 
