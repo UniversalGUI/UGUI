@@ -1238,9 +1238,13 @@ function saveNewSwatch(newSwatch) {
             if (err) return console.log(err);
         });
 
-        $(".newSwatchSaved").fadeIn();
-        setTimeout(1000);
-        $(".newSwatchSaved").fadeOut();
+        //Animate the "Saved" text, having it fade in
+        $(".newSwatchSaved").addClass("showSaved");
+        //Wait 2 seconds and then fade the "Saved" text out
+        setTimeout(function(){
+            $(".newSwatchSaved").removeClass("showSaved");
+        }, 2000);
+
     });
 }
 

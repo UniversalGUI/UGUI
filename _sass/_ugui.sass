@@ -188,6 +188,11 @@ span[data-nav="uguiExecutable"],
 
 .newSwatchSaved
     font-style: italic
+    opacity: 0
+    -webkit-transition: 0.5s ease-in-out
+    transition: 0.5s ease-in-out
+    &.showSaved
+        opacity: 1
 
 .executableName
     color: #555
