@@ -299,7 +299,7 @@ $('.sendCmdArgs').each( unlockSubmit );
 //          REALTIME UPDATING DEV TOOL COMMAND OUTPUT          //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// In the UGUI Dev Tools there is a Command Output tab. This   //
+// In the UGUI Dev Tools there is a CMD Output tab. This       //
 // section updates the contents of that section whenever the   //
 // developer interacts with any form elements rather than only //
 // updating it on submit.                                      //
@@ -991,7 +991,7 @@ if ( $("body").hasClass("prod") ) {
         $("#uguiDevTools section *").addClass("shrink");
         $("#uguiDevTools").show();
 
-        $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $(".sendCmdArgs").html() + "</em> button to see output.</span>");
+        updateCommandLineOutputPreviewHint();
 
         //Hide/Show based on UGUI Dev Tools navigation
         $("#uguiDevTools nav span").click( function() {
@@ -1010,6 +1010,8 @@ if ( $("body").hasClass("prod") ) {
                 $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink");
             }
         });
+
+        $(".uguiCommand .executableName").change( updateCommandLineOutputPreviewHint );
 
         swatchSwapper();
 
@@ -1034,6 +1036,11 @@ if ( $("body").hasClass("prod") ) {
     //Check for duplicat Arg Names
     warnIfDuplicateArgNames();
 
+}
+
+function updateCommandLineOutputPreviewHint() {
+    var commandLineOutputExecutable = $(".uguiCommand .executableName").val();
+    $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $("#" + commandLineOutputExecutable + " .sendCmdArgs").html() + "</em> button to see output.</span>");
 }
 
 
@@ -1079,27 +1086,33 @@ function warnIfDuplicateArgNames() {
     var duplicatesArray = {};
     var cmdArgs = [];
 
+    //Cycle through each executable
     for (index = 0; index < executable.length; index++) {
+        //all elements with a data-argName in a form with a matching executable ID
         cmdArgs = argsForm[index];
+
+        //loop through all form elements for this executable
         for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+            //put each element's data-argName and into an array
             duplicatesArray[cmdArgs[subindex].dataset.argname] = cmdArgs[subindex];
         }
-    }
 
-    //Create a new array with duplicate argOrders removed
-    cmdArgsWithoutDuplicates = [];
-    for ( var key in duplicatesArray )
-        cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
+        //Create a new array with duplicate argOrders removed
+        cmdArgsWithoutDuplicates = [];
+        for ( var key in duplicatesArray ) {
+            cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
+        }
 
-    //If the new array had any duplicates removed display a warning.
-    if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
-        $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
-            //Put alert mesage at top of page
-            $("body.dev").prepend( multiArgNamesMarkup );
-        });
-        console.warn( "////////////////////////////////////////" );
-        console.warn( "// All data-argName's must be unique. //" );
-        console.warn( "////////////////////////////////////////" );
+        //If the new array had any duplicates removed display a warning.
+        if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
+            $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
+                //Put alert mesage at top of page
+                $("body.dev").prepend( multiArgNamesMarkup );
+            });
+            console.warn( "////////////////////////////////////////" );
+            console.warn( "// All data-argName's must be unique. //" );
+            console.warn( "////////////////////////////////////////" );
+        }
     }
 }
 
