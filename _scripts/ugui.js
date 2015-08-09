@@ -342,20 +342,22 @@ function updateUGUIDevCommandLine() {
     //clear it out first
     $("#commandLine").empty();
 
-    for (index = 0; index < executable.length; index++) {
-        //Get an array of all the commands being sent out
-        var devCommandOutput = buildCommandArray(executable[index]);
-        var devCommandOutputSpaces = [];
+    //Get the executable from the dropdown lists
+    var pickedExecutable = $(".uguiCommand .executableName").val();
 
-        for (var subindex = 0; subindex < devCommandOutput.length; subindex++) {
-            if (devCommandOutput[subindex] !== "") {
-                devCommandOutputSpaces.push(" " + devCommandOutput[subindex]);
-            }
+    //Get an array of all the commands being sent out
+    var devCommandOutput = buildCommandArray(pickedExecutable);
+    var devCommandOutputSpaces = [];
+
+    for (var index = 0; index < devCommandOutput.length; index++) {
+        if (devCommandOutput[index] !== "") {
+            devCommandOutputSpaces.push(" " + devCommandOutput[index]);
         }
-
-        //Replace the text in the command line box in UGUI dev tools
-        $("#commandLine").html( devCommandOutputSpaces );
     }
+
+    //Replace the text in the command line box in UGUI dev tools
+    $("#commandLine").html( devCommandOutputSpaces );
+
 }
 
 
@@ -428,7 +430,7 @@ function buildCommandArray(thisExecutable) {
 
     //Setting up arrays
     var cmdArgsText = [];
-    for (var i = 0; i < $("cmd arg").length; i++) {
+    for (var i = 0; i < $("cmd[executable=" + thisExecutable + "] arg").length; i++) {
         cmdArgsText.push( $(allArgElements[i]).text() );
     }
 
