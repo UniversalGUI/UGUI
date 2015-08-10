@@ -681,68 +681,77 @@ function parseArgument(argumentText) {
 /////////////////////////////////////////////////////////////////
 
 function patternMatchingDefinitionEngine() {
-    // loop there all <def>'s in all <cmd>'s
-    // find the arg name in the <def>
-    // get the value from ugui.args.ARGNAME.value
-    // use the <def> value to parse the ugui.args value
-    // put the values in the window.ugui.args.ARGNAME
-
-    // a regular expression that matches ((THIS))
+    //A regular expression that matches ((x)) and captures x
     var re = /\(\((.*?)\)\)/gi;
 
     $('def').each(function(index, value) {
-        // assign value to def
-        // def = <def name="quality">((min)),((max))</def>
+        //Assign 'value' to def
+        //def = <def name="quality">((min)),((max))</def>
         var def = value;
 
-        // get the arg name associated with this def
-        // arg = "quality"
-        var arg = $('def').attr('name');
-
-        // get the actual definition from the def
-        // definition = "((min)),((max))"
+        //Get the actual definition from the def
+        //definition = "((min)),((max))"
         var definition = $('def').html();
 
-        // get the value of the associated arg
-        // argValue = "0,75"
-        var argValue = ugui.args[arg].value;
+        //Get the arg associated with this def
+        //arg = ugui.args.quality
+        var arg = ugui.args[$('def').attr('name')];
 
         var match;
         var currentIndex = 0;
         var seperators = [];
         var args = [];
-        // loop through the definition until the re.exec comes back as null
+        //Loop through the definition grabbing all the seperators and args
         while (true) {
+            //Assign the RegEx result to match and check to see if there is a match
             if ((match = re.exec(definition)) !== null) {
-                // grab any text seperating the values and push it to a collector
+                //Grab any text seperating the values and push it to a collector array
                 seperators.push(definition.slice(currentIndex, match.index));
-                // update the slice start inded for the next iteration
+                //Update the slice start index for the next iteration
                 currentIndex = re.lastIndex;
 
-                // update the global UGUI object with the arg from the def
-                ugui.args[arg][match[1]] = '';
+                //Add the arg from the definition to the global UGUI object
+                arg[match[1]] = '';
 
-                // add the arg to the args array for value assignment in next loop
+                //Add the arg to the args array for value assignment in next loop
                 args.push(match[1]);
+            //If there are no more args:
             } else {
+                //Put the last part of the def into the seperator array
                 seperators.push(definition.slice(currentIndex));
+                //End the loop. Very important!!!
                 break;
             }
         };
 
+        //Get the value of the associated arg
+        //argValue = "0,75"
+        var argValue = arg.value;
+
+        //splitIndex is used to keep track of where we are in the value
         splitIndex = 0;
+
+        //Loop through the args defined by this def, parse the value using the seperators, and assign the correct value
         for (var i = 0; i < args.length; i++) {
+            //The seperators around the current arg
+            //firstSeperator = ""
+            //secondSeperator = ","
             firstSeperator = seperators[i];
             secondSeperator = seperators[i + 1];
+
+            //The first if catches cases where the dev has unnecessarily used a def
             if (firstSeperator == "" && secondSeperator == "") {
-                ugui.args[arg][args[i]] = argValue;
+                arg[args[i]] = argValue;
+            //This catches if there is no text before the first value to map
             } else if (firstSeperator == "") {
-                ugui.args[arg][args[i]] = argValue.slice(splitIndex, argValue.indexOf(secondSeperator));
+                arg[args[i]] = argValue.slice(splitIndex, argValue.indexOf(secondSeperator));
                 splitIndex = argValue.indexOf(secondSeperator);
+            //This catches if there is no text after the last value to map
             } else if (secondSeperator == "") {
-                ugui.args[arg][args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length));
+                arg[args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length));
+            //This catches in all other cases
             } else {
-                ugui.args[arg][args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length), argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length)));
+                arg[args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length), argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length)));
                 splitIndex = argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
             }
         }
