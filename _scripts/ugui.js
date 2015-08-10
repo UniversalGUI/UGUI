@@ -521,6 +521,13 @@ function buildUGUIArgObject() {
                 window.ugui.args[argName].htmltype = argType;
             }
 
+            if (argType === "color") {
+                colorProcessor("#789AFF");
+                setInputFilePathNameExt(cmdArgs[subindex], argName);
+                window.ugui.args[argName].htmltag = argTag;
+                window.ugui.args[argName].htmltype = argType;
+            }
+
             //For checkboxes and radio dials, add special info
             if (argType === "checkbox" || argType === "radio") {
                 if ( $(cmdArgs[subindex]).prop("checked") ) {
@@ -843,6 +850,67 @@ function htmlEscape(str) {
         .replace(/>/g, "&gt;");
 }
 */
+
+
+
+
+
+
+
+
+
+
+
+
+// COLOR PROCESSOR //
+
+function colorProcessor(input) {
+    var R = ""; var r = "";
+    var G = ""; var g = "";
+    var B = ""; var b = "";
+    var rgb = input.split("");
+    var sansOctothorpe = rgb[1] + rgb[2] + rgb[3] + rgb[4] + rgb[5] + rgb[6];
+    for (var i = 1; i < rgb.length; i++) {
+        var rgbi = rgb[i];
+        //Convert Hex to Dec
+        if (rgbi == "A" || rgbi == "a") { rgbi = "10" }
+        if (rgbi == "B" || rgbi == "b") { rgbi = "11" }
+        if (rgbi == "C" || rgbi == "c") { rgbi = "12" }
+        if (rgbi == "D" || rgbi == "d") { rgbi = "13" }
+        if (rgbi == "E" || rgbi == "e") { rgbi = "14" }
+        if (rgbi == "F" || rgbi == "f") { rgbi = "15" }
+        
+        //set RrGgBb to decimal
+        if (i === 1) { R = rgbi; } else
+        if (i === 2) { r = rgbi; } else
+        if (i === 3) { G = rgbi; } else
+        if (i === 4) { g = rgbi; } else
+        if (i === 5) { B = rgbi; } else
+        if (i === 6) { b = rgbi; }
+
+        //as 0-255
+        var Red   = (parseInt(R) * 16) + parseInt(r);
+        var Green = (parseInt(G) * 16) + parseInt(g);
+        var Blue  = (parseInt(B) * 16) + parseInt(b);
+        
+        //as 0-100%
+        var RP = Math.floor( (Red/255) * 100 );
+        var GP = Math.floor( (Green/255) * 100 );
+        var BP = Math.floor( (Blue/255) * 100 );
+    }
+    console.log(input);
+    console.log(sansOctothorpe);
+    console.log( "RrGgBb: " + R,r,G,g,B,b );
+    console.log( "RGB: (" + Red + ", " + Green + ", " + Blue + ")" );
+    console.log( "Percent: " + RP + "% " + GP + "% " + BP + "% " );
+    
+}
+
+
+
+
+
+
 
 
 
