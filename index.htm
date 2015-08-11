@@ -54,7 +54,7 @@
 
       <arg>--speed ((speedVsQuality))mph</arg>
 
-      <arg>The best ((fruitPlum)) and ((fruitKiwi)) around!</arg>
+      <arg>The best ((fruitPlum)) around!</arg>
       <arg>((fruitKiwi))</arg>
       <arg>((fruitPear))</arg>
 
@@ -67,6 +67,8 @@
       <arg>((quality.min))-((quality.max))</arg>
 
       <arg>-m "((userMessage))"</arg>
+
+      <arg>((colorful.rgb))</arg>
 
       <arg>"((fileToProcess.path))((fileToProcess.name)).new.((fileToProcess.ext))"</arg>
 
@@ -202,17 +204,17 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-6 col-s-4 col-md-4 col-l-4 radio">
+            <div class="col-xs-6 col-s-3 col-md-3 col-l-3 radio">
               <label><input type="radio" name="radioDials" data-argName="catSoundsMeow" value="-meow" /> Radio dial</label><br />
               <label><input type="radio" name="radioDials" data-argName="catSoundsPurr" value="-purr" /> choices</label><br />
               <label><input type="radio" name="radioDials" data-argName="catSoundsNyan" value="-nyan" /> for arguments</label>
             </div>
-            <div class="col-xs-6 col-s-4 col-md-4 col-l-4 checkbox">
+            <div class="col-xs-6 col-s-3 col-md-3 col-l-3 checkbox">
               <label><input type="checkbox" data-argName="fruitPlum" value="-plum" />Several checkboxes</label><br />
               <label><input type="checkbox" data-argName="fruitKiwi" value="-kiwi" />that each add a</label><br />
               <label><input type="checkbox" data-argName="fruitPear" value="-pear" />different argument</label>
             </div>
-            <div class="col-xs-12 col-s-4 col-md-4 col-l-4">
+            <div class="col-xs-6 col-s-3 col-md-3 col-l-3">
               <div class="btn-group">
                 <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Dropdown List <span class="caret"></span></button>
                 <ul class="dropdown-menu">
@@ -223,7 +225,13 @@
                 </ul>
               </div>
             </div>
+            <div class="col-xs-6 col-s-3 col-md-3 col-l-3">
+              <label>Color Picker:</label>
+              <input type="color" data-argName="colorful" value="#000000" />
+            </div>
+          </div>
 
+          <div class="row">
             <div class="col-xs-12 col-s-6 col-md-6 col-l-6">
               <label for="speed">Speed vs Quality:</label><br />
               <table>
@@ -245,13 +253,14 @@
                 </tr>
               </table>
             </div>
+          </div>
 
-            <div class="col-xs-12 col-s-6 col-md-6 col-l-6">
+          <div class="row">
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12">
               <label for="message">Message:</label>
               <textarea id="message" class="form-control" required="required" data-argName="userMessage"></textarea>
             </div>
           </div>
-
           <div class="row">
             <div class="col-xs-12 col-s-12 col-md-12 col-l-12 text-right">
               <button type="submit" class="sendCmdArgs btn btn-default">Run!</button>

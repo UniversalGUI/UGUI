@@ -521,9 +521,9 @@ function buildUGUIArgObject() {
                 window.ugui.args[argName].htmltype = argType;
             }
 
+            //Special info just for <input type="color">
             if (argType === "color") {
-                colorProcessor("#789AFF");
-                setInputFilePathNameExt(cmdArgs[subindex], argName);
+                colorProcessor(argValue, argName);
                 window.ugui.args[argName].htmltag = argTag;
                 window.ugui.args[argName].htmltype = argType;
             }
@@ -857,19 +857,22 @@ function htmlEscape(str) {
 
 
 
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                       COLOR PROCESSOR                       //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+/////////////////////////////////////////////////////////////////
 
-
-
-
-
-// COLOR PROCESSOR //
-
-function colorProcessor(input) {
+function colorProcessor(inputColor, argName) {
+    //setup variables
     var R = ""; var r = "";
     var G = ""; var g = "";
     var B = ""; var b = "";
-    var rgb = input.split("");
+    var rgb = inputColor.split("");
     var sansOctothorpe = rgb[1] + rgb[2] + rgb[3] + rgb[4] + rgb[5] + rgb[6];
+
     for (var i = 1; i < rgb.length; i++) {
         var rgbi = rgb[i];
         //Convert Hex to Dec
@@ -879,7 +882,7 @@ function colorProcessor(input) {
         if (rgbi == "D" || rgbi == "d") { rgbi = "13" }
         if (rgbi == "E" || rgbi == "e") { rgbi = "14" }
         if (rgbi == "F" || rgbi == "f") { rgbi = "15" }
-        
+
         //set RrGgBb to decimal
         if (i === 1) { R = rgbi; } else
         if (i === 2) { r = rgbi; } else
@@ -887,30 +890,33 @@ function colorProcessor(input) {
         if (i === 4) { g = rgbi; } else
         if (i === 5) { B = rgbi; } else
         if (i === 6) { b = rgbi; }
-
-        //as 0-255
-        var Red   = (parseInt(R) * 16) + parseInt(r);
-        var Green = (parseInt(G) * 16) + parseInt(g);
-        var Blue  = (parseInt(B) * 16) + parseInt(b);
-        
-        //as 0-100%
-        var RP = Math.floor( (Red/255) * 100 );
-        var GP = Math.floor( (Green/255) * 100 );
-        var BP = Math.floor( (Blue/255) * 100 );
     }
-    console.log(input);
-    console.log(sansOctothorpe);
-    console.log( "RrGgBb: " + R,r,G,g,B,b );
-    console.log( "RGB: (" + Red + ", " + Green + ", " + Blue + ")" );
-    console.log( "Percent: " + RP + "% " + GP + "% " + BP + "% " );
-    
+
+    //as 0-255
+    var Red   = (parseInt(R) * 16) + parseInt(r);
+    var Green = (parseInt(G) * 16) + parseInt(g);
+    var Blue  = (parseInt(B) * 16) + parseInt(b);
+
+    //as 0-100%
+    var RP = Math.floor( (Red/255) * 100 );
+    var GP = Math.floor( (Green/255) * 100 );
+    var BP = Math.floor( (Blue/255) * 100 );
+
+    var DecRrGgBb = R + " " + r + " " + G + " " + g + " " + B + " " + b;
+    //create the args object parameters on the ugui object
+    window.ugui.args[argName] = {
+        "rgb": "rgb(" + Red + "," + Green + "," + Blue + ")",
+        "decred": Red,
+        "decgreen": Green,
+        "decblue": Blue,
+        "decRrGgBb": DecRrGgBb,
+        "hexRrGgBb": sansOctothorpe,
+        "percentRed": RP,
+        "percentGreen": GP,
+        "percentBlue": BP,
+        "value": inputColor
+    };
 }
-
-
-
-
-
-
 
 
 
