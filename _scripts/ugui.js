@@ -111,6 +111,10 @@ if (!window.ugui) {
 /////////////////////////////////////////////////////////////////
 
 function readAFile(filePathAndName) {
+    if (!filePathAndName) {
+        console.info("Supply a path to the file you want to read as an argument to this function.");
+        return;
+    }
     var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
     return fileData;
 }
@@ -140,6 +144,11 @@ function readAFile(filePathAndName) {
 /////////////////////////////////////////////////////////////////
 
 function runcmd(executableAndArgs, callback) {
+    if (!executableAndArgs){
+        console.info("Supply an string containing the exectuable and arguments as an argument for this function");
+        return;
+    }
+
     var exec = require("child_process").exec;
     var child = exec( executableAndArgs,
         //Throw errors and information into console
@@ -186,6 +195,10 @@ function runcmd(executableAndArgs, callback) {
 /////////////////////////////////////////////////////////////////
 
 function runcmdClassic(executable, args, callback) {
+    if (!executable || !args){
+        console.info("You must pass in your executable as a string and your arguments as an array of strings to use this function.");
+        return;
+    }
    var spawn = require("child_process").spawn;
    console.log( executable, args );
    var child = spawn( executable, args );
@@ -582,9 +595,10 @@ function buildUGUIArgObject() {
 /////////////////////////////////////////////////////////////////
 
 function findKeyValue(obj, arr) {
-if (arr == ["fileToProcess","ext"]) {
-    debugger;
-}
+    if(!obj || !arr) {
+        console.info("You need to supply an object and an array of strings to drill down within the object.");
+        return;
+    }
 //console.log(obj, arr);
     for (var i = 0; i < arr.length; i++) {
         obj = obj[arr[i]];
@@ -614,6 +628,11 @@ if (arr == ["fileToProcess","ext"]) {
 /////////////////////////////////////////////////////////////////
 
 function parseArgument(argumentText) {
+    if (!argumentText) {
+        console.info("This processes strings of text that contain ((keywords)) in them from the <cmd> tags.");
+        return;
+    }
+
     //argumentText = "and ((meow)), with ((oink)) too. "
     var regexToMatch = /\(\((.*?)\)\)/;
 
@@ -930,11 +949,20 @@ function colorProcessor(inputColor, argName) {
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // Take the array of executable and commands, remove empty     //
-// arguments and put everything into a string to eb sent out   //
+// arguments and put everything into a string to be sent out   //
 // to the command line.                                        //
 /////////////////////////////////////////////////////////////////
 
-function convertCommandArraytoString ( cmdArray ) {
+function convertCommandArraytoString( cmdArray ) {
+    if (!cmdArray) {
+        console.info(
+            "Accepts an array of executable and commands, " +
+            "removes empty arguments and puts everything into a string " +
+            "ready to be sent out to the command line."
+        );
+        return;
+    }
+
     //Create and empty variable
     var cmdString = "";
 
@@ -1339,23 +1367,25 @@ function swatchSwapper() {
     //Grab all the files in the ven.bootswatch folder and put them in an array
     var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files) {
         //if that works
-        if (!err)
+        if (!err) {
             //check each file and put it in the dropdown box
             for (index = 0; index < files.length; index++) {
                 var cssFileName = files[index];                     //cerulean.min.css
                 var swatchName = files[index].split(".min.css")[0]; //cerulean
                 $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + cssFileName + "'>" + swatchName + "</option>");
             }
-        else
+        } else {
             console.warn("Could not return list of style swatches.");
+        }
     });
 
     //When you change what is selected in the dropdown box, swap out the current swatch for the new one.
     $("#swatchSwapper").change( function() {
         $("head link[data-swatch]").attr( "href", $("#swatchSwapper").val() );
         //Nav logo wasn't vertically centering after changing a stylesheet because the function was being ran after
-        //the stylesheet was swapped instead of after the page rendered the styles. Unfortunately a delay had to be used.
-        //71 was chosen because 14 FPS is the slowest you can go in animation before something looks choppy
+        //the stylesheet was swapped instead of after the page rendered the styles. Since Webkit does not have a way of
+        //indicating when a repaint finishes, unfortunately a delay had to be used. 71 was chosen because 14 FPS is the
+        //slowest you can go in animation before something looks choppy.
         window.setTimeout(centerNavLogo, 71);
         window.setTimeout(sliderHandleColor, 71);
     });
@@ -1654,46 +1684,49 @@ sliderHandleColor();
 // Credit: https://github.com/b1rdex/nw-contextmenu            //
 /////////////////////////////////////////////////////////////////
 
-$(function() {
-  function Menu(cutLabel, copyLabel, pasteLabel) {
-    var gui = require("nw.gui");
-    var menu = new gui.Menu();
+function cutCopyPasteMenu() {
+    function Menu(cutLabel, copyLabel, pasteLabel) {
+        var gui = require("nw.gui");
+        var menu = new gui.Menu();
 
-    var cut = new gui.MenuItem( {
-        label: cutLabel || "Cut",
-        click: function() {
-            document.execCommand("cut");
-            console.log("Menu:", "cutted to clipboard");
-        }
-    });
-    var copy = new gui.MenuItem({
-        label: copyLabel || "Copy",
-        click: function() {
-            document.execCommand("copy");
-            console.log("Menu:", "copied to clipboard");
-        }
-      });
-    var paste = new gui.MenuItem({
-        label: pasteLabel || "Paste",
-        click: function() {
-            document.execCommand("paste");
-            console.log("Menu:", "pasted to textarea");
-        }
-      });
+        var cut = new gui.MenuItem( {
+            label: cutLabel || "Cut",
+            click: function() {
+                document.execCommand("cut");
+                console.log("Menu:", "cutted to clipboard");
+            }
+        });
+        var copy = new gui.MenuItem({
+            label: copyLabel || "Copy",
+            click: function() {
+                document.execCommand("copy");
+                console.log("Menu:", "copied to clipboard");
+            }
+        });
+        var paste = new gui.MenuItem({
+            label: pasteLabel || "Paste",
+            click: function() {
+                document.execCommand("paste");
+                console.log("Menu:", "pasted to textarea");
+            }
+        });
 
-    menu.append(cut);
-    menu.append(copy);
-    menu.append(paste);
+        menu.append(cut);
+        menu.append(copy);
+        menu.append(paste);
 
-    return menu;
-  }
+        return menu;
+    }
 
     var menu = new Menu(/* pass cut, copy, paste labels if you need in */);
     $(document).on("contextmenu", function(event) {
         event.preventDefault();
         menu.popup(event.originalEvent.x, event.originalEvent.y);
     });
-});
+}
+
+//run once on page load
+cutCopyPasteMenu();
 
 
 
@@ -1713,19 +1746,36 @@ $(function() {
 
 window.ugui = {
     "allArgElements": allArgElements,
-    "appDescription": appDescription,
-    "appName": appName,
-    "appTitle": appTitle,
-    "appVersion": appVersion,
+    "app": {
+        "description": appDescription,
+        "name": appName,
+        "title": appTitle,
+        "version": appVersion,
+        "author": authorName,
+        "packageJSON": packageJSON,
+        "startPage": indexFile,
+    },
     "args": window.ugui.args,
-    "authorName": authorName,
-    "startPage": indexFile,
-    "cmdArgs": "cmdArgs",
     "executable": executable,
-    "packageJSON": packageJSON,
     "platform": process.platform,
     "textFields": textFields,
-    "version": uguiVersion
+    "version": uguiVersion,
+    "helpers": {
+        "readAFile": readAFile,
+        "runcmd": runcmd,
+        "runcmdClassic": runcmdClassic,
+        "removeTypedQuotes": removeTypedQuotes,
+        "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
+        "buildCommandArray": buildCommandArray,
+        "buildUGUIArgObject": buildUGUIArgObject,
+        "findKeyValue": findKeyValue,
+        "parseArgument": parseArgument,
+        "convertCommandArraytoString": convertCommandArraytoString,
+        "centerNavLogo": centerNavLogo,
+        "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
+        "fillExecutableDropdowns": fillExecutableDropdowns,
+        "warnIfDuplicateArgNames": warnIfDuplicateArgNames
+    }
 };
 
 
