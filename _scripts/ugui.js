@@ -564,6 +564,9 @@ function buildUGUIArgObject() {
 
 }
 
+//Run once on page load
+buildUGUIArgObject();
+
 
 
 
@@ -1414,7 +1417,7 @@ function swatchSwapper() {
 function saveNewSwatch(newSwatch) {
 
     //Set the filename to whatever the page is NW.js opens on launch, like index.htm
-    var filename = window.ugui.startPage;
+    var filename = window.ugui.app.startPage;
 
     //Read the contents of index.htm like a normal file and put them in the 'data' variable
     fs.readFile(filename, 'utf8', function(err, data) {
@@ -1774,7 +1777,8 @@ window.ugui = {
         "centerNavLogo": centerNavLogo,
         "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
         "fillExecutableDropdowns": fillExecutableDropdowns,
-        "warnIfDuplicateArgNames": warnIfDuplicateArgNames
+        "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
+        "openDefaultBrowser": openDefaultBrowser
     }
 };
 
