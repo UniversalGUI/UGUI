@@ -487,77 +487,71 @@ function buildUGUIArgObject() {
     //Reset the Args Object to remove any stragglers
     window.ugui.args = {};
 
-    //Since UGUI allows for multiple executables, we need to process all args in each <cmd> block
-    for (index = 0; index < executable.length; index++) {
-        //argsForm[0] will match executable[0]
-        //so this sets cmdArgs to all the elements with a data-argName in the form with an ID that matches the right executable
-        var cmdArgs = argsForm[index];
+    var cmdArgs = $("*[data-argName]");
 
-        //Cycle through all elements with a data-argName in <form id="currentexecutable">
-        for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+    //Cycle through all elements with a data-argName in <form id="currentexecutable">
+    for (index = 0; index < cmdArgs.length; index++) {
 
-            //get "bob" from <input data-argName="bob" value="--kitten" />
-            var argName = $(cmdArgs[subindex]).attr("data-argName");
+        //get "bob" from <input data-argName="bob" value="--kitten" />
+        var argName = $(cmdArgs[index]).attr("data-argName");
 
-            var argValue = "";
-            var argType = "";
+        var argValue = "";
+        var argType = "";
 
-            //See if the current item is a range slider
-            if ( $(cmdArgs[subindex]).hasClass('slider') ) {
-                //get "6" from <input data-argname="bob" value="6" type="text" class="slider" />
-                argValue = $(cmdArgs[subindex]).val();
+        //See if the current item is a range slider
+        if ( $(cmdArgs[index]).hasClass('slider') ) {
+            //get "6" from <input data-argname="bob" value="6" type="text" class="slider" />
+            argValue = $(cmdArgs[index]).val();
 
-                //get checkbox from <input data-argName="bob" type="checkbox" />
-                argType = "range";
+            //get checkbox from <input data-argName="bob" type="checkbox" />
+            argType = "range";
+        } else {
+            //get "--kitten" from <input data-argName="bob" value="--kitten" />
+            argValue = $(cmdArgs[index]).val();
+
+            //get checkbox from <input data-argName="bob" type="checkbox" />
+            argType = $(cmdArgs[index]).attr("type");
+        }
+
+        //get input from <input data-argName="bob" type="checkbox" />
+        var argTag = $(cmdArgs[index]).prop("tagName").toLowerCase();
+
+        //Basic info put on every object
+        window.ugui.args[argName] = {
+            "value": argValue,
+            "htmltag": argTag,
+            "htmltype": argType
+        };
+
+        //Special info just for <input type="file">
+        if (argType === "file") {
+            setInputFilePathNameExt(cmdArgs[index], argName);
+            window.ugui.args[argName].htmltag = argTag;
+            window.ugui.args[argName].htmltype = argType;
+        }
+
+        //Special info just for <input type="color">
+        if (argType === "color") {
+            colorProcessor(argValue, argName);
+            window.ugui.args[argName].htmltag = argTag;
+            window.ugui.args[argName].htmltype = argType;
+        }
+
+        //For checkboxes and radio dials, add special info
+        if (argType === "checkbox" || argType === "radio") {
+            if ( $(cmdArgs[index]).prop("checked") ) {
+                window.ugui.args[argName].htmlticked = true;
             } else {
-                //get "--kitten" from <input data-argName="bob" value="--kitten" />
-                argValue = $(cmdArgs[subindex]).val();
-
-                //get checkbox from <input data-argName="bob" type="checkbox" />
-                argType = $(cmdArgs[subindex]).attr("type");
+                window.ugui.args[argName].htmlticked = false;
             }
+        }
 
-            //get input from <input data-argName="bob" type="checkbox" />
-            var argTag = $(cmdArgs[subindex]).prop("tagName").toLowerCase();
-
-            //Basic info put on every object
+        if (argTag === "textarea") {
             window.ugui.args[argName] = {
                 "value": argValue,
                 "htmltag": argTag,
-                "htmltype": argType
+                "htmltype": "textarea"
             };
-
-            //Special info just for <input type="file">
-            if (argType === "file") {
-                setInputFilePathNameExt(cmdArgs[subindex], argName);
-                window.ugui.args[argName].htmltag = argTag;
-                window.ugui.args[argName].htmltype = argType;
-            }
-
-            //Special info just for <input type="color">
-            if (argType === "color") {
-                colorProcessor(argValue, argName);
-                window.ugui.args[argName].htmltag = argTag;
-                window.ugui.args[argName].htmltype = argType;
-            }
-
-            //For checkboxes and radio dials, add special info
-            if (argType === "checkbox" || argType === "radio") {
-                if ( $(cmdArgs[subindex]).prop("checked") ) {
-                    window.ugui.args[argName].htmlticked = true;
-                } else {
-                    window.ugui.args[argName].htmlticked = false;
-                }
-            }
-
-            if (argTag === "textarea") {
-                window.ugui.args[argName] = {
-                    "value": argValue,
-                    "htmltag": argTag,
-                    "htmltype": "textarea"
-                };
-            }
-
         }
 
     }
