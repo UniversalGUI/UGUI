@@ -415,8 +415,17 @@ $(".sendCmdArgs").click( function(event) {
     //Convert the array to a string that can be ran in a command line using the runcmd function
     var builtCommandString = convertCommandArraytoString(builtCommandArray);
 
-    //Run the command!
-    runcmd( builtCommandString );
+    //Check if the form has an element with a class of returnedCmdText
+    if ( $("#" + thisExecutable + " .returnedCmdText").length > 0 ) {
+        //If so, run a command and put its returned text on the page
+        runcmd( builtCommandString, function(data) {
+            $("#" + thisExecutable + " .returnedCmdText").html(data);
+        });
+    } else {
+        //Run the command!
+        runcmd(builtCommandString);
+    }
+
 
 });
 
