@@ -274,11 +274,24 @@
         <form id="second_cli" role="form-inline">
 
           <div class="row">
-            <div class="col-xs-12 col-s-12 col-md-6 col-l-6 checkbox">
-              <label><input type="checkbox" data-argName="winewhite" value="-message" required="required" />Don't output the following text unless this is checked</label>
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12">
+              <p>Don't output the following text unless this is checked</p>
             </div>
-            <div class="col-xs-12 col-s-12 col-md-6 col-l-6 checkbox">
-              <textarea class="form-control" data-argName="winetext" required="required"></textarea>
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" data-argName="winewhite" value="-message" required="required" aria-label="winewhite" />
+                </span>
+                <input type="text" class="form-control" data-argName="winetext" required="required" aria-label="winewhite" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12">
+              <p>Text output that would normally be returned to the command prompt, can be placed in elements with a <code>returnedCmdText</code> class.</p>
+            </div>
+            <div class="col-xs-12 col-s-12 col-md-12 col-l-12">
+              <pre class="returnedCmdText">Returned text will be displayed here.</pre>
             </div>
           </div>
           <div class="row">

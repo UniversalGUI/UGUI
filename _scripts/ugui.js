@@ -145,7 +145,8 @@ function readAFile(filePathAndName) {
 
 function runcmd(executableAndArgs, callback) {
     if (!executableAndArgs){
-        console.info("Supply an string containing the exectuable and arguments as an argument for this function");
+        console.info("You must pass in a string containing the exectuable and arguments to be sent to the command line.");
+        console.info('Example: ugui.helpers.runcmd("pngquant.exe --speed 11mph --force file.png");');
         return;
     }
 
@@ -197,6 +198,7 @@ function runcmd(executableAndArgs, callback) {
 function runcmdClassic(executable, args, callback) {
     if (!executable || !args){
         console.info("You must pass in your executable as a string and your arguments as an array of strings to use this function.");
+        console.info('Example: ugui.helpers.runcmd("pngquant.exe", ["--speed 11mph", "--force", "file.png"]);');
         return;
     }
    var spawn = require("child_process").spawn;
