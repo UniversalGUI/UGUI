@@ -11,7 +11,7 @@ $(document).ready( runUGUI );
 //Lets you open NW.js, then immediately launch the devtools, then a few seconds later run UGUI.
 //Good for hitting a debugger in time, as often the JS runs before the devtools can open.
 function waitUGUI() {
-    require('nw.gui').Window.get().showDevTools();
+    require("nw.gui").Window.get().showDevTools();
     setTimeout(runUGUI, 6000);
 }
 
@@ -112,7 +112,7 @@ var textFields = $( "textarea[data-argName], input[data-argName][type=text]" ).t
 var fs = require("fs");
 
 //Access the contents of the package.json file
-var packageJSON = require('nw.gui').App.manifest;
+var packageJSON = require("nw.gui").App.manifest;
 
 //Name of the developer's application, set in package.json
 var appName = packageJSON.name;
@@ -157,8 +157,14 @@ if (!window.ugui) {
 /////////////////////////////////////////////////////////////////
 
 function readAFile(filePathAndName) {
+    //Validate that required argument is passed
     if (!filePathAndName) {
         console.info("Supply a path to the file you want to read as an argument to this function.");
+        return;
+    }
+    //Validate types
+    if (typeof(filePathAndName) !== "string") {
+        console.info("File path must be passed as a string.");
         return;
     }
     var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
@@ -183,16 +189,22 @@ function readAFile(filePathAndName) {
 //   runcmd('pngquant --force "file.png"');                    //
 // });                                                         //
 //                                                             //
-// runcmd('node --version', function(data) {                   //
+// runcmd("node --version", function(data) {                   //
 //   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
 // });                                                         //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
 function runcmd(executableAndArgs, callback) {
-    if (!executableAndArgs){
+    //Validate that required argument is passed
+    if (!executableAndArgs) {
         console.info("You must pass in a string containing the exectuable and arguments to be sent to the command line.");
         console.info('Example: ugui.helpers.runcmd("pngquant.exe --speed 11mph --force file.png");');
+        return;
+    }
+    //Validate types
+    if (typeof(executableAndArgs) !== "string") {
+        console.info("Executable and arguments must be passed as a string.");
         return;
     }
 
@@ -201,17 +213,17 @@ function runcmd(executableAndArgs, callback) {
         //Throw errors and information into console
         function(error, stdout, stderr) {
             console.log(executableAndArgs);
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
+            console.log("stdout: " + stdout);
+            console.log("stderr: " + stderr);
             if (error !== null) {
-                console.log('Executable Error: ' + error);
+                console.log("Executable Error: " + error);
             }
             console.log("---------------------");
         }
     );
     //Return data from command line
     child.stdout.on("data", function(chunk) {
-        if (typeof callback === "function"){
+        if (typeof callback === "function") {
             callback(chunk);
         }
     });
@@ -242,16 +254,33 @@ function runcmd(executableAndArgs, callback) {
 /////////////////////////////////////////////////////////////////
 
 function runcmdClassic(executable, args, callback) {
-    if (!executable || !args){
+    //Validate that both required arguments are passed
+    if (!executable || !args) {
         console.info("You must pass in your executable as a string and your arguments as an array of strings to use this function.");
         console.info('Example: ugui.helpers.runcmd("pngquant.exe", ["--speed 11mph", "--force", "file.png"]);');
         return;
     }
+    //Validate types
+    if (typeof(executable) !== "string") {
+        console.info("Executable must be passed as a string.");
+        return;
+    } else if (Object.prototype.toString.call(args) !== "[object Array]") {
+        console.info("Arguments must be passed as strings in an array.");
+        return;
+    }
+    //Validate that all items of the array are strings
+    for (i = 0; i < args.length; i++) {
+        if (typeof(args[i]) !== "string") {
+            console.info("Arguments must be passed as strings in an array.");
+            return;
+        }
+    }
+
    var spawn = require("child_process").spawn;
    console.log( executable, args );
    var child = spawn( executable, args );
    child.stdout.on("data", function(chunk) {
-       if (typeof callback === "function"){
+       if (typeof callback === "function") {
            callback(chunk);
        }
    });
@@ -347,7 +376,7 @@ for (index = 0; index < argsForm.length; index++) {
 }
 
 //On page load have this run once to unlock submit if nothing is required.
-$('.sendCmdArgs').each( unlockSubmit );
+$(".sendCmdArgs").each( unlockSubmit );
 
 
 
@@ -492,6 +521,12 @@ $(".sendCmdArgs").click( function(event) {
 /////////////////////////////////////////////////////////////////
 
 function buildCommandArray(thisExecutable) {
+    //Validate types
+    if (thisExecutable !== undefined && typeof(thisExecutable) !== "string") {
+        console.info("Executable must be passed as a string.");
+        return;
+    }
+
     //If no executable was passed in, just use the first one in <cmd>'s
     thisExecutable = thisExecutable || executable[0];
 
@@ -556,7 +591,7 @@ function buildUGUIArgObject() {
         var argType = "";
 
         //See if the current item is a range slider
-        if ( $(cmdArgs[index]).hasClass('slider') ) {
+        if ( $(cmdArgs[index]).hasClass("slider") ) {
             //get "6" from <input data-argname="bob" value="6" type="text" class="slider" />
             argValue = $(cmdArgs[index]).val();
 
@@ -649,16 +684,33 @@ buildUGUIArgObject();
 /////////////////////////////////////////////////////////////////
 
 function findKeyValue(obj, arr) {
+    //Validate that both required arguments are passed
     if(!obj || !arr) {
         console.info("You need to supply an object and an array of strings to drill down within the object.");
         return;
     }
+    //Validate types
+    if (Object.prototype.toString.call(obj) !== "[object Object]") {
+        console.info("First argument must be passed as an object.");
+        return;
+    } else if (Object.prototype.toString.call(arr) !== "[object Array]") {
+        console.info("Second argument must be passed as strings in an array.");
+        return;
+    }
+    //Validate that all items of the array are strings
+    for (i = 0; i < arr.length; i++) {
+        if (typeof(arr[i]) !== "string") {
+            console.info("Second argument must be passed as strings in an array.");
+            return;
+        }
+    }
+
 //console.log(obj, arr);
     for (var i = 0; i < arr.length; i++) {
         obj = obj[arr[i]];
     }
     //For stuff like ((moo)), assume the user means ((moo.value))
-    if (typeof obj === "object") {
+    if (Object.prototype.toString.call(obj) === "[object Object]") {
         obj = obj.value;
     }
 //console.log(obj);
@@ -682,8 +734,14 @@ function findKeyValue(obj, arr) {
 /////////////////////////////////////////////////////////////////
 
 function parseArgument(argumentText) {
+    //Validate that required argument is passed
     if (!argumentText) {
         console.info("This processes strings of text that contain ((keywords)) in them from the <cmd> tags.");
+        return;
+    }
+    //Validate types
+    if (typeof(argumentText) !== "string") {
+        console.info("Argument text must be passed as a string.");
         return;
     }
 
@@ -697,12 +755,12 @@ function parseArgument(argumentText) {
         var match = regexToMatch.exec(argumentText);
         var uguiArgObj = window.ugui.args;
 
-        var regExMatch = RegExp( '\\(\\(' + match[1] + '\\)\\)' );
+        var regExMatch = RegExp( "\\(\\(" + match[1] + "\\)\\)" );
         //matched = uguiArgObj.meow
         var matched = uguiArgObj[match[1]];
 
         if (matched === undefined) {
-            var matchName = match[1].split('.')[0];
+            var matchName = match[1].split(".")[0];
             matched = uguiArgObj[matchName];
         }
 
@@ -714,7 +772,7 @@ function parseArgument(argumentText) {
         if (
             (matched.htmltype === "checkbox" && matched.htmlticked === false) ||
             (matched.htmltype === "radio" && matched.htmlticked === false) ||
-            (typeof(matched.value) === 'undefined') ||
+            (typeof(matched.value) === "undefined") ||
             (matched.value === "")
            ) {
             //Replace the "--quality ((meow))" with ""
@@ -728,7 +786,7 @@ function parseArgument(argumentText) {
             (matched.htmltype === "radio" && matched.htmlticked === true)
            ) {
             //Find the correct value from the UGUI Args Object
-            var foundKeyValue = findKeyValue( uguiArgObj, match[1].split('.') );
+            var foundKeyValue = findKeyValue( uguiArgObj, match[1].split(".") );
             //Replace the "--quality ((meow))" with "--quality 9"
             argumentText = argumentText.replace( regExMatch, foundKeyValue );
         //And whatever's left
@@ -764,18 +822,18 @@ function patternMatchingDefinitionEngine() {
     //A regular expression that matches ((x)) and captures x
     var re = /\(\((.*?)\)\)/gi;
 
-    $('def').each(function(index, value) {
-        //Assign 'value' to def
+    $("def").each(function(index, value) {
+        //Assign "value" to def
         //def = <def name="quality">((min)),((max))</def>
         var def = value;
 
         //Get the actual definition from the def
         //definition = "((min)),((max))"
-        var definition = $('def').html();
+        var definition = $("def").html();
 
         //Get the arg associated with this def
         //arg = ugui.args.quality
-        var arg = ugui.args[$('def').attr('name')];
+        var arg = ugui.args[$("def").attr("name")];
 
         var match;
         var currentIndex = 0;
@@ -791,7 +849,7 @@ function patternMatchingDefinitionEngine() {
                 currentIndex = re.lastIndex;
 
                 //Add the arg from the definition to the global UGUI object
-                arg[match[1]] = '';
+                arg[match[1]] = "";
 
                 //Add the arg to the args array for value assignment in next loop
                 args.push(match[1]);
@@ -855,6 +913,20 @@ function patternMatchingDefinitionEngine() {
 /////////////////////////////////////////////////////////////////
 
 function setInputFilePathNameExt(currentElement, argName) {
+    //Validate that both required arguments are passed
+    if (!currentElement || !argName) {
+        console.info("You must pass in the element as an object and its argName as a string.");
+        return;
+    }
+    //Validate types
+    if (typeof(currentElement) !== "object") {
+        console.info("Element must be passed as a jQuery object.");
+        return;
+    } else if (typeof(argName) !== "string") {
+        console.info("The argName must be passed as a string.");
+        return;
+    }
+
     //Create a variable that contains all the file information supplied by webkit
     var fileAttributes = currentElement.files[0];
 
@@ -865,8 +937,8 @@ function setInputFilePathNameExt(currentElement, argName) {
         var platform = process.platform;
 
         //Create filename and filepath variables to be used below
-        var filename = '';
-        var filepath = '';
+        var filename = "";
+        var filepath = "";
 
         // Either C:\users\bob\desktop\cows.new.png or /home/bob/desktop/cows.new.png
         var fullFilepath = fileAttributes.path;
@@ -877,22 +949,22 @@ function setInputFilePathNameExt(currentElement, argName) {
         //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
         if ( platform == "win32" ) {
             //Get the index of the final backslash so we can split the name from the path
-            var lastBackslash = fullFilepath.lastIndexOf('\\');
+            var lastBackslash = fullFilepath.lastIndexOf("\\");
             // C:\users\bob\desktop\
             filepath = fullFilepath.substring(0, lastBackslash+1);
         } else {
             //Get the index of the final backslash so we can split the name from the path
-            var lastSlash = fullFilepath.lastIndexOf('/');
+            var lastSlash = fullFilepath.lastIndexOf("/");
             // /home/bob/desktop/
             filepath = fullFilepath.substring(0, lastSlash+1);
         }
 
         //Split "cows.new.png" into ["cows", "new", "png"]
-        var filenameSplit = filename.split('.');
+        var filenameSplit = filename.split(".");
         //Remove last item in array, ["cows", "new"]
         filenameSplit.pop();
         //Combine them back together as a string putting the . back in, "cows.new"
-        var filenameNoExt = filenameSplit.join('.');
+        var filenameNoExt = filenameSplit.join(".");
 
         //create the args object parameters on the ugui object
         window.ugui.args[argName] = {
@@ -900,7 +972,7 @@ function setInputFilePathNameExt(currentElement, argName) {
             "path": filepath,
             "name": filenameNoExt,
             "nameExt": filename,
-            "ext": filename.split('.').pop(),
+            "ext": filename.split(".").pop(),
             "lastModified": fileAttributes.lastModified,
             "lastModifiedDate": fileAttributes.lastModifiedDate,
             "size": fileAttributes.size,
@@ -941,6 +1013,23 @@ function htmlEscape(str) {
 /////////////////////////////////////////////////////////////////
 
 function colorProcessor(inputColor, argName) {
+    //Validate that both required arguments are passed
+    if (!inputColor || !argName) {
+        console.info("You must pass in your Hex color (#FF0000) as a string accompanied by it's argName.");
+        return;
+    }
+    //Validate types
+    if (typeof(inputColor) !== "string") {
+        console.info("Hex color must be passed as a string.");
+        return;
+    } else if (inputColor[0] !== "#") {
+        console.info("Hex color must begin with #.");
+        return;
+    } else if (typeof(argName) !== "string") {
+        console.info("argName must be passed as a string.");
+        return;
+    }
+
     //setup variables
     var R = ""; var r = "";
     var G = ""; var g = "";
@@ -1010,6 +1099,7 @@ function colorProcessor(inputColor, argName) {
 /////////////////////////////////////////////////////////////////
 
 function convertCommandArraytoString( cmdArray ) {
+    //Validate that the required argument is passed
     if (!cmdArray) {
         console.info(
             "Accepts an array of executable and commands, " +
@@ -1017,6 +1107,18 @@ function convertCommandArraytoString( cmdArray ) {
             "ready to be sent out to the command line."
         );
         return;
+    }
+    //Validate types
+    if (Object.prototype.toString.call(cmdArray) !== "[object Array]") {
+        console.info("Command array must be passed as strings in an array.");
+        return;
+    }
+    //Validate that all items of the array are strings
+    for (i = 0; i < cmdArray.length; i++) {
+        if (typeof(cmdArray[i]) !== "string") {
+            console.info("Arguments must be passed as strings in an array.");
+            return;
+        }
     }
 
     //Create and empty variable
@@ -1074,7 +1176,7 @@ getAboutModal();
 /////////////////////////////////////////////////////////////////
 
 function getAboutModal() {
-    $.get("_markup/ugui-about.htm", function( aboutMarkup ){
+    $.get("_markup/ugui-about.htm", function( aboutMarkup ) {
         //Put UGUI about info in about modal
         $("#aboutModal .modal-body").append( aboutMarkup );
 
@@ -1084,9 +1186,9 @@ function getAboutModal() {
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
         $(".versionUGUI").html(uguiVersion);
-        $("#aboutModal .nwjsVersion").append(" (Version " + process.versions['node-webkit'] + ")");
-        $("#aboutModal .chromiumVersion").append(" (Version " + process.versions['chromium'] + ")");
-        $("#aboutModal .iojsVersion").append(" (Version " + process.versions['node'] + ")");
+        $("#aboutModal .nwjsVersion").append(" (Version " + process.versions["node-webkit"] + ")");
+        $("#aboutModal .chromiumVersion").append(" (Version " + process.versions["chromium"] + ")");
+        $("#aboutModal .iojsVersion").append(" (Version " + process.versions["node"] + ")");
 
         //After all content is loaded, detect all links that should open in the default browser
         openDefaultBrowser();
@@ -1097,7 +1199,7 @@ function getAboutModal() {
                 $("body").css("overflow","auto");
                 //If the navigation is expanded, then close it after exiting the modal
                 if ( !$(".navbar-toggle").hasClass("collapsed") ) {
-                    $(".navbar-toggle").trigger('click');
+                    $(".navbar-toggle").trigger("click");
                 }
             });
         }
@@ -1129,25 +1231,25 @@ function getAboutModal() {
 /////////////////////////////////////////////////////////////////
 
 //Clicking View > Command Line Output in the Nav Bar
-$(".navbar a[href='#cmdoutput']").click( function() {
-    $("#uguiDevTools nav span[data-nav='uguiCommand']").trigger("click");
+$('.navbar a[href="#cmdoutput"]').click( function() {
+    $('#uguiDevTools nav span[data-nav="uguiCommand"]').trigger("click");
 });
 
 //Clicking View > Console in the Nav Bar
-$(".navbar a[href='#console']").click( function() {
-    require('nw.gui').Window.get().showDevTools();
+$('.navbar a[href="#console"]').click( function() {
+    require("nw.gui").Window.get().showDevTools();
 });
 
 //Clicking View > Fullscreen
-$(".navbar a[href='#fullscreen']").click( function() {
-    require('nw.gui').Window.get().toggleFullscreen();
+$('.navbar a[href="#fullscreen"]').click( function() {
+    require("nw.gui").Window.get().toggleFullscreen();
 });
 
 //Clicking "About" in the Nav Bar
-$(".navbar a[href='#about']").click( function() {
+$('.navbar a[href="#about"]').click( function() {
 
     //Get the current Window
-    var win = require('nw.gui').Window.get();
+    var win = require("nw.gui").Window.get();
 
     //Show the modal
     $("#aboutModal").fadeIn("slow");
@@ -1168,7 +1270,7 @@ $(".navbar a[href='#about']").click( function() {
 
     //Make the header of the modal small when app is tiny
     setModalHeight();
-    win.on('resize', setModalHeight );
+    win.on("resize", setModalHeight );
 
     //Remove page scrollbar when modal displays
     $("body").css("overflow", "hidden");
@@ -1187,8 +1289,8 @@ function centerNavLogo() {
 centerNavLogo();
 
 //When you click on the X in the top corner, close this instance of Node-Webkit
-$(".navbar a[href='#exit']").click( function() {
-    require('nw.gui').Window.get().close(true);
+$('.navbar a[href="#exit"]').click( function() {
+    require("nw.gui").Window.get().close(true);
 });
 
 
@@ -1213,7 +1315,7 @@ $(".navbar a[href='#exit']").click( function() {
 //Check if the body has a class of prod for Production Environment
 if ( $("body").hasClass("prod") ) {
     $("#uguiDevTools").remove();
-} else if ( $("body").hasClass("dev") ){
+} else if ( $("body").hasClass("dev") ) {
     //Create UGUI Dev Tools markup
     $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ) {
         //Put Dev Tool Markup on the page
@@ -1234,13 +1336,13 @@ if ( $("body").hasClass("prod") ) {
             $("#uguiDevTools nav span").removeClass("selected");
 
             if ( $("#uguiDevTools section." + sectionClicked).hasClass("shrink") ) {
-                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").addClass('selected');
+                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").addClass("selected");
                 $("#uguiDevTools section").addClass("shrink");
                 $("#uguiDevTools section *").addClass("shrink");
                 $("#uguiDevTools section." + sectionClicked).removeClass("shrink");
                 $("#uguiDevTools section." + sectionClicked + " *").removeClass("shrink");
             } else {
-                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").removeClass('selected');
+                $("#uguiDevTools nav span[data-nav=" + sectionClicked + "]").removeClass("selected");
                 $("#uguiDevTools section." + sectionClicked).addClass("shrink");
                 $("#uguiDevTools section." + sectionClicked + " *").addClass("shrink");
             }
@@ -1263,7 +1365,7 @@ if ( $("body").hasClass("prod") ) {
     //get node webkit GUI - WIN
     var gui = require("nw.gui");
     // get the window object
-    var win = require('nw.gui').Window.get();
+    var win = require("nw.gui").Window.get();
 
     //Keyboard shortcuts
     keyBindings();
@@ -1275,7 +1377,7 @@ if ( $("body").hasClass("prod") ) {
 
 function updateCommandLineOutputPreviewHint() {
     var commandLineOutputExecutable = $(".uguiCommand .executableName").val();
-    $("#commandLine").html("<span class='commandLineHint'>Click the <em>" + $("#" + commandLineOutputExecutable + " .sendCmdArgs").html() + "</em> button to see output.</span>");
+    $("#commandLine").html('<span class="commandLineHint">Click the <em>' + $('#' + commandLineOutputExecutable + ' .sendCmdArgs').html() + '</em> button to see output.</span>');
 }
 
 
@@ -1298,7 +1400,7 @@ function fillExecutableDropdowns() {
     var executables = ugui.executable;
     //check each file and put it in the dropdown box
     for (index = 0; index < executables.length; index++) {
-        $(".executableName").append("<option value='" + executables[index] + "'>" + executables[index] + "</option>");
+        $(".executableName").append('<option value="' + executables[index] + '">' + executables[index] + '</option>');
     }
 }
 
@@ -1351,7 +1453,7 @@ function warnIfDuplicateArgNames() {
             var spacesNeeded = 16 - executable[index].length;
             var spaces = "";
             if (spacesNeeded > 0) {
-                for (subindex = 0; subindex < spacesNeeded; subindex ++){
+                for (subindex = 0; subindex < spacesNeeded; subindex ++) {
                     spaces = spaces + " ";
                 }
             }
@@ -1428,7 +1530,7 @@ function swatchSwapper() {
             for (index = 0; index < files.length; index++) {
                 var cssFileName = files[index];                     //cerulean.min.css
                 var swatchName = files[index].split(".min.css")[0]; //cerulean
-                $("#swatchSwapper").append("<option value='_style/ven.bootswatch/" + cssFileName + "'>" + swatchName + "</option>");
+                $("#swatchSwapper").append('<option value="_style/ven.bootswatch/' + cssFileName + '">' + swatchName + '</option>');
             }
         } else {
             console.warn("Could not return list of style swatches.");
@@ -1468,12 +1570,17 @@ function swatchSwapper() {
 /////////////////////////////////////////////////////////////////
 
 function saveNewSwatch(newSwatch) {
+    //Validate that the required argument is passed and is the correct type
+    if (!newSwatch || typeof(newSwatch) !== "string") {
+        console.info("You must pass in a new swatch as a string");
+        return;
+    }
 
     //Set the filename to whatever the page is NW.js opens on launch, like index.htm
     var filename = window.ugui.app.startPage;
 
-    //Read the contents of index.htm like a normal file and put them in the 'data' variable
-    fs.readFile(filename, 'utf8', function(err, data) {
+    //Read the contents of index.htm like a normal file and put them in the "data" variable
+    fs.readFile(filename, "utf8", function(err, data) {
         //If it can't read it for some reason, throw an error
         if (err) {
             return console.log(err);
@@ -1504,7 +1611,7 @@ function saveNewSwatch(newSwatch) {
         //Animate the "Saved" text, having it fade in
         $(".newSwatchSaved").addClass("showSaved");
         //Wait 2 seconds and then fade the "Saved" text out
-        setTimeout(function(){
+        setTimeout(function() {
             $(".newSwatchSaved").removeClass("showSaved");
         }, 2000);
 
@@ -1585,16 +1692,16 @@ function keyBindings() {
 function openDefaultBrowser() {
 
     // Load native UI library.
-    var gui = require('nw.gui');
+    var gui = require("nw.gui");
 
     // Open URL with default browser.
     $(".external-link").click( function( event ) {
         //prevent the link from loading in NW.js
         event.preventDefault();
         //get the href url for the current link
-        var url = $(this).attr('href');
+        var url = $(this).attr("href");
         //launch the user's default browser and load the URL for the link they clicked
-        gui.Shell.openExternal( url );
+        gui.Shell.openExternal(url);
     });
 }
 //Run once on page load
@@ -1621,31 +1728,36 @@ openDefaultBrowser();
 // https://github.com/jaysalvat/ezdz                           //
 /////////////////////////////////////////////////////////////////
 
-$('.ezdz').on('dragover', function() {
-    $('.ezdz label').removeClass('text-info');    //Static
-    $('.ezdz label').removeClass('text-success'); //Dropped
-    $('.ezdz label').addClass('text-warning');    //Hover
+$(".ezdz").on("dragover", function() {
+    $(".ezdz label").removeClass("text-info");    //Static
+    $(".ezdz label").removeClass("text-success"); //Dropped
+    $(".ezdz label").addClass("text-warning");    //Hover
 });
 
-$('.ezdz').on('dragleave', function() {
-    $('.ezdz label').removeClass('text-success'); //Dropped
-    $('.ezdz label').removeClass('text-warning'); //Hover
-    $('.ezdz label').addClass('text-info');       //Static
+$(".ezdz").on("dragleave", function() {
+    $(".ezdz label").removeClass("text-success"); //Dropped
+    $(".ezdz label").removeClass("text-warning"); //Hover
+    $(".ezdz label").addClass("text-info");       //Static
 });
 
 function ezdz(fileInfo) {
+    //Validate that the required argument is passed and the correct type
+    if (!fileInfo || typeof(fileInfo) !== "object") {
+        console.info("You must pass in your file information as an object.");
+        return;
+    }
 
     var file = fileInfo;
 
-    $('.ezdz label').removeClass('text-info');    //Static
-    $('.ezdz label').removeClass('text-warning'); //Hover
+    $(".ezdz label").removeClass("text-info");    //Static
+    $(".ezdz label").removeClass("text-warning"); //Hover
 
     if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
-        return alert('File type not allowed.');
+        return alert("File type not allowed.");
     }
 
-    $('.ezdz label').addClass('text-success');   //Dropped
-    $('.ezdz img').remove();
+    $(".ezdz label").addClass("text-success");   //Dropped
+    $(".ezdz img").remove();
 
     if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
         var reader = new FileReader(file);
@@ -1654,16 +1766,16 @@ function ezdz(fileInfo) {
 
         reader.onload = function(event) {
             var data = event.target.result;
-            var $img = $('<img />').attr('src', data).fadeIn();
+            var $img = $("<img />").attr("src", data).fadeIn();
 
-            $('.ezdz img').attr('alt', "Thumbnail of dropped image.");
-            $('.ezdz span').html($img);
+            $(".ezdz img").attr("alt", "Thumbnail of dropped image.");
+            $(".ezdz span").html($img);
         };
     }
 
     //Update the text on screen to display the name of the file that was dropped
     var droppedFilename = file.name + " selected";
-    $('.ezdz label').html(droppedFilename);
+    $(".ezdz label").html(droppedFilename);
 
 }
 
@@ -1691,6 +1803,13 @@ $(".slider").slider({
 });
 
 function sliderHandleSolid(themeColor) {
+    //Validate that the required argument is passed and the correct type
+    if (!themeColor || typeof(themeColor) !== "string") {
+        console.info("You must pass in your theme color as a string in RGB format.");
+        console.info('Example: rgb(141, 12, 70)');
+        return;
+    }
+
     //If the navbar is white set the slider handle to gray
     if (themeColor == "rgb(255, 255, 255)") {
         $(".slider .slider-handle").css("background-color", "#7E7E7E");
@@ -1701,6 +1820,13 @@ function sliderHandleSolid(themeColor) {
 }
 
 function sliderHandleGradient(themeGradient) {
+    //Validate that the required argument is passed and the correct type
+    if (!themeGradient || typeof(themeGradient) !== "string") {
+        console.info("You must pass in your theme gradient as a string in RGB format.");
+        console.info('Example: linear-gradient(rgb(84, 180, 235), rgb(47, 164, 231) 60%, rgb(29, 156, 229))');
+        return;
+    }
+
     $(".slider .slider-handle").css("background-image", themeGradient);
 }
 
@@ -1796,7 +1922,7 @@ cutCopyPasteMenu();
 //                                                             //
 /////////////////////////////////////////////////////////////////
 // We expose parts of UGUI to developers via the UGUI object.  //
-// To quickly access what is available type 'ugui' into the    //
+// To quickly access what is available type "ugui" into the    //
 // NW.js Developer Tools console.                              //
 /////////////////////////////////////////////////////////////////
 
