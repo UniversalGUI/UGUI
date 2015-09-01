@@ -10,8 +10,10 @@ STUFF FOR DAN
 function loadSettings() {
     //1. Check to see if the uguisettings.json files exists in the local storage folder. if not, return.
     //2. Assuming the file exists, use window.ugui.helpers.readafile("pathtofile").
-    //3. Cycle through the object and find all data-argNames that match and update their values. Note: Expect the possibility that the save file may contain data-argName's that don't exist on the page.
-    //4. console.log("Settings Loaded.");
+    //3. Cycle through the object and find all data-argNames that match and update their values.
+    //4. Expect the possibility that the save file may contain data-argName's that don't exist on the page. Skip those.
+    //5. Detect if the data-argName has a class of "do-not-save", in which case, skip it.
+    //6. console.log("Settings Loaded.");
 }
 
 function saveSettings() {
