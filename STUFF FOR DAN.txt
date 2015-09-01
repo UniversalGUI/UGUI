@@ -1,0 +1,26 @@
+STUFF FOR DAN
+
+1. Research how NW.js handles storing things locally. Resources:
+ * https://github.com/nwjs/nw.js/wiki/app
+ * https://gentlenode.com/journal/node-webkit-1-complete-cheatsheet/26#64app
+2. On page load run window.ugui.helpers.loadSetings()
+3. Add a "Save Settings" option to the navigation of index.html under "File". Give it a class of "save-ugui-settings".
+4. Anytime someone clicks on something with a class of "save-ugui-settings" it should run window.ugui.helpers.saveSettings();
+
+function loadSettings() {
+    //1. Check to see if the uguisettings.json files exists in the local storage folder. if not, return.
+    //2. Assuming the file exists, use window.ugui.helpers.readafile("pathtofile").
+    //3. Cycle through the object and find all data-argNames that match and update their values. Note: Expect the possibility that the save file may contain data-argName's that don't exist on the page.
+    //4. console.log("Settings Loaded.");
+}
+
+function saveSettings() {
+    //1. Run window.ugui.helpers.buildUGUIArgObject(); You can view the ugui arg obj by typing ugui.args in the console. This object is what we want to export out.
+    //2. Check to see if the uguisettings.json files exists in the local storage folder.
+    //2A. If it doesn't exist create the file.
+    //2B. If it does exist empty the contents of the file. DO NOT delete the file and recreate it. If the file is is use it won't delete, which would be problematic.
+    //3. Find a way to write the window.ugui.args object to the file in json format
+    //4. console.log("Settings Saved.");
+}
+
+5. Hook up those functions to the helper object at the bottom of ugui.js
