@@ -1982,7 +1982,13 @@ function loadSettings() {
                         //Check if the value is not a number, which means it's a 2 value slider
                         //ie: '0,25'
                         if (isNaN(settingsObj[key].value)) {
-  //ISSUE                          //NO IDEA BRO
+                            var parsedValue =
+                                settingsObj[key].value
+                                .split(',')
+                                .map(function(num) {
+                                    return parseInt (num)
+                                });
+                            $('[data-argName=' + key + ']').slider('setValue', parsedValue);
                         } else {
                             $('[data-argName=' + key + ']').slider('setValue', parseInt(settingsObj[key].value));
                         }
