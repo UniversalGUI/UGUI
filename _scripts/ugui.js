@@ -1912,8 +1912,96 @@ cutCopyPasteMenu();
 
 
 
+function saveSettings() {
+    //Make sure args object is up to date
+    window.ugui.helpers.buildUGUIArgObject();
+    //Grab the args object and JSONify it
+    var settingsJSON = JSON.stringify(ugui.args);
+    //Find the path to the settings file and store it
+    var gui = require('nw.gui');
+    var settingsFile = (gui.App.dataPath + '/uguisettings.json');
 
+    //Attempt to read the file
+    fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
+        //If it's not found, make it!
+        if (err) {
+            fs.writeFileSync(settingsFile, settingsJSON);
+        //If it is found, overwrite it!
+        } else {
+            fs.writeFileSync(settingsFile, '');
+            fs.writeFileSync(settingsFile, settingsJSON);
+        }
+    });
+}
 
+function loadSettings() {
+    //Find the path to the settings file and store it
+    var gui = require('nw.gui');
+    var settingsFile = (gui.App.dataPath + '/uguisettings.json');
+
+    //Attempt to read the file
+    fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
+        //If it's not found, move on with your life!
+        if (err) {
+            return;
+        //If it is found, load that shit!
+        } else {
+            var settingsObj = JSON.parse(data);
+            //Iterate through the saved settings and update the UI
+            for (key in settingsObj) {
+                //Check if the key has a corresponding UI element
+                //and that it isn't set to 'do not save'
+                if ($('[data-argName'+ key + ']') && !($('[data-argName'+ key + ']').hasClass('do-not-save'))) {
+                    console.log(settingsObj[key].htmltype);
+                    //Update based on type of key:
+                    if (settingsObj[key].htmltype == 'file') {
+                        //File: file
+  //ISSUE                      //YEA I DUNNO
+                    } else if (settingsObj[key].htmltype == 'radio') {
+                        //Radio dials: checked
+                        if (settingsObj[key].htmlticked == true) {
+                            $('[data-argName=' + key + ']').prop('checked', true);
+                        } else {
+                            $('[data-argName=' + key + ']').prop('checked', false);
+                        }
+                    } else if (settingsObj[key].htmltype == 'checkbox') {
+                        //Checkbox: checked
+                        if (settingsObj[key].htmlticked == true) {
+                            $('[data-argName=' + key + ']').prop('checked', true);
+                        } else {
+                            $('[data-argName=' + key + ']').prop('checked', false);
+                        }
+                    } else if (settingsObj[key].htmltype == 'color') {
+                        //Color: value
+                        //This one actually updates the color and is most important!
+                        $('[data-argName=' + key + ']').val(settingsObj[key].value);
+                        //This one updates the html value, which doesn't do anything that I can tell
+                        $('[data-argName=' + key + ']').attr('value', settingsObj[key].value);
+                    } else if (settingsObj[key].htmltype == 'range') {
+                        //Range: value
+                        //Check if the value is not a number, which means it's a 2 value slider
+                        //ie: '0,25'
+                        if (isNaN(settingsObj[key].value)) {
+  //ISSUE                          //NO IDEA BRO
+                        } else {
+                            $('[data-argName=' + key + ']').slider('setValue', parseInt(settingsObj[key].value));
+                        }
+
+                    } else if (settingsObj[key].htmltype == 'textarea') {
+                        //Textarea: text
+                        $('[data-argName=' + key + ']').text(settingsObj[key].value);
+                    } else if (settingsObj[key].htmltype == 'text') {
+                        //Textarea: text
+                        $('[data-argName=' + key + ']').val(settingsObj[key].value);
+                    }
+                }
+            }
+            //Build the arg object based on our updated UI
+            buildUGUIArgObject();
+        }
+    });
+
+}
 
 
 /////////////////////////////////////////////////////////////////
@@ -1957,7 +2045,9 @@ window.ugui = {
         "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
         "fillExecutableDropdowns": fillExecutableDropdowns,
         "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
-        "openDefaultBrowser": openDefaultBrowser
+        "openDefaultBrowser": openDefaultBrowser,
+        "saveSettings": saveSettings,
+        "loadSettings": loadSettings
     }
 };
 
