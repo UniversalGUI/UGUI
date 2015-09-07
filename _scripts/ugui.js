@@ -65,7 +65,7 @@ var uguiVersion = "0.9.0";
 // U25. Save chosen bootswatch                                 //
 // U26. Custom keyboard shortcuts                              //
 // U27. Launch links in default browser                        //
-// U28. EZDZ: drag and drop                                    //
+// U28. EZDZ: Drag and drop file browse box                    //
 // U29. Range slider                                           //
 // U30. Cut/copy/paste context menu                            //
 // U31. The UGUI Object                                        //
