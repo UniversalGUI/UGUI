@@ -1760,17 +1760,18 @@ function ezdz(fileInfo) {
     $(".ezdz img").remove();
 
     if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
-        var reader = new FileReader(file);
+        //var reader = new FileReader(file);
 
-        reader.readAsDataURL(file);
+        //reader.readAsDataURL(file);
 
-        reader.onload = function(event) {
-            var data = event.target.result;
-            var $img = $("<img />").attr("src", data).fadeIn();
+        //reader.onload = function(event) {
+            //var data = event.target.result;
+            //var $img = $("<img />").attr("src", data).fadeIn();
+            var $img = $("<img />").attr("src", file.path).fadeIn();
 
             $(".ezdz img").attr("alt", "Thumbnail of dropped image.");
             $(".ezdz span").html($img);
-        };
+        //};
     }
 
     //Update the text on screen to display the name of the file that was dropped
@@ -1912,6 +1913,18 @@ cutCopyPasteMenu();
 
 
 
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                        SAVE SETTINGS                        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
 function saveSettings() {
     //Make sure args object is up to date
     window.ugui.helpers.buildUGUIArgObject();
@@ -1920,7 +1933,7 @@ function saveSettings() {
     //Find the path to the settings file and store it
     var gui = require('nw.gui');
     var settingsFile = (gui.App.dataPath + '/uguisettings.json');
-
+/*
     //Attempt to read the file
     fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
         //If it's not found, make it!
@@ -1932,7 +1945,25 @@ function saveSettings() {
             fs.writeFileSync(settingsFile, settingsJSON);
         }
     });
+*/
+    //Tested on windows, this line seems to work in every scenario.
+    //If the above isn't needed for Ubuntu/OSX, we should just slim it down to this:
+    fs.writeFileSync(settingsFile, settingsJSON);
 }
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                        LOAD SETTINGS                        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+/////////////////////////////////////////////////////////////////
 
 function loadSettings() {
     //Find the path to the settings file and store it
@@ -1956,7 +1987,23 @@ function loadSettings() {
                     //Update based on type of key:
                     if (settingsObj[key].htmltype == 'file') {
                         //File: file
-  //ISSUE                      //YEA I DUNNO
+                        var file = {
+                            "type": settingsObj[key].type,
+                            "path": settingsObj[key].fullpath,
+                            "name": settingsObj[key].nameExt,
+                            "size": settingsObj[key].size,
+                            "lastModified": settingsObj[key].lastModified,
+                            "lastModifiedDate": settingsObj[key].lastModifiedDate,
+                            "webkitRelativePath": settingsObj[key].webkitRelativePath
+                        };
+                        $('[data-argName=' + key + ']')[0].files[0] = file;
+                        //Can't manually set the val, need to change the cmd preview in devtools to look at .files[0] instead of .val()
+                        //$('[data-argName=' + key + ']').val(file.path);
+                        //Update ezdz
+                        if ( $('[data-argName=' + key + ']').parent().hasClass("ezdz") ) {
+                            //run ezdz to update visuals on the page
+                            ezdz(file);
+                        }
                     } else if (settingsObj[key].htmltype == 'radio') {
                         //Radio dials: checked
                         if (settingsObj[key].htmlticked == true) {
@@ -1979,25 +2026,20 @@ function loadSettings() {
                         $('[data-argName=' + key + ']').attr('value', settingsObj[key].value);
                     } else if (settingsObj[key].htmltype == 'range') {
                         //Range: value
-                        //Check if the value is not a number, which means it's a 2 value slider
-                        //ie: '0,25'
+                        //Check if the value is not a number, which means it's a 2 value slider like '0,25'
                         if (isNaN(settingsObj[key].value)) {
-                            var parsedValue =
-                                settingsObj[key].value
-                                .split(',')
-                                .map(function(num) {
-                                    return parseInt (num)
-                                });
+                            var parsedValue = settingsObj[key].value.split(',').map( function(num) {
+                                return parseInt (num);
+                            });
                             $('[data-argName=' + key + ']').slider('setValue', parsedValue);
                         } else {
                             $('[data-argName=' + key + ']').slider('setValue', parseInt(settingsObj[key].value));
                         }
-
                     } else if (settingsObj[key].htmltype == 'textarea') {
                         //Textarea: text
                         $('[data-argName=' + key + ']').text(settingsObj[key].value);
                     } else if (settingsObj[key].htmltype == 'text') {
-                        //Textarea: text
+                        //Input type=text: text
                         $('[data-argName=' + key + ']').val(settingsObj[key].value);
                     }
                 }
