@@ -41,7 +41,7 @@ var uguiVersion = "0.9.0";
 // U01. UGUI variables                                         //
 // U02. Read a file                                            //
 // U03. Run CMD                                                //
-// U04. Run CMD (classic)                                      //
+// U04. Run CMD (Advanced)                                     //
 // U05. Prevent user from entering quotes in forms             //
 // U06. Submit is locked until required is fulfilled           //
 // U07. Realtime updating of command output in UGUI Dev Tools  //
@@ -239,57 +239,111 @@ function runcmd(executableAndArgs, callback) {
 
 /////////////////////////////////////////////////////////////////
 //                                                         U04 //
-//                       RUN CMD CLASSIC                       //
+//                       RUN CMD ADVANCED                      //
 //                                                             //
 /////////////////////////////////////////////////////////////////
-// This is the older way of running commands using "spawn".    //
-// Cow & Taco examples below to make life simpler.             //
+// This is a more advanced option for running executables. You //
+// can pass in a parameters object to get additional function- //
+// ality such as running a function when an executable closes, //
+// finishes, errors, or returns data.                          //
 //                                                             //
-// $("#taco").click( function() {                              //
-//   runcmdClassic("pngquant", ["--force", "file.png"]);       //
-// });                                                         //
+// ugui.helpers.runcmdAdvanced(parameters);                    //
 //                                                             //
-// runcmdClassic("node", ["--version"], function(data) {       //
-//   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
-// });                                                         //
-//                                                             //
+// Below is an example parameters object.                      //
 /////////////////////////////////////////////////////////////////
 
-function runcmdClassic(executable, args, callback) {
-    //Validate that both required arguments are passed
-    if (!executable || !args) {
-        console.info("You must pass in your executable as a string and your arguments as an array of strings to use this function.");
-        console.info('Example: ugui.helpers.runcmd("pngquant.exe", ["--speed 11mph", "--force", "file.png"]);');
+/*
+var parameters = {
+    "executableAndArgs": "node --version",
+    "returnedData": function(data) {
+        console.log("The text from the exectuable: " + data);
+    },
+    "onExit": function(code) {
+        console.log("Executable finished with the exit code: " + code);
+    },
+    "onError": function(err) {
+        console.log("Executable finished with the error: " + err);
+    },
+    "onClose": function(code) {
+        console.log("Executable has closed with the exit code: " + code);
+    }
+}
+*/
+
+function runcmdAdvanced(parameters) {
+    //Validate that required argument is passed
+    if (!parameters) {
+        console.info("You must pass in an object with your options.");
+        console.info("Example:");
+        console.info("    var parameters = { 'executableAndArgs': 'node --version' };");
+        console.info("    ugui.helpers.runcmdAdv(parameters);");
         return;
     }
     //Validate types
-    if (typeof(executable) !== "string") {
-        console.info("Executable must be passed as a string.");
+    if (Object.prototype.toString.call(parameters) !== "[object Object]") {
+        console.info("Your parameters must be passed as an object.");
         return;
-    } else if (Object.prototype.toString.call(args) !== "[object Array]") {
-        console.info("Arguments must be passed as strings in an array.");
+    } else if (typeof(parameters.executableAndArgs) !== "string") {
+        console.info("Executable and arguments must be passed as a string.");
+        console.info('Example: "node --version"');
+        return;
+    } else if (parameters.returnedData && typeof(parameters.returnedData) !== "function") {
+        console.info("returnedData must be a function.");
+        return;
+    } else if (parameters.onExit && typeof(parameters.onExit) !== "function") {
+        console.info("onExit must be a function.");
+        return; 
+    } else if (parameters.onError && typeof(parameters.onError) !== "function") {
+        console.info("onError must be a function.");
+        return;
+    } else if (parameters.onClose && typeof(parameters.onClose) !== "function") {
+        console.info("onClose must be a function.");
         return;
     }
-    //Validate that all items of the array are strings
-    for (i = 0; i < args.length; i++) {
-        if (typeof(args[i]) !== "string") {
-            console.info("Arguments must be passed as strings in an array.");
-            return;
+
+    var exec = require("child_process").exec;
+    var child = exec( parameters.executableAndArgs,
+        //Throw errors and information into console
+        function(error, stdout, stderr) {
+            console.log(parameters.executableAndArgs);
+            console.log("stdout: " + stdout);
+            console.log("stderr: " + stderr);
+            if (error !== null) {
+                console.log("Executable Error: " + error);
+            } else {
+                return child;
+            }
+            console.log("---------------------");
         }
-    }
+    );
 
-   var spawn = require("child_process").spawn;
-   console.log( executable, args );
-   var child = spawn( executable, args );
-   child.stdout.on("data", function(chunk) {
-       if (typeof callback === "function") {
-           callback(chunk);
-       }
-   });
+    //Detect when executable finishes
+    child.on("exit", function(code) {
+        if (typeof parameters.onExit === "function") {
+            parameters.onExit(code);
+        }
+    });
 
-   child.stderr.on("data", function(data) {
-     console.log("stderr: " + data);
-   });
+    //Detect when executable errors
+    child.on("error", function(code) {
+        if (typeof parameters.onError === "function") {
+            parameters.onError(code);
+        }
+    });
+
+    //Detect when the executable is closed
+    child.on("close", function(code) {
+        if (typeof parameters.onClose === "function") {
+            parameters.onClose(code);
+        }
+    });
+
+    //Return data from command line
+    child.stdout.on("data", function(chunk) {
+        if (typeof parameters.returnedData === "function") {
+            parameters.returnedData(chunk);
+        }
+    });
 }
 
 
@@ -2123,7 +2177,7 @@ window.ugui = {
     "helpers": {
         "readAFile": readAFile,
         "runcmd": runcmd,
-        "runcmdClassic": runcmdClassic,
+        "runcmdAdvanced": runcmdAdvanced,
         "removeTypedQuotes": removeTypedQuotes,
         "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
         "buildCommandArray": buildCommandArray,
