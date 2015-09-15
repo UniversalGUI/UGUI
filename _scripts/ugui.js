@@ -68,7 +68,9 @@ var uguiVersion = "0.9.0";
 // U28. EZDZ: Drag and drop file browse box                    //
 // U29. Range slider                                           //
 // U30. Cut/copy/paste context menu                            //
-// U31. The UGUI Object                                        //
+// U31. Save Settings                                          //
+// U32. Load Settings                                          //
+// U33. The UGUI Object                                        //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
@@ -1918,36 +1920,47 @@ cutCopyPasteMenu();
 
 
 /////////////////////////////////////////////////////////////////
-//                                                             //
+//                                                         U31 //
 //                        SAVE SETTINGS                        //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function saveSettings() {
+function saveSettings(customLocation) {
+    var gui = require('nw.gui');
+
+    var defaultLocation = "";
+
+    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    if ( process.platform == "win32" ) {
+        //Find the path to the settings file and store it
+        defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
+    } else {
+        //Find the path to the settings file and store it
+        defaultLocation = (gui.App.dataPath + '/uguisettings.json');
+    }
+
+    //Validate types
+    if (customLocation && typeof(customLocation) !== "string") {
+        console.info("The custom location for your save file must be passed a as a string");
+        console.info("Example:");
+        console.info('saveSettings("C:\\folder\\app-settings.json");');
+        console.info("Or, if you don't pass anything in, UGUI defaults to:");
+        console.info('"' + defaultLocation + '"');
+        return;
+    }
+
     //Make sure args object is up to date
     window.ugui.helpers.buildUGUIArgObject();
+
     //Grab the args object and JSONify it
     var settingsJSON = JSON.stringify(ugui.args);
-    //Find the path to the settings file and store it
-    var gui = require('nw.gui');
-    var settingsFile = (gui.App.dataPath + '/uguisettings.json');
-/*
-    //Attempt to read the file
-    fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
-        //If it's not found, make it!
-        if (err) {
-            fs.writeFileSync(settingsFile, settingsJSON);
-        //If it is found, overwrite it!
-        } else {
-            fs.writeFileSync(settingsFile, '');
-            fs.writeFileSync(settingsFile, settingsJSON);
-        }
-    });
-*/
-    //Tested on windows, this line seems to work in every scenario.
-    //If the above isn't needed for Ubuntu/OSX, we should just slim it down to this:
+
+    //If a custom location isn't passed into the function, use the default location for the settings file
+    var settingsFile = customLocation || defaultLocation;
+
+    //Save the ugui.args object to the uguisettings.json file
     fs.writeFileSync(settingsFile, settingsJSON);
 }
 
@@ -1958,34 +1971,58 @@ function saveSettings() {
 
 
 /////////////////////////////////////////////////////////////////
-//                                                             //
+//                                                         U32 //
 //                        LOAD SETTINGS                        //
 //                                                             //
 /////////////////////////////////////////////////////////////////
 //                                                             //
 /////////////////////////////////////////////////////////////////
 
-function loadSettings() {
-    //Find the path to the settings file and store it
+function loadSettings(customLocation) {
     var gui = require('nw.gui');
-    var settingsFile = (gui.App.dataPath + '/uguisettings.json');
+
+    var defaultLocation = "";
+
+    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    if ( process.platform == "win32" ) {
+        //Find the path to the settings file and store it
+        defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
+    } else {
+        //Find the path to the settings file and store it
+        defaultLocation = (gui.App.dataPath + '/uguisettings.json');
+    }
+
+    //Validate types
+    if (customLocation && typeof(customLocation) !== "string") {
+        console.info("The custom location for your save file must be passed a as a string");
+        console.info("Example:");
+        console.info('loadSettings("C:\\folder\\app-settings.json");');
+        console.info("Or, if you don't pass anything in, UGUI defaults to:");
+        console.info('"' + defaultLocation + '"');
+        return;
+    }
+
+    //If a custom location isn't passed into the function, use the default location for the settings file
+    var settingsFile = customLocation || defaultLocation;
 
     //Attempt to read the file
     fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
-        //If it's not found, move on with your life!
+        //Display console warning if unable to read the file
         if (err) {
+            console.warn("Could not read settings file from location:");
+            console.warn('"' + settingsFile + '"');
             return;
-        //If it is found, load that shit!
+        //Load the file if it's found
         } else {
             var settingsObj = JSON.parse(data);
             //Iterate through the saved settings and update the UI
             for (key in settingsObj) {
                 //Check if the key has a corresponding UI element
                 //and that it isn't set to 'do not save'
-                if ($('[data-argName'+ key + ']') && !($('[data-argName'+ key + ']').hasClass('do-not-save'))) {
+                if ( $('[data-argName'+ key + ']') && !($('[data-argName'+ key + ']').hasClass('do-not-save')) ) {
                     console.log(settingsObj[key].htmltype);
                     //Update based on type of key:
-                    if (settingsObj[key].htmltype == 'file') {
+                    if (settingsObj[key].htmltype == 'file' && settingsObj[key].value !== "") {
                         //File: file
                         var file = {
                             "type": settingsObj[key].type,
@@ -2038,8 +2075,8 @@ function loadSettings() {
                     } else if (settingsObj[key].htmltype == 'textarea') {
                         //Textarea: text
                         $('[data-argName=' + key + ']').text(settingsObj[key].value);
-                    } else if (settingsObj[key].htmltype == 'text') {
-                        //Input type=text: text
+                    } else if (settingsObj[key].value) {
+                        //Catch-all
                         $('[data-argName=' + key + ']').val(settingsObj[key].value);
                     }
                 }
@@ -2052,8 +2089,13 @@ function loadSettings() {
 }
 
 
+
+
+
+
+
 /////////////////////////////////////////////////////////////////
-//                                                         U31 //
+//                                                         U33 //
 //                       THE UGUI OBJECT                       //
 //                                                             //
 /////////////////////////////////////////////////////////////////
