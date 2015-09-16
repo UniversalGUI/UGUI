@@ -1,12 +1,56 @@
+//UGUI is a library and framework used to bootstrap NW.js
+//projects however it specializes in allowing the quick and
+//easy conversion of CLI to GUI.
+
+//## TABLE OF CONTENTS
+//
+//**U00**. [Intro](#u00-intro)  
+//**U01**. [UGUI variables](#u01-ugui-variables)  
+//**U02**. [Read a file](#u02-read-a-file)  
+//**U03**. [Run CMD](#u03-run-cmd)  
+//**U04**. [Run CMD (Advanced)](#u04-run-cmd-advanced)  
+//**U05**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
+//**U06**. [Submit is locked until required is fulfilled](#u06-submit-locked-until-required-fulfilled)  
+//**U07**. [Realtime updating of command output in UGUI Dev Tools](#u07-realtime-updating-dev-tool-command-output)  
+//**U08**. [Clicking Submit](#u08-clicking-submit)  
+//**U09**. [Building the command array](#u09-building-the-command-array)  
+//**U10**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
+//**U11**. [Find key value](#u11-find-key-value)  
+//**U12**. [Parse argument](#u12-parse-argument)  
+//**U13**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
+//**U14**. [Set input file path, file name, and extension](#u14-set-input-file-path-file-name-and-extension)  
+//**U15**. [Color processor](#u15-color-processor)  
+//**U16**. [Convert command array to string](#u16-convert-command-array-to-string)  
+//**U17**. [Replace HTML text with text from package.json](#u17-replace-html-text-with-text-from-package-json)  
+//**U18**. [Update about modal](#u18-update-about-modal)  
+//**U19**. [Navigation bar functionality](#u19-navigation-bar-functionality)  
+//**U20**. [Detect if in developer environment](#u20-detect-if-in-developer-environment)  
+//**U21**. [Put all executables in dropdowns](#u21-put-all-executables-in-dropdowns)  
+//**U22**. [Warn if identical data-argNames](#u22-warn-if-identical-data-argnames)  
+//**U23**. [Put CLI help info in UGUI dev tools](#u23-put-cli-help-info-in-ugui-dev-tools)  
+//**U24**. [Swap bootswatches](#u24-swap-bootswatches)  
+//**U25**. [Save chosen bootswatch](#u25-save-chosen-bootswatch)  
+//**U26**. [Custom keyboard shortcuts](#u26-custom-keyboard-shortcuts)  
+//**U27**. [Launch links in default browser](#u27-launch-links-in-default-browser)  
+//**U28**. [EZDZ: Drag and drop file browse box](#u28-ezdz-drag-and-drop)  
+//**U29**. [Range slider](#u29-range-slider)  
+//**U30**. [Cut/copy/paste context menu](#u30-cut-copy-paste-context-menu)  
+//**U31**. [Save Settings](#u31-save-settings)  
+//**U32**. [Load Settings](#u32-load-settings)  
+//**U33**. [The UGUI Object](#u33-the-ugui-object)  
+
+
+
+
+
+
+
+//* * *
+//### U00. Intro
+//
 
 //Wait for the document to load before running ugui.js. Use either runUGUI or waitUGUI for immediate or delayed launch.
 $(document).ready( runUGUI );
-
-
-
-
-
-
 
 //Lets you open NW.js, then immediately launch the devtools, then a few seconds later run UGUI.
 //Good for hitting a debugger in time, as often the JS runs before the devtools can open.
@@ -15,15 +59,10 @@ function waitUGUI() {
     setTimeout(runUGUI, 6000);
 }
 
-
-
-
-
-
-
 //Container for all UGUI components
 function runUGUI() {
 
+//This is the one place where the UGUI version is declared
 var uguiVersion = "0.9.0";
 
 
@@ -32,61 +71,10 @@ var uguiVersion = "0.9.0";
 
 
 
-/////////////////////////////////////////////////////////////////
-//                      TABLE OF CONTENTS                      //
-/////////////////////////////////////////////////////////////////
-// Use CTRL+F to search for the match U## in the below file.   //
-/////////////////////////////////////////////////////////////////
-//                                                             //
-// U01. UGUI variables                                         //
-// U02. Read a file                                            //
-// U03. Run CMD                                                //
-// U04. Run CMD (Advanced)                                     //
-// U05. Prevent user from entering quotes in forms             //
-// U06. Submit is locked until required is fulfilled           //
-// U07. Realtime updating of command output in UGUI Dev Tools  //
-// U08. Clicking Submit                                        //
-// U09. Building the command array                             //
-// U10. Build UGUI Args object                                 //
-// U11. Find key value                                         //
-// U12. Parse argument                                         //
-// U13. Process all <cmd> definitions                          //
-// U14. Set input file path, file name, and extension          //
-// U15. Color processor                                        //
-// U16. Convert command array to string                        //
-// U17. Replace HTML text with text from package.json          //
-// U18. Update about modal                                     //
-// U19. Navigation bar functionality                           //
-// U20. Detect if in developer environment                     //
-// U21. Put all executables in dropdowns                       //
-// U22. Warn if identical data-argNames                        //
-// U23. Put CLI help info in UGUI dev tools                    //
-// U24. Swap bootswatches                                      //
-// U25. Save chosen bootswatch                                 //
-// U26. Custom keyboard shortcuts                              //
-// U27. Launch links in default browser                        //
-// U28. EZDZ: Drag and drop file browse box                    //
-// U29. Range slider                                           //
-// U30. Cut/copy/paste context menu                            //
-// U31. Save Settings                                          //
-// U32. Load Settings                                          //
-// U33. The UGUI Object                                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////
-//                                                         U01 //
-//                        UGUI VARIABLES                       //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Listing of Variables used throughout this library.          //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U01. UGUI VARIABLES
+//
+//>Listing of Variables used throughout this library.
 
 //All arguments sent in the command
 var allArgElements = $("cmd arg");
@@ -100,8 +88,8 @@ for (index = 0; index < $("cmd").length; index++) {
     executable.push($(currentCommandBlock).attr("executable"));
 }
 
-//Create the cmdArgs object containing all elements with an argOrder for each executable form.
-//var cmdArgs = $("#argsForm *[data-argName]");
+//Create the cmdArgs object containing all elements with an argOrder for each executable form.  
+//`var cmdArgs = $("#argsForm *[data-argName]");`
 var argsForm = [];
 for (index = 0; index < executable.length; index++) {
     argsForm.push( $("#" + executable[index] + " *[data-argName]" ) );
@@ -146,18 +134,15 @@ if (!window.ugui) {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U02 //
-//                         READ A FILE                         //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// A function that allows you to set the contents of a file to //
-// a variable. Like so:                                        //
-//                                                             //
-// var devToolsHTML = readAFile("_markup/ugui-devtools.htm");  //
-//                                                             //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U02. READ A FILE
+//
+//>A function that allows you to set the contents of a file to
+//a variable. Like so:
+//
+//>`var devToolsHTML = readAFile("_markup/ugui-devtools.htm");`
 
+//
 function readAFile(filePathAndName) {
     //Validate that required argument is passed
     if (!filePathAndName) {
@@ -179,24 +164,22 @@ function readAFile(filePathAndName) {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U03 //
-//                           RUN CMD                           //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This is what makes running your CLI program and arguments   //
-// easier. Cow & Taco examples below to make life simpler.     //
-//                                                             //
-// $("#taco").click( function() {                              //
-//   runcmd('pngquant --force "file.png"');                    //
-// });                                                         //
-//                                                             //
-// runcmd("node --version", function(data) {                   //
-//   $("#cow").html("<pre>Node Version: " + data + "</pre>");  //
-// });                                                         //
-//                                                             //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U03. RUN CMD
+//
+//>This is what makes running your CLI program and arguments
+//easier. Cow & Taco examples below to make life simpler.
+//>
+//
+//>     $("#taco").click( function() {
+//         runcmd('pngquant --force "file.png"');
+//     });
+//
+//>     runcmd("node --version", function(data) {
+//         $("#cow").html("<pre>Node Version: " + data + "</pre>");
+//     });
 
+//
 function runcmd(executableAndArgs, callback) {
     //Validate that required argument is passed
     if (!executableAndArgs) {
@@ -236,40 +219,35 @@ function runcmd(executableAndArgs, callback) {
 
 
 
+//* * *
+//### U04. RUN CMD ADVANCED
+//
+//>This is a more advanced option for running executables. You
+//can pass in a parameters object to get additional
+//functionality such as running a function when an executable
+//closes, finishes, errors, or returns data.
+//
+//>`ugui.helpers.runcmdAdvanced(parameters);`
+//
+//>Below is an example parameters object.
+//
+//>     var parameters = {
+//         "executableAndArgs": "node --version",
+//         "returnedData": function(data) {
+//             console.log("The text from the exectuable: " + data);
+//         },
+//         "onExit": function(code) {
+//             console.log("Executable finished with the exit code: " + code);
+//         },
+//         "onError": function(err) {
+//             console.log("Executable finished with the error: " + err);
+//         },
+//         "onClose": function(code) {
+//             console.log("Executable has closed with the exit code: " + code);
+//         }
+//     }
 
-/////////////////////////////////////////////////////////////////
-//                                                         U04 //
-//                       RUN CMD ADVANCED                      //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This is a more advanced option for running executables. You //
-// can pass in a parameters object to get additional function- //
-// ality such as running a function when an executable closes, //
-// finishes, errors, or returns data.                          //
-//                                                             //
-// ugui.helpers.runcmdAdvanced(parameters);                    //
-//                                                             //
-// Below is an example parameters object.                      //
-/////////////////////////////////////////////////////////////////
-
-/*
-var parameters = {
-    "executableAndArgs": "node --version",
-    "returnedData": function(data) {
-        console.log("The text from the exectuable: " + data);
-    },
-    "onExit": function(code) {
-        console.log("Executable finished with the exit code: " + code);
-    },
-    "onError": function(err) {
-        console.log("Executable finished with the error: " + err);
-    },
-    "onClose": function(code) {
-        console.log("Executable has closed with the exit code: " + code);
-    }
-}
-*/
-
+//
 function runcmdAdvanced(parameters) {
     //Validate that required argument is passed
     if (!parameters) {
@@ -352,15 +330,12 @@ function runcmdAdvanced(parameters) {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U05 //
-//          PREVENT USER FROM ENTERING QUOTES IN FORMS         //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// In all input text fields and textareas, remove both single  //
-// and double quotes as they are typed, on page load, and when //
-// the form is submitted.                                      //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U05. PREVENT USER FROM ENTERING QUOTES IN FORMS
+//
+//>In all input text fields and textareas, remove both single
+//and double quotes as they are typed, on page load, and when
+//the form is submitted.
 
 //Remove all quotes on every textfield whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
@@ -386,16 +361,13 @@ removeTypedQuotes();
 
 
 
+//* * *
+//### U06. SUBMIT LOCKED UNTIL REQUIRED FULFILLED
+//
+//>Gray out the submit button until all required elements are
+//filled out.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U06 //
-//            SUBMIT LOCKED UNTIL REQUIRED FULFILLED           //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Gray out the submit button until all required elements are  //
-// filled out.                                                 //
-/////////////////////////////////////////////////////////////////
-
+//
 function unlockSubmit() {
     //Find the id name for the form containing what triggered this function (id=executable name)
     var whichExecutable = $(this).closest("form").attr("id");
@@ -439,17 +411,13 @@ $(".sendCmdArgs").each( unlockSubmit );
 
 
 
-
-/////////////////////////////////////////////////////////////////
-//                                                         U07 //
-//          REALTIME UPDATING DEV TOOL COMMAND OUTPUT          //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// In the UGUI Dev Tools there is a CMD Output tab. This       //
-// section updates the contents of that section whenever the   //
-// developer interacts with any form elements rather than only //
-// updating it on submit.                                      //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U07. REALTIME UPDATING DEV TOOL COMMAND OUTPUT
+//
+//>In the UGUI Dev Tools there is a CMD Output tab. This
+//section updates the contents of that section whenever the
+//developer interacts with any form elements rather than only
+//updating it on submit.
 
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
@@ -511,22 +479,18 @@ function updateUGUIDevCommandLine() {
 
 
 
-
-/////////////////////////////////////////////////////////////////
-//                                                         U08 //
-//                       CLICKING SUBMIT                       //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// What happens when you click the submit button.              //
-/////////////////////////////////////////////////////////////////
-// When the button is pressed, prevent it from submitting the  //
-// form like it normally would in a browser. Then grab all     //
-// elements with an argOrder except for unchecked checkboxes.  //
-// Combine the prefix, value and suffix into one variable per  //
-// element. Put them in the correct order. Send out all of the //
-// prefix/value/suffix combos in the correct order to the CLI  //
-// executable.                                                 //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U08. CLICKING SUBMIT
+//
+//>What happens when you click the submit button.
+//
+//>When the button is pressed, prevent it from submitting the
+//form like it normally would in a browser. Then grab all
+//elements with an argOrder except for unchecked checkboxes.
+//Combine the prefix, value and suffix into one variable per
+//element. Put them in the correct order. Send out all of the
+//prefix/value/suffix combos in the correct order to the CLI
+//executable.
 
 //When you click the submit button.
 $(".sendCmdArgs").click( function(event) {
@@ -565,17 +529,14 @@ $(".sendCmdArgs").click( function(event) {
 
 
 
+//* * *
+//### U09. BUILDING THE COMMAND ARRAY
+//
+//>What happens when you click the submit button or when the
+//UGUI Dev Tools are updated to preview the outputted command
+//that would be sent to the cmd line/terminal.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U09 //
-//                  BUILDING THE COMMAND ARRAY                 //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// What happens when you click the submit button or when the   //
-// UGUI Dev Tools are updated to preview the outputted command //
-// that would be sent to the cmd line/terminal.                //
-/////////////////////////////////////////////////////////////////
-
+//
 function buildCommandArray(thisExecutable) {
     //Validate types
     if (thisExecutable !== undefined && typeof(thisExecutable) !== "string") {
@@ -589,7 +550,7 @@ function buildCommandArray(thisExecutable) {
     //Set up commands to be sent to command line
     var cmds = [ thisExecutable ];
 
-    //fill out window.ugui.args {}
+    //fill out `window.ugui.args` object
     buildUGUIArgObject();
 
     //Process all definitions and place them in window.ugui.args
@@ -607,7 +568,7 @@ function buildCommandArray(thisExecutable) {
 
     //loop through all phrases and add processed versions to output array
     for (index = 0; index < cmdArgsText.length; index++) {
-        //cmdArgsText[index] is "--quality ((meow)) to ((oink.min))"
+        //`cmdArgsText[index]` is "--quality ((meow)) to ((oink.min))"
         cmds.push( parseArgument(cmdArgsText[index]) );
     }
 
@@ -620,17 +581,14 @@ function buildCommandArray(thisExecutable) {
 
 
 
+//* * *
+//### U10. BUILD UGUI ARG OBJECT
+//
+//>This grabs all the data about the elements on the page that
+//have a data-argName and puts that information on the window
+//object, located here: `window.ugui.args`
 
-/////////////////////////////////////////////////////////////////
-//                                                         U10 //
-//                    BUILD UGUI ARG OBJECT                    //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This grabs all the data about the elements on the page that //
-// have a data-argName and puts that information on the window //
-// object, located here: window.ugui.args                      //
-/////////////////////////////////////////////////////////////////
-
+//
 function buildUGUIArgObject() {
     //Reset the Args Object to remove any stragglers
     window.ugui.args = {};
@@ -640,7 +598,7 @@ function buildUGUIArgObject() {
     //Cycle through all elements with a data-argName in <form id="currentexecutable">
     for (index = 0; index < cmdArgs.length; index++) {
 
-        //get "bob" from <input data-argName="bob" value="--kitten" />
+        //get "bob" from `<input data-argName="bob" value="--kitten" />`
         var argName = $(cmdArgs[index]).attr("data-argName");
 
         var argValue = "";
@@ -648,20 +606,20 @@ function buildUGUIArgObject() {
 
         //See if the current item is a range slider
         if ( $(cmdArgs[index]).hasClass("slider") ) {
-            //get "6" from <input data-argname="bob" value="6" type="text" class="slider" />
+            //get "6" from `<input data-argname="bob" value="6" type="text" class="slider" />`
             argValue = $(cmdArgs[index]).val();
 
-            //get checkbox from <input data-argName="bob" type="checkbox" />
+            //get checkbox from `<input data-argName="bob" type="checkbox" />`
             argType = "range";
         } else {
-            //get "--kitten" from <input data-argName="bob" value="--kitten" />
+            //get "--kitten" from `<input data-argName="bob" value="--kitten" />`
             argValue = $(cmdArgs[index]).val();
 
-            //get checkbox from <input data-argName="bob" type="checkbox" />
+            //get checkbox from `<input data-argName="bob" type="checkbox" />`
             argType = $(cmdArgs[index]).attr("type");
         }
 
-        //get input from <input data-argName="bob" type="checkbox" />
+        //get input from `<input data-argName="bob" type="checkbox" />`
         var argTag = $(cmdArgs[index]).prop("tagName").toLowerCase();
 
         //Basic info put on every object
@@ -671,14 +629,14 @@ function buildUGUIArgObject() {
             "htmltype": argType
         };
 
-        //Special info just for <input type="file">
+        //Special info just for `<input type="file">`
         if (argType === "file") {
             setInputFilePathNameExt(cmdArgs[index], argName);
             window.ugui.args[argName].htmltag = argTag;
             window.ugui.args[argName].htmltype = argType;
         }
 
-        //Special info just for <input type="color">
+        //Special info just for `<input type="color">`
         if (argType === "color") {
             colorProcessor(argValue, argName);
             window.ugui.args[argName].htmltag = argTag;
@@ -714,31 +672,27 @@ buildUGUIArgObject();
 
 
 
+//* * *
+//### U11. FIND KEY VALUE
+//
+//>This is a general purpose function that allows retrieving
+//information from an object. Here is an example object and
+//how `findKeyValue()` works to return data from it:
+//
+//>     var a = {
+//         "b": "dog",
+//         "c": {
+//             "d": "cat",
+//             "e": "bat"
+//         }
+//     };
+//     var ab  = ["b"];
+//     var acd = ["c","d"];
+//
+//>     console.log( findKeyValue(a,ab) );  //dog
+//     console.log( findKeyValue(a,acd) ); //cat
 
-/////////////////////////////////////////////////////////////////
-//                                                         U11 //
-//                       FIND KEY VALUE                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This is a general purpose function that allows retrieving   //
-// information from an object. Here is an example object and   //
-// how findKeyValue() works to return data from it:            //
-//                                                             //
-//     var a = {                                               //
-//         "b": "dog",                                         //
-//         "c": {                                              //
-//             "d": "cat",                                     //
-//             "e": "bat"                                      //
-//         }                                                   //
-//     };                                                      //
-//     var ab  = ["b"];                                        //
-//     var acd = ["c","d"];                                    //
-//                                                             //
-//     console.log( findKeyValue(a,ab) );  //dog               //
-//     console.log( findKeyValue(a,acd) ); //cat               //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
+//
 function findKeyValue(obj, arr) {
     //Validate that both required arguments are passed
     if(!obj || !arr) {
@@ -761,7 +715,7 @@ function findKeyValue(obj, arr) {
         }
     }
 
-//console.log(obj, arr);
+    /* console.log(obj, arr); */
     for (var i = 0; i < arr.length; i++) {
         obj = obj[arr[i]];
     }
@@ -769,7 +723,7 @@ function findKeyValue(obj, arr) {
     if (Object.prototype.toString.call(obj) === "[object Object]") {
         obj = obj.value;
     }
-//console.log(obj);
+    /* console.log(obj); */
     return obj;
 }
 
@@ -778,17 +732,14 @@ function findKeyValue(obj, arr) {
 
 
 
+//* * *
+//### U12. PARSE ARGUMENT
+//
+//>This takes the argument from the `<cmd><arg>`, finds all
+//the `((keywords))` and replaces them with the information on
+//the UGUI Args Object found here: `window.ugui.args`
 
-/////////////////////////////////////////////////////////////////
-//                                                         U12 //
-//                       PARSE ARGUMENT                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This takes the argument from the <cmd><arg>, finds all the  //
-// ((keywords)) and replaces them with the information on the  //
-// UGUI Args Object found here: window.ugui.args               //
-/////////////////////////////////////////////////////////////////
-
+//
 function parseArgument(argumentText) {
     //Validate that required argument is passed
     if (!argumentText) {
@@ -801,18 +752,18 @@ function parseArgument(argumentText) {
         return;
     }
 
-    //argumentText = "and ((meow)), with ((oink)) too. "
+    //`argumentText = "and ((meow)), with ((oink)) too. "`
     var regexToMatch = /\(\((.*?)\)\)/;
 
     //Keep rerunning this until all ((keywords)) in argumentText are replaced with their actual values
     while ( regexToMatch.test(argumentText) ) {
 
-        //match = ["((meow))","meow"]
+        //`match = ["((meow))","meow"]`
         var match = regexToMatch.exec(argumentText);
         var uguiArgObj = window.ugui.args;
 
         var regExMatch = RegExp( "\\(\\(" + match[1] + "\\)\\)" );
-        //matched = uguiArgObj.meow
+        //`matched = uguiArgObj.meow`
         var matched = uguiArgObj[match[1]];
 
         if (matched === undefined) {
@@ -820,8 +771,8 @@ function parseArgument(argumentText) {
             matched = uguiArgObj[matchName];
         }
 
-//console.log( "-----------------" );
-//console.log( "value: ", matched.value );
+        /* console.log( "-----------------" ); */
+        /* console.log( "value: ", matched.value ); */
 
         //Skip all unchecked checkboxes and unchecked radio dials.
         //Skip everything without a value
@@ -851,7 +802,7 @@ function parseArgument(argumentText) {
             argumentText = "";
         }
 
-//console.log(argumentText);
+    /* console.log(argumentText); */
 
     }
 
@@ -863,32 +814,29 @@ function parseArgument(argumentText) {
 
 
 
+//* * *
+//### U13. PROCESS ALL CMD DEFINITIONS
+//
+//>This loops through all <def>'s and processes the value of
+//them to create the correct key value pairs on the ugui args
+//object.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U13 //
-//                 PROCESS ALL CMD DEFINITIONS                 //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This loops through all <def>'s and processes the value of   //
-// them to create the correct key value pairs on the ugui args //
-// object.                                                     //
-/////////////////////////////////////////////////////////////////
-
+//
 function patternMatchingDefinitionEngine() {
     //A regular expression that matches ((x)) and captures x
     var re = /\(\((.*?)\)\)/gi;
 
     $("def").each(function(index, value) {
         //Assign "value" to def
-        //def = <def name="quality">((min)),((max))</def>
+        //`def = <def name="quality">((min)),((max))</def>`
         var def = value;
 
         //Get the actual definition from the def
-        //definition = "((min)),((max))"
+        //`definition = "((min)),((max))"`
         var definition = $("def").html();
 
         //Get the arg associated with this def
-        //arg = ugui.args.quality
+        //`arg = ugui.args.quality`
         var arg = ugui.args[$("def").attr("name")];
 
         var match;
@@ -919,7 +867,7 @@ function patternMatchingDefinitionEngine() {
         };
 
         //Get the value of the associated arg
-        //argValue = "0,75"
+        //`argValue = "0,75"`
         var argValue = arg.value;
 
         //splitIndex is used to keep track of where we are in the value
@@ -945,7 +893,10 @@ function patternMatchingDefinitionEngine() {
                 arg[args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length));
             //This catches in all other cases
             } else {
-                arg[args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length), argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length)));
+                arg[args[i]] = argValue.slice(
+                    (argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length),
+                    argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
+                );
                 splitIndex = argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
             }
         }
@@ -958,16 +909,14 @@ function patternMatchingDefinitionEngine() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U14 //
-//        SET INPUT FILE PATH, FILE NAME, AND EXTENSION        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This processes everything elements with a data-argName that //
-// are also <input type="file">. It creates special properties //
-// for it on the UGUI args object found here: window.ugui.args //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U14. SET INPUT FILE PATH, FILE NAME, AND EXTENSION
+//
+//>This processes everything elements with a data-argName that
+//are also `<input type="file">`. It creates special properties
+//for it on the UGUI args object found here: `window.ugui.args`
 
+//
 function setInputFilePathNameExt(currentElement, argName) {
     //Validate that both required arguments are passed
     if (!currentElement || !argName) {
@@ -1002,24 +951,24 @@ function setInputFilePathNameExt(currentElement, argName) {
         //cows.new.png
         filename = fileAttributes.name;
 
-        //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+        //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
         if ( platform == "win32" ) {
             //Get the index of the final backslash so we can split the name from the path
             var lastBackslash = fullFilepath.lastIndexOf("\\");
-            // C:\users\bob\desktop\
+            // `C:\users\bob\desktop\`
             filepath = fullFilepath.substring(0, lastBackslash+1);
         } else {
             //Get the index of the final backslash so we can split the name from the path
             var lastSlash = fullFilepath.lastIndexOf("/");
-            // /home/bob/desktop/
+            // `/home/bob/desktop/`
             filepath = fullFilepath.substring(0, lastSlash+1);
         }
 
-        //Split "cows.new.png" into ["cows", "new", "png"]
+        //Split `"cows.new.png"` into `["cows", "new", "png"]`
         var filenameSplit = filename.split(".");
-        //Remove last item in array, ["cows", "new"]
+        //Remove last item in array, `["cows", "new"]`
         filenameSplit.pop();
-        //Combine them back together as a string putting the . back in, "cows.new"
+        //Combine them back together as a string putting the . back in, `"cows.new"`
         var filenameNoExt = filenameSplit.join(".");
 
         //create the args object parameters on the ugui object
@@ -1040,34 +989,20 @@ function setInputFilePathNameExt(currentElement, argName) {
     }
 }
 
-/*
-function htmlEscape(str) {
-    if (!str) return;
-    return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-}
-*/
 
 
 
 
 
 
+//* * *
+//### U15. COLOR PROCESSOR
+//
+//>Process input elements with a type of color to generate
+//RGB, Hex, and Decimal values, then place them on the
+//`ugui.args.{data-argName}` object.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U15 //
-//                       COLOR PROCESSOR                       //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Process input elements with a type of color to generate     //
-// RGB, Hex, and Decimal values, then place them on the        //
-// ugui.args.{data-argName} object.                            //
-/////////////////////////////////////////////////////////////////
-
+//
 function colorProcessor(inputColor, argName) {
     //Validate that both required arguments are passed
     if (!inputColor || !argName) {
@@ -1143,17 +1078,14 @@ function colorProcessor(inputColor, argName) {
 
 
 
+//* * *
+//### U16. CONVERT COMMAND ARRAY TO STRING
+//
+//>Take the array of executable and commands, remove empty
+// arguments and put everything into a string to be sent out
+// to the command line.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U16 //
-//               CONVERT COMMAND ARRAY TO STRING               //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Take the array of executable and commands, remove empty     //
-// arguments and put everything into a string to be sent out   //
-// to the command line.                                        //
-/////////////////////////////////////////////////////////////////
-
+//
 function convertCommandArraytoString( cmdArray ) {
     //Validate that the required argument is passed
     if (!cmdArray) {
@@ -1180,7 +1112,7 @@ function convertCommandArraytoString( cmdArray ) {
     //Create and empty variable
     var cmdString = "";
 
-    //cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]
+    //`cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]`
     for (index = 0; index < cmdArray.length; index++) {
         //Make sure the executable isn't preceeded with a space
         if (index === 0) {
@@ -1200,16 +1132,13 @@ function convertCommandArraytoString( cmdArray ) {
 
 
 
+//* * *
+//### U17. REPLACE HTML TEXT WITH TEXT FROM PACKAGE.JSON
+//
+//>Some text on the page can be auto-filled from the content in
+//the package.json. This replaces the text on the page.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U17 //
-//        REPLACE HTML TEXT WITH TEXT FROM PACKAGE.JSON        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Some text on the page can be auto-filled from the content   //
-// in the package.json. This replaces the text on the page.    //
-/////////////////////////////////////////////////////////////////
-
+//
 $(".applicationName").html(appName);
 $(".applicationTitle").html(appTitle);
 $(".applicationDescription").html(appDescription);
@@ -1220,17 +1149,14 @@ getAboutModal();
 
 
 
+//* * *
+//### U18. UPDATE ABOUT MODAL
+//
+//>This pulls in information about the application from the
+// package.json file and puts in in the About modal. It also
+// pulls in UGUI's about info from the `_markdown` folder.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U18 //
-//                     UPDATE ABOUT MODAL                      //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This pulls in information about the application from the    //
-// package.json file and puts in in the About modal. It also   //
-// pulls in UGUI's about info from the _markdown folder.       //
-/////////////////////////////////////////////////////////////////
-
+//
 function getAboutModal() {
     $.get("_markup/ugui-about.htm", function( aboutMarkup ) {
         //Put UGUI about info in about modal
@@ -1276,15 +1202,11 @@ function getAboutModal() {
 
 
 
-
-/////////////////////////////////////////////////////////////////
-//                                                         U19 //
-//                 NAVIGATION BAR FUNCTIONALITY                //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Everything in this section controls the visibility and the  //
-// functionality of the items in the top nav bar.              //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U19. NAVIGATION BAR FUNCTIONALITY
+//
+//>Everything in this section controls the visibility and the
+// functionality of the items in the top nav bar.
 
 //Clicking View > Command Line Output in the Nav Bar
 $('.navbar a[href="#cmdoutput"]').click( function() {
@@ -1354,19 +1276,16 @@ $('.navbar a[href="#exit"]').click( function() {
 
 
 
+//* * *
+//### U20. DETECT IF IN DEVELOPER ENVIRONMENT
+//
+//>Detects if you're in Development or Production environment.
+//
+// If you have a class of "dev" or "prod" in the body tag UGUI
+// will enable key bindings such as F12 or CTRL+Shift+I to
+// launch Webkit's Developer Tools, or F5 to refresh. Also it
+// displays the Command Line output at the bottom of the page.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U20 //
-//              DETECT IF IN DEVELOPER ENVIRONMENT             //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Detects if you're in Development or Production environment. //
-//                                                             //
-// If you have a class of "dev" or "prod" in the body tag UGUI //
-// will enable key bindings such as F12 or CTRL+Shift+I to     //
-// launch Webkit's Developer Tools, or F5 to refresh. Also it  //
-// displays the Command Line output at the bottom of the page. //
-/////////////////////////////////////////////////////////////////
 
 //Check if the body has a class of prod for Production Environment
 if ( $("body").hasClass("prod") ) {
@@ -1433,7 +1352,11 @@ if ( $("body").hasClass("prod") ) {
 
 function updateCommandLineOutputPreviewHint() {
     var commandLineOutputExecutable = $(".uguiCommand .executableName").val();
-    $("#commandLine").html('<span class="commandLineHint">Click the <em>' + $('#' + commandLineOutputExecutable + ' .sendCmdArgs').html() + '</em> button to see output.</span>');
+    $("#commandLine").html(
+        '<span class="commandLineHint">Click the <em>' +
+        $('#' + commandLineOutputExecutable + ' .sendCmdArgs').html() +
+        '</em> button to see output.</span>'
+    );
 }
 
 
@@ -1441,17 +1364,14 @@ function updateCommandLineOutputPreviewHint() {
 
 
 
+//* * *
+//### U21. PUT ALL EXECUTABLES IN DROPDOWNS
+//
+// In the UGUI Dev Toolbar, there are dropdowns in the "CMD
+// Output" and "Exectuable Info" sections that contain all of
+// the executables used in the app.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U21 //
-//               PUT ALL EXECUTABLES IN DROPDOWNS              //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// In the UGUI Dev Toolbar, there are dropdowns in the "CMD    //
-// Output" and "Exectuable Info" sections that contain all of  //
-// the executables used in the app.                            //
-/////////////////////////////////////////////////////////////////
-
+//
 function fillExecutableDropdowns() {
     var executables = ugui.executable;
     //check each file and put it in the dropdown box
@@ -1466,15 +1386,13 @@ function fillExecutableDropdowns() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U22 //
-//               WARN IF IDENTICAL DATA-ARGNAMES               //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// If the designer/developer uses the same data-argName value  //
-// for multiple elements, display a warning.                   //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U22. WARN IF IDENTICAL DATA-ARGNAMES
+//
+// If the designer/developer uses the same data-argName value
+// for multiple elements, display a warning.
 
+//
 function warnIfDuplicateArgNames() {
     var duplicatesArray = {};
     var cmdArgs = "";
@@ -1528,32 +1446,30 @@ function warnIfDuplicateArgNames() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U23 //
-//             PUT CLI HELP INFO IN UGUI DEV TOOLS             //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This funciton is only ran when in dev mode. It adds another //
-// tab in the UGUI Developer Tools that returns information    //
-// from the user's executable with arguments like --help.      //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U23. PUT CLI HELP INFO IN UGUI DEV TOOLS
+//
+//>This funciton is only ran when in dev mode. It adds another
+// tab in the UGUI Developer Tools that returns information
+// from the user's executable with arguments like `--help`.
 
+//
 function putExeHelpInDevTools() {
-    //Everytime the dropdown changes update the <pre>
+    //Everytime the dropdown changes update the `<pre>`
     $("#uguiDevTools .executableName").change(getHelpInfo);
     $("#uguiDevTools .helpDropdown").change(getHelpInfo);
 
     function getHelpInfo() {
         //Grab the correct executable from the dropdown
         var executableChoice = $(".uguiExecutable .executableName").val();
-        //Grab which kind of help argument they chose, like --help or /?
+        //Grab which kind of help argument they chose, like `--help` or `/?`
         var helpChoice = $(".uguiExecutable .helpDropdown").val();
 
         //Don't run if there isn't a help choice
         if (helpChoice) {
             //Run the executable using the user's chosen argument to get it's help info
             runcmd( executableChoice + " " + helpChoice, function(returnedHelpInfo) {
-                //Put the help info in a <pre>
+                //Put the help info in a `<pre>`
                 $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
             });
         }
@@ -1566,19 +1482,17 @@ function putExeHelpInDevTools() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U24 //
-//                      SWAP BOOTSWATCHES                      //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This funciton is only ran when in dev mode. It grabs a list //
-// of all files in the ven.bootswatch folder and puts them in  //
-// a dropdown box in UGUI Developer Tools so developers can    //
-// try out different stylesheets.                              //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U24. SWAP BOOTSWATCHES
+//
+//>This funciton is only ran when in dev mode. It grabs a list
+// of all files in the ven.bootswatch folder and puts them in
+// a dropdown box in UGUI Developer Tools so developers can
+// try out different stylesheets.
 
+//
 function swatchSwapper() {
-    //Grab all the files in the ven.bootswatch folder and put them in an array
+    //Grab all the files in the `ven.bootswatch` folder and put them in an array
     var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files) {
         //if that works
         if (!err) {
@@ -1612,19 +1526,17 @@ function swatchSwapper() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U25 //
-//                   SAVE CHOSEN BOOTSWATCH                    //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// In the UGUI Developer Tools panel under the "Style Swapper" //
-// section, when the user clicks the "Use this style" button,  //
-// read the contents of the index.htm, find the line that sets //
-// which swatch css to use and update it to the new chosen     //
-// swatch. Then replace the contents of index.htm with the new //
-// data so on every load it uses the correct swatch.           //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U25. SAVE CHOSEN BOOTSWATCH
+//
+//>In the UGUI Developer Tools panel under the "Style Swapper"
+// section, when the user clicks the "Use this style" button,
+// read the contents of the index.htm, find the line that sets
+// which swatch css to use and update it to the new chosen
+// swatch. Then replace the contents of index.htm with the new
+// data so on every load it uses the correct swatch.
 
+//
 function saveNewSwatch(newSwatch) {
     //Validate that the required argument is passed and is the correct type
     if (!newSwatch || typeof(newSwatch) !== "string") {
@@ -1647,13 +1559,13 @@ function saveNewSwatch(newSwatch) {
         var re_file = '((?:[a-z][a-z\\.\\d_]+)\\.(?:[a-z\\d]{3}))(?![\\w\\.])';
         var re_end = '(" data-swatch="swapper">)';
 
-        //would match: <link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">
+        //would match: `<link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">`
         var createRegex = RegExp(re_start + re_file + re_end, ["i"]);
         var findSwatchLine = createRegex.exec(data);
         //If we could find the line in the file
         if (findSwatchLine != null) {
             //Though not currently using this line, it may come in handy some day
-            //var currentSwatch = findSwatchLine[52];
+            //`var currentSwatch = findSwatchLine[52];`
 
             //Take the contents of index.htm, find the correct line, and replace that line with the updated swatch
             data = data.replace(createRegex, '<link rel="stylesheet" href="' + newSwatch + '" data-swatch="swapper">');
@@ -1680,15 +1592,13 @@ function saveNewSwatch(newSwatch) {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U26 //
-//                  CUSTOM KEYBOARD SHORTCUTS                  //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// This funciton is only ran when in dev mode. It gives the    //
-// developer access to common/expected keyboard shortcuts.     //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U26. CUSTOM KEYBOARD SHORTCUTS
+//
+//>This funciton is only ran when in dev mode. It gives the
+//developer access to common/expected keyboard shortcuts.
 
+//
 function keyBindings() {
     //Keyboard shortcuts
     document.onkeydown = function(pressed) {
@@ -1735,16 +1645,14 @@ function keyBindings() {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U27 //
-//               LAUNCH LINKS IN DEFAULT BROWSER               //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Detects all links on the page with a class of external-link //
-// and sets them to open the link in the user's default        //
-// default browser instead of using NW.js as a browser.        //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U27. LAUNCH LINKS IN DEFAULT BROWSER
+//
+//>Detects all links on the page with a class of external-link
+// and sets them to open the link in the user's default
+// default browser instead of using NW.js as a browser.
 
+//
 function openDefaultBrowser() {
 
     // Load native UI library.
@@ -1769,21 +1677,19 @@ openDefaultBrowser();
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U28 //
-//                     EZDZ: DRAG AND DROP                     //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Code for drag/drop/browse box. This was originally based on //
-// EZDZ, but has been heavily modified for Bootstrap and NW.js //
-// for cross-platform and Bootswatch compatibility.            //
-//                                                             //
-// After dropping a file in the EZDZ box, put the file name in //
-// the EZDZ box. If the file is an image, display a thumbnail. //
-/////////////////////////////////////////////////////////////////
-// https://github.com/jaysalvat/ezdz                           //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U28. EZDZ: DRAG AND DROP
+//
+//>Code for drag/drop/browse box. This was originally based on
+// EZDZ, but has been heavily modified for Bootstrap and NW.js
+// for cross-platform and Bootswatch compatibility.
+//
+//>After dropping a file in the EZDZ box, put the file name in
+// the EZDZ box. If the file is an image, display a thumbnail.
+//
+//>**Credits:** [EZDZ on GitHub](https://github.com/jaysalvat/ezdz)
 
+//
 $(".ezdz").on("dragover", function() {
     $(".ezdz label").removeClass("text-info");    //Static
     $(".ezdz label").removeClass("text-success"); //Dropped
@@ -1841,18 +1747,15 @@ function ezdz(fileInfo) {
 
 
 
+//* * *
+//### U29. RANGE SLIDER
+//
+//>Enables all elements with a class of slider to use the
+// boostrap-slider plugin.
+//
+//>**Documentation**: [http://seiyria.github.io/bootstrap-slider](http://seiyria.github.io/bootstrap-slider)
 
-/////////////////////////////////////////////////////////////////
-//                                                         U29 //
-//                         RANGE SLIDER                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Enables all elements with a class of slider to use the      //
-// boostrap-slider plugin.                                     //
-/////////////////////////////////////////////////////////////////
-// Documentation: http://seiyria.github.io/bootstrap-slider    //
-/////////////////////////////////////////////////////////////////
-
+//
 $(".slider").slider({
     formatter: function(value) {
         return value;
@@ -1913,16 +1816,14 @@ sliderHandleColor();
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U30 //
-//                 CUT/COPY/PASTE CONTEXT MENU                 //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// Right-click on any text or text field and you can now C&P!  //
-//                                                             //
-// Credit: https://github.com/b1rdex/nw-contextmenu            //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U30 CUT/COPY/PASTE CONTEXT MENU
+//
+//>Right-click on any text or text field and you can now C&P!
+//
+//>**Credit**: [nw-contextmenu on GitHub](https://github.com/b1rdex/nw-contextmenu)
 
+//
 function cutCopyPasteMenu() {
     function Menu(cutLabel, copyLabel, pasteLabel) {
         var gui = require("nw.gui");
@@ -1972,21 +1873,30 @@ cutCopyPasteMenu();
 
 
 
+//* * *
+//### U31. SAVE SETTINGS
+//
+//>This saves the settings of your app into a local user
+// account specific folder on the computer that is different
+// for each Operating System. You can run the following to see
+// what the default location is on your OS:
+//
+//>`ugui.helpers.saveSettings(["Show Default"]);`
+//
+//>Or you can pass in a custom path for the location of your
+// settings file. Add `data-argName` to an element in your HTML
+// to ensure it gets saved automatically.
+//
+//>Add a class of `do-not-save` for items you don't want to be
+// updated during `loadSettings()`
 
-/////////////////////////////////////////////////////////////////
-//                                                         U31 //
-//                        SAVE SETTINGS                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
+//
 function saveSettings(customLocation) {
     var gui = require('nw.gui');
 
     var defaultLocation = "";
 
-    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
         defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
@@ -2014,7 +1924,7 @@ function saveSettings(customLocation) {
     //If a custom location isn't passed into the function, use the default location for the settings file
     var settingsFile = customLocation || defaultLocation;
 
-    //Save the ugui.args object to the uguisettings.json file
+    //Save the ugui.args object to the `uguisettings.json` file
     fs.writeFileSync(settingsFile, settingsJSON);
 }
 
@@ -2024,20 +1934,25 @@ function saveSettings(customLocation) {
 
 
 
-/////////////////////////////////////////////////////////////////
-//                                                         U32 //
-//                        LOAD SETTINGS                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-//                                                             //
-/////////////////////////////////////////////////////////////////
+//* * *
+//### U32. LOAD SETTINGS
+//
+//>This loads your settings from the default save location or
+// a location that you've passed in. It reads the file, which
+// is a JSON version of the `ugui.args` object, and updates
+// the UI elements on the page with the correct values, then
+// updates the current `ugui.args` to reflect the UI changes.
+//
+//>To have an HTML element skipped during the load process,
+// give it a class of `do-not-save`.
 
+//
 function loadSettings(customLocation) {
     var gui = require('nw.gui');
 
     var defaultLocation = "";
 
-    //If you're on windows then folders in filepaths are separated with \, otherwise OS's use /
+    //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
         defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
@@ -2088,8 +2003,8 @@ function loadSettings(customLocation) {
                             "webkitRelativePath": settingsObj[key].webkitRelativePath
                         };
                         $('[data-argName=' + key + ']')[0].files[0] = file;
-                        //Can't manually set the val, need to change the cmd preview in devtools to look at .files[0] instead of .val()
-                        //$('[data-argName=' + key + ']').val(file.path);
+                        //Can't manually set the val, need to change the cmd preview in devtools to look at `.files[0]` instead of `.val()`
+                        //`$('[data-argName=' + key + ']').val(file.path);`
                         //Update ezdz
                         if ( $('[data-argName=' + key + ']').parent().hasClass("ezdz") ) {
                             //run ezdz to update visuals on the page
@@ -2117,7 +2032,7 @@ function loadSettings(customLocation) {
                         $('[data-argName=' + key + ']').attr('value', settingsObj[key].value);
                     } else if (settingsObj[key].htmltype == 'range') {
                         //Range: value
-                        //Check if the value is not a number, which means it's a 2 value slider like '0,25'
+                        //Check if the value is not a number, which means it's a `2` value slider like `'0,25'`
                         if (isNaN(settingsObj[key].value)) {
                             var parsedValue = settingsObj[key].value.split(',').map( function(num) {
                                 return parseInt (num);
@@ -2147,17 +2062,14 @@ function loadSettings(customLocation) {
 
 
 
+//* * *
+//### U33. THE UGUI OBJECT
+//
+// We expose parts of UGUI to developers via the UGUI object.
+// To quickly access what is available type "ugui" into the
+// NW.js Developer Tools console.
 
-/////////////////////////////////////////////////////////////////
-//                                                         U33 //
-//                       THE UGUI OBJECT                       //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// We expose parts of UGUI to developers via the UGUI object.  //
-// To quickly access what is available type "ugui" into the    //
-// NW.js Developer Tools console.                              //
-/////////////////////////////////////////////////////////////////
-
+//
 window.ugui = {
     "allArgElements": allArgElements,
     "app": {
@@ -2201,4 +2113,52 @@ window.ugui = {
 
 
 
-}// end ugui();
+// end `ugui();`
+}
+
+
+
+
+
+
+
+/*
+
+/////////////////////////////////////////////////////////////////
+//                                                             //
+//                    ANNOTATED SOURCE CODE                    //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// 1. Introduction                                             //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+// This document's comments have been written specifically     //
+// with MarkDown and Docco in mind. Markdown is a simple way   //
+// to add formatting to text that can then be converted to     //
+// HTML. It is used by sites like GitHub, StackOverflow, and   //
+// Reddit. Since the UGUI project is hosted on GitHub and it's //
+// community is based in ugui.reddit.com, it seemed logical    //
+// MarkDown be the common language used for the documentation. //
+// Fortunately Jeremy Ashkenas created a tool called Docco     //
+// that allows you to easily generate an HTML file from your   //
+// source files.                                               //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+// 2. Running Docco/Updating the documentation                 //
+/////////////////////////////////////////////////////////////////
+//                                                             //
+// a. Install Node.js (which in turn installs NPM).            //
+//    * http://nodejs.org                                      //
+// b. Verify NPM installed by running npm --version in your    //
+//    command line.                                            //
+// c. Install docco by running npm install -g docco in your    //
+//    command line.                                            //
+// d. Navigate to the directory ugui.s is in and run           //
+//    docco ugui.js                                            //
+//                                                             //
+// These instructions will be updated when a more routine      //
+// method is developed.                                        //
+//                                                             //
+/////////////////////////////////////////////////////////////////
+
+*/
