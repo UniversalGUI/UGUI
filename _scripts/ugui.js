@@ -138,7 +138,7 @@ if (!window.ugui) {
 //### U02. READ A FILE
 //
 //>A function that allows you to set the contents of a file to
-//a variable. Like so:
+// a variable. Like so:
 //
 //>`var devToolsHTML = readAFile("_markup/ugui-devtools.htm");`
 
@@ -223,9 +223,9 @@ function runcmd(executableAndArgs, callback) {
 //### U04. RUN CMD ADVANCED
 //
 //>This is a more advanced option for running executables. You
-//can pass in a parameters object to get additional
-//functionality such as running a function when an executable
-//closes, finishes, errors, or returns data.
+// can pass in a parameters object to get additional
+// functionality such as running a function when an executable
+// closes, finishes, errors, or returns data.
 //
 //>`ugui.helpers.runcmdAdvanced(parameters);`
 //
@@ -334,8 +334,8 @@ function runcmdAdvanced(parameters) {
 //### U05. PREVENT USER FROM ENTERING QUOTES IN FORMS
 //
 //>In all input text fields and textareas, remove both single
-//and double quotes as they are typed, on page load, and when
-//the form is submitted.
+// and double quotes as they are typed, on page load, and when
+// the form is submitted.
 
 //Remove all quotes on every textfield whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
@@ -365,7 +365,7 @@ removeTypedQuotes();
 //### U06. SUBMIT LOCKED UNTIL REQUIRED FULFILLED
 //
 //>Gray out the submit button until all required elements are
-//filled out.
+// filled out.
 
 //
 function unlockSubmit() {
@@ -415,9 +415,9 @@ $(".sendCmdArgs").each( unlockSubmit );
 //### U07. REALTIME UPDATING DEV TOOL COMMAND OUTPUT
 //
 //>In the UGUI Dev Tools there is a CMD Output tab. This
-//section updates the contents of that section whenever the
-//developer interacts with any form elements rather than only
-//updating it on submit.
+// section updates the contents of that section whenever the
+// developer interacts with any form elements rather than only
+// updating it on submit.
 
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
@@ -485,12 +485,12 @@ function updateUGUIDevCommandLine() {
 //>What happens when you click the submit button.
 //
 //>When the button is pressed, prevent it from submitting the
-//form like it normally would in a browser. Then grab all
-//elements with an argOrder except for unchecked checkboxes.
-//Combine the prefix, value and suffix into one variable per
-//element. Put them in the correct order. Send out all of the
-//prefix/value/suffix combos in the correct order to the CLI
-//executable.
+// form like it normally would in a browser. Then grab all
+// elements with an argOrder except for unchecked checkboxes.
+// Combine the prefix, value and suffix into one variable per
+// element. Put them in the correct order. Send out all of the
+// prefix/value/suffix combos in the correct order to the CLI
+// executable.
 
 //When you click the submit button.
 $(".sendCmdArgs").click( function(event) {
@@ -533,8 +533,8 @@ $(".sendCmdArgs").click( function(event) {
 //### U09. BUILDING THE COMMAND ARRAY
 //
 //>What happens when you click the submit button or when the
-//UGUI Dev Tools are updated to preview the outputted command
-//that would be sent to the cmd line/terminal.
+// UGUI Dev Tools are updated to preview the outputted command
+// that would be sent to the cmd line/terminal.
 
 //
 function buildCommandArray(thisExecutable) {
@@ -585,8 +585,8 @@ function buildCommandArray(thisExecutable) {
 //### U10. BUILD UGUI ARG OBJECT
 //
 //>This grabs all the data about the elements on the page that
-//have a data-argName and puts that information on the window
-//object, located here: `window.ugui.args`
+// have a data-argName and puts that information on the window
+// object, located here: `window.ugui.args`
 
 //
 function buildUGUIArgObject() {
@@ -676,8 +676,8 @@ buildUGUIArgObject();
 //### U11. FIND KEY VALUE
 //
 //>This is a general purpose function that allows retrieving
-//information from an object. Here is an example object and
-//how `findKeyValue()` works to return data from it:
+// information from an object. Here is an example object and
+// how `findKeyValue()` works to return data from it:
 //
 //>     var a = {
 //         "b": "dog",
@@ -736,8 +736,8 @@ function findKeyValue(obj, arr) {
 //### U12. PARSE ARGUMENT
 //
 //>This takes the argument from the `<cmd><arg>`, finds all
-//the `((keywords))` and replaces them with the information on
-//the UGUI Args Object found here: `window.ugui.args`
+// the `((keywords))` and replaces them with the information on
+// the UGUI Args Object found here: `window.ugui.args`
 
 //
 function parseArgument(argumentText) {
@@ -818,8 +818,8 @@ function parseArgument(argumentText) {
 //### U13. PROCESS ALL CMD DEFINITIONS
 //
 //>This loops through all <def>'s and processes the value of
-//them to create the correct key value pairs on the ugui args
-//object.
+// them to create the correct key value pairs on the ugui args
+// object.
 
 //
 function patternMatchingDefinitionEngine() {
@@ -913,8 +913,8 @@ function patternMatchingDefinitionEngine() {
 //### U14. SET INPUT FILE PATH, FILE NAME, AND EXTENSION
 //
 //>This processes everything elements with a data-argName that
-//are also `<input type="file">`. It creates special properties
-//for it on the UGUI args object found here: `window.ugui.args`
+// are also `<input type="file">`. It creates special properties
+// for it on the UGUI args object found here: `window.ugui.args`
 
 //
 function setInputFilePathNameExt(currentElement, argName) {
@@ -999,8 +999,8 @@ function setInputFilePathNameExt(currentElement, argName) {
 //### U15. COLOR PROCESSOR
 //
 //>Process input elements with a type of color to generate
-//RGB, Hex, and Decimal values, then place them on the
-//`ugui.args.{data-argName}` object.
+// RGB, Hex, and Decimal values, then place them on the
+// `ugui.args.{data-argName}` object.
 
 //
 function colorProcessor(inputColor, argName) {
@@ -1136,7 +1136,7 @@ function convertCommandArraytoString( cmdArray ) {
 //### U17. REPLACE HTML TEXT WITH TEXT FROM PACKAGE.JSON
 //
 //>Some text on the page can be auto-filled from the content in
-//the package.json. This replaces the text on the page.
+// the package.json. This replaces the text on the page.
 
 //
 $(".applicationName").html(appName);
@@ -1281,7 +1281,7 @@ $('.navbar a[href="#exit"]').click( function() {
 //
 //>Detects if you're in Development or Production environment.
 //
-// If you have a class of "dev" or "prod" in the body tag UGUI
+//>If you have a class of "dev" or "prod" in the body tag UGUI
 // will enable key bindings such as F12 or CTRL+Shift+I to
 // launch Webkit's Developer Tools, or F5 to refresh. Also it
 // displays the Command Line output at the bottom of the page.
@@ -1367,7 +1367,7 @@ function updateCommandLineOutputPreviewHint() {
 //* * *
 //### U21. PUT ALL EXECUTABLES IN DROPDOWNS
 //
-// In the UGUI Dev Toolbar, there are dropdowns in the "CMD
+//>In the UGUI Dev Toolbar, there are dropdowns in the "CMD
 // Output" and "Exectuable Info" sections that contain all of
 // the executables used in the app.
 
@@ -1389,7 +1389,7 @@ function fillExecutableDropdowns() {
 //* * *
 //### U22. WARN IF IDENTICAL DATA-ARGNAMES
 //
-// If the designer/developer uses the same data-argName value
+//>If the designer/developer uses the same data-argName value
 // for multiple elements, display a warning.
 
 //
@@ -1596,7 +1596,7 @@ function saveNewSwatch(newSwatch) {
 //### U26. CUSTOM KEYBOARD SHORTCUTS
 //
 //>This funciton is only ran when in dev mode. It gives the
-//developer access to common/expected keyboard shortcuts.
+// developer access to common/expected keyboard shortcuts.
 
 //
 function keyBindings() {
@@ -2065,7 +2065,7 @@ function loadSettings(customLocation) {
 //* * *
 //### U33. THE UGUI OBJECT
 //
-// We expose parts of UGUI to developers via the UGUI object.
+//>We expose parts of UGUI to developers via the UGUI object.
 // To quickly access what is available type "ugui" into the
 // NW.js Developer Tools console.
 
