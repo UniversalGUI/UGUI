@@ -72,7 +72,7 @@ var uguiVersion = "0.9.0";
 
 
 //* * *
-//### U01. UGUI VARIABLES
+//### U01. UGUI Variables
 //
 //>Listing of Variables used throughout this library.
 
@@ -135,7 +135,7 @@ if (!window.ugui) {
 
 
 //* * *
-//### U02. READ A FILE
+//### U02. Read a file
 //
 //>A function that allows you to set the contents of a file to
 // a variable. Like so:
@@ -165,7 +165,7 @@ function readAFile(filePathAndName) {
 
 
 //* * *
-//### U03. RUN CMD
+//### U03. Run CMD
 //
 //>This is what makes running your CLI program and arguments
 //easier. Cow & Taco examples below to make life simpler.
@@ -220,7 +220,7 @@ function runcmd(executableAndArgs, callback) {
 
 
 //* * *
-//### U04. RUN CMD ADVANCED
+//### U04. Run CMD (Advanced)
 //
 //>This is a more advanced option for running executables. You
 // can pass in a parameters object to get additional
@@ -331,7 +331,7 @@ function runcmdAdvanced(parameters) {
 
 
 //* * *
-//### U05. PREVENT USER FROM ENTERING QUOTES IN FORMS
+//### U05. Prevent user from entering quotes in forms
 //
 //>In all input text fields and textareas, remove both single
 // and double quotes as they are typed, on page load, and when
@@ -362,7 +362,7 @@ removeTypedQuotes();
 
 
 //* * *
-//### U06. SUBMIT LOCKED UNTIL REQUIRED FULFILLED
+//### U06. Submit locked until required fulfilled
 //
 //>Gray out the submit button until all required elements are
 // filled out.
@@ -412,7 +412,7 @@ $(".sendCmdArgs").each( unlockSubmit );
 
 
 //* * *
-//### U07. REALTIME UPDATING DEV TOOL COMMAND OUTPUT
+//### U07. Realtime updating dev tool command output
 //
 //>In the UGUI Dev Tools there is a CMD Output tab. This
 // section updates the contents of that section whenever the
@@ -480,7 +480,7 @@ function updateUGUIDevCommandLine() {
 
 
 //* * *
-//### U08. CLICKING SUBMIT
+//### U08. Clicking Submit
 //
 //>What happens when you click the submit button.
 //
@@ -530,7 +530,7 @@ $(".sendCmdArgs").click( function(event) {
 
 
 //* * *
-//### U09. BUILDING THE COMMAND ARRAY
+//### U09. Building the Command Array
 //
 //>What happens when you click the submit button or when the
 // UGUI Dev Tools are updated to preview the outputted command
@@ -582,7 +582,7 @@ function buildCommandArray(thisExecutable) {
 
 
 //* * *
-//### U10. BUILD UGUI ARG OBJECT
+//### U10. Build UGUI Arg Object
 //
 //>This grabs all the data about the elements on the page that
 // have a data-argName and puts that information on the window
@@ -682,7 +682,7 @@ buildUGUIArgObject();
 
 
 //* * *
-//### U11. FIND KEY VALUE
+//### U11. Find Key Value
 //
 //>This is a general purpose function that allows retrieving
 // information from an object. Here is an example object and
@@ -742,7 +742,7 @@ function findKeyValue(obj, arr) {
 
 
 //* * *
-//### U12. PARSE ARGUMENT
+//### U12. Parse Argument
 //
 //>This takes the argument from the `<cmd><arg>`, finds all
 // the `((keywords))` and replaces them with the information on
@@ -824,7 +824,7 @@ function parseArgument(argumentText) {
 
 
 //* * *
-//### U13. PROCESS ALL CMD DEFINITIONS
+//### U13. Process All CMD Definitions
 //
 //>This loops through all <def>'s and processes the value of
 // them to create the correct key value pairs on the ugui args
@@ -919,7 +919,7 @@ function patternMatchingDefinitionEngine() {
 
 
 //* * *
-//### U14. SET INPUT FILE PATH, FILE NAME, AND EXTENSION
+//### U14. Set input file path, file name, and extension
 //
 //>This processes everything elements with a data-argName that
 // are also `<input type="file">`. It creates special properties
@@ -1005,7 +1005,7 @@ function setInputFilePathNameExt(currentElement, argName) {
 
 
 //* * *
-//### U15. COLOR PROCESSOR
+//### U15. Color Processor
 //
 //>Process input elements with a type of color to generate
 // RGB, Hex, and Decimal values, then place them on the
@@ -1088,7 +1088,7 @@ function colorProcessor(inputColor, argName) {
 
 
 //* * *
-//### U16. CONVERT COMMAND ARRAY TO STRING
+//### U16. Convert Command Array to string
 //
 //>Take the array of executable and commands, remove empty
 // arguments and put everything into a string to be sent out
@@ -1142,7 +1142,7 @@ function convertCommandArraytoString( cmdArray ) {
 
 
 //* * *
-//### U17. REPLACE HTML TEXT WITH TEXT FROM PACKAGE.JSON
+//### U17. Replace HTML text with text from package.json
 //
 //>Some text on the page can be auto-filled from the content in
 // the package.json. This replaces the text on the page.
@@ -1159,7 +1159,7 @@ getAboutModal();
 
 
 //* * *
-//### U18. UPDATE ABOUT MODAL
+//### U18. Update About modal
 //
 //>This pulls in information about the application from the
 // package.json file and puts in in the About modal. It also
@@ -1212,7 +1212,7 @@ function getAboutModal() {
 
 
 //* * *
-//### U19. NAVIGATION BAR FUNCTIONALITY
+//### U19. Navigation bar functionality
 //
 //>Everything in this section controls the visibility and the
 // functionality of the items in the top nav bar.
@@ -1286,7 +1286,7 @@ $('.navbar a[href="#exit"]').click( function() {
 
 
 //* * *
-//### U20. DETECT IF IN DEVELOPER ENVIRONMENT
+//### U20. Detect if in Developer environment
 //
 //>Detects if you're in Development or Production environment.
 //
@@ -1374,7 +1374,7 @@ function updateCommandLineOutputPreviewHint() {
 
 
 //* * *
-//### U21. PUT ALL EXECUTABLES IN DROPDOWNS
+//### U21. Put all executables in dropdowns
 //
 //>In the UGUI Dev Toolbar, there are dropdowns in the "CMD
 // Output" and "Exectuable Info" sections that contain all of
@@ -1396,7 +1396,7 @@ function fillExecutableDropdowns() {
 
 
 //* * *
-//### U22. WARN IF IDENTICAL DATA-ARGNAMES
+//### U22. Warn if identical data-argNames
 //
 //>If the designer/developer uses the same data-argName value
 // for multiple elements, display a warning.
@@ -1456,7 +1456,7 @@ function warnIfDuplicateArgNames() {
 
 
 //* * *
-//### U23. PUT CLI HELP INFO IN UGUI DEV TOOLS
+//### U23. Put CLI help info in UGUI Dev Tools
 //
 //>This funciton is only ran when in dev mode. It adds another
 // tab in the UGUI Developer Tools that returns information
@@ -1492,7 +1492,7 @@ function putExeHelpInDevTools() {
 
 
 //* * *
-//### U24. SWAP BOOTSWATCHES
+//### U24. Swap Bootswatches
 //
 //>This funciton is only ran when in dev mode. It grabs a list
 // of all files in the ven.bootswatch folder and puts them in
@@ -1536,7 +1536,7 @@ function swatchSwapper() {
 
 
 //* * *
-//### U25. SAVE CHOSEN BOOTSWATCH
+//### U25. Save chosen Bootswatch
 //
 //>In the UGUI Developer Tools panel under the "Style Swapper"
 // section, when the user clicks the "Use this style" button,
@@ -1602,7 +1602,7 @@ function saveNewSwatch(newSwatch) {
 
 
 //* * *
-//### U26. CUSTOM KEYBOARD SHORTCUTS
+//### U26. Custom keyboard shortcuts
 //
 //>This funciton is only ran when in dev mode. It gives the
 // developer access to common/expected keyboard shortcuts.
@@ -1655,7 +1655,7 @@ function keyBindings() {
 
 
 //* * *
-//### U27. LAUNCH LINKS IN DEFAULT BROWSER
+//### U27. Launch links in default browser
 //
 //>Detects all links on the page with a class of external-link
 // and sets them to open the link in the user's default
@@ -1687,7 +1687,7 @@ openDefaultBrowser();
 
 
 //* * *
-//### U28. EZDZ: DRAG AND DROP
+//### U28. EZDZ: Drag and Drop
 //
 //>Code for drag/drop/browse box. This was originally based on
 // EZDZ, but has been heavily modified for Bootstrap and NW.js
@@ -1757,7 +1757,7 @@ function ezdz(fileInfo) {
 
 
 //* * *
-//### U29. RANGE SLIDER
+//### U29. Range slider
 //
 //>Enables all elements with a class of slider to use the
 // boostrap-slider plugin.
@@ -1826,7 +1826,7 @@ sliderHandleColor();
 
 
 //* * *
-//### U30 CUT/COPY/PASTE CONTEXT MENU
+//### U30 Cut/Copy/Paste context menu
 //
 //>Right-click on any text or text field and you can now C&P!
 //
@@ -1883,7 +1883,7 @@ cutCopyPasteMenu();
 
 
 //* * *
-//### U31. SAVE SETTINGS
+//### U31. Save settings
 //
 //>This saves the settings of your app into a local user
 // account specific folder on the computer that is different
@@ -1944,7 +1944,7 @@ function saveSettings(customLocation) {
 
 
 //* * *
-//### U32. LOAD SETTINGS
+//### U32. Load settings
 //
 //>This loads your settings from the default save location or
 // a location that you've passed in. It reads the file, which
@@ -2074,7 +2074,7 @@ function loadSettings(customLocation) {
 
 
 //* * *
-//### U33. THE UGUI OBJECT
+//### U33. The UGUI Object
 //
 //>We expose parts of UGUI to developers via the UGUI object.
 // To quickly access what is available type "ugui" into the
@@ -2133,43 +2133,43 @@ window.ugui = {
 
 
 
-/*
-
-/////////////////////////////////////////////////////////////////
-//                                                             //
-//                    ANNOTATED SOURCE CODE                    //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// 1. Introduction                                             //
-/////////////////////////////////////////////////////////////////
-//                                                             //
-// This document's comments have been written specifically     //
-// with MarkDown and Docco in mind. Markdown is a simple way   //
-// to add formatting to text that can then be converted to     //
-// HTML. It is used by sites like GitHub, StackOverflow, and   //
-// Reddit. Since the UGUI project is hosted on GitHub and it's //
-// community is based in ugui.reddit.com, it seemed logical    //
-// MarkDown be the common language used for the documentation. //
-// Fortunately Jeremy Ashkenas created a tool called Docco     //
-// that allows you to easily generate an HTML file from your   //
-// source files.                                               //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-// 2. Running Docco/Updating the documentation                 //
-/////////////////////////////////////////////////////////////////
-//                                                             //
-// a. Install Node.js (which in turn installs NPM).            //
-//    * http://nodejs.org                                      //
-// b. Verify NPM installed by running npm --version in your    //
-//    command line.                                            //
-// c. Install docco by running npm install -g docco in your    //
-//    command line.                                            //
-// d. Navigate to the directory ugui.s is in and run           //
-//    docco ugui.js                                            //
-//                                                             //
-// These instructions will be updated when a more routine      //
-// method is developed.                                        //
-//                                                             //
-/////////////////////////////////////////////////////////////////
-
-*/
+/***********************************************************************/
+/*                                                                     */
+/*  /////////////////////////////////////////////////////////////////  */
+/*  //                                                             //  */
+/*  //                    ANNOTATED SOURCE CODE                    //  */
+/*  //                                                             //  */
+/*  /////////////////////////////////////////////////////////////////  */
+/*  // 1. Introduction                                             //  */
+/*  /////////////////////////////////////////////////////////////////  */
+/*  //                                                             //  */
+/*  // This document's comments have been written specifically     //  */
+/*  // with MarkDown and Docco in mind. Markdown is a simple way   //  */
+/*  // to add formatting to text that can then be converted to     //  */
+/*  // HTML. It is used by sites like GitHub, StackOverflow, and   //  */
+/*  // Reddit. Since the UGUI project is hosted on GitHub and it's //  */
+/*  // community is based in ugui.reddit.com, it seemed logical    //  */
+/*  // MarkDown be the common language used for the documentation. //  */
+/*  // Fortunately Jeremy Ashkenas created a tool called Docco     //  */
+/*  // that allows you to easily generate an HTML file from your   //  */
+/*  // source files.                                               //  */
+/*  //                                                             //  */
+/*  /////////////////////////////////////////////////////////////////  */
+/*  // 2. Running Docco/Updating the documentation                 //  */
+/*  /////////////////////////////////////////////////////////////////  */
+/*  //                                                             //  */
+/*  // a. Install Node.js (which in turn installs NPM).            //  */
+/*  //    * http://nodejs.org                                      //  */
+/*  // b. Verify NPM installed by running npm --version in your    //  */
+/*  //    command line.                                            //  */
+/*  // c. Install docco by running npm install -g docco in your    //  */
+/*  //    command line.                                            //  */
+/*  // d. Navigate to the directory ugui.s is in and run           //  */
+/*  //    docco ugui.js                                            //  */
+/*  //                                                             //  */
+/*  // These instructions will be updated when a more routine      //  */
+/*  // method is developed.                                        //  */
+/*  //                                                             //  */
+/*  /////////////////////////////////////////////////////////////////  */
+/*                                                                     */
+/***********************************************************************/
