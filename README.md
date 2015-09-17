@@ -46,6 +46,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Implement Dan's definition pattern matching engine~~
 * V1.0 ~~UGUI Devtools needs to have an exectuable selector~~
 * V1.0 Test realworld usage of UGUI
+* V1.0 Save/Load Settings
 * V1.0 Test in OSX, Linux, and Windows (again)
 * V1.1 Multi-File import
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
@@ -63,6 +64,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
  * Design: In progress
  * Homepage: In progress
  * Documentation Page: In progress
+  * Annotated Source Code: In progress
  * Tutorials Page: Not started
  * Showcase of applications made with UGUI: Not started
  * Templates Page: Not started
@@ -96,6 +98,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 ###Known Issues
 
+* Loading settings doesn't update the value of `<input type="file">`. It does update it's internal file list though and should be functional if ran. There seems to currently be no method of updating the value of these elements due to security restrictions originally placed in Chromium. To get around this, we visually update the EZDZ plugin to make it look as though it's been updated, this however will not make a required `<input type="file">` activate as being fullfilled until the user interacts with it.
 * Range slider value is empty in the UGUI Arg Obj (window.ugui.args) on load. This doesn't matter though as it will get it's value when clicking run or any other form element with a data-argName, which in turn updates the UGUI Developer Toolbar's CMD Output Preview. Will not fix. Will accept pull request.
 
 * * *

@@ -593,9 +593,10 @@ function buildUGUIArgObject() {
     //Reset the Args Object to remove any stragglers
     window.ugui.args = {};
 
+    //Make an array containing every element on the page with an attribute of `data-argName`
     var cmdArgs = $("*[data-argName]");
 
-    //Cycle through all elements with a data-argName in <form id="currentexecutable">
+    //Cycle through all elements with a `data-argName` in `<form id="currentexecutable">`
     for (index = 0; index < cmdArgs.length; index++) {
 
         //get "bob" from `<input data-argName="bob" value="--kitten" />`
@@ -606,11 +607,19 @@ function buildUGUIArgObject() {
 
         //See if the current item is a range slider
         if ( $(cmdArgs[index]).hasClass("slider") ) {
-            //get "6" from `<input data-argname="bob" value="6" type="text" class="slider" />`
+            //get "6" from `<input data-argName="bob" value="6" type="text" class="slider" />`
             argValue = $(cmdArgs[index]).val();
 
-            //get checkbox from `<input data-argName="bob" type="checkbox" />`
+            //manually set the type to "range" for range slider elements
             argType = "range";
+        //See if the element is an item in one of Bootstrap's fake dropdowns
+        } else if ( $(cmdArgs[index]).parent().parent().hasClass("dropdown-menu") ) {
+
+            //get "--carrot" from `<input type="radio" data-argName="vegCarrot" value="--carrot" />`
+            argValue = $(cmdArgs[index]).val();
+
+            //manually set the type to "range" for range slider elements
+            argType = "dropdown";
         } else {
             //get "--kitten" from `<input data-argName="bob" value="--kitten" />`
             argValue = $(cmdArgs[index]).val();
@@ -644,7 +653,7 @@ function buildUGUIArgObject() {
         }
 
         //For checkboxes and radio dials, add special info
-        if (argType === "checkbox" || argType === "radio") {
+        if (argType === "checkbox" || argType === "radio" || argType === "dropdown") {
             if ( $(cmdArgs[index]).prop("checked") ) {
                 window.ugui.args[argName].htmlticked = true;
             } else {
@@ -1892,17 +1901,17 @@ cutCopyPasteMenu();
 
 //
 function saveSettings(customLocation) {
-    var gui = require('nw.gui');
+    var gui = require("nw.gui");
 
     var defaultLocation = "";
 
     //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
-        defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
+        defaultLocation = (gui.App.dataPath + "\\uguisettings.json");
     } else {
         //Find the path to the settings file and store it
-        defaultLocation = (gui.App.dataPath + '/uguisettings.json');
+        defaultLocation = (gui.App.dataPath + "/uguisettings.json");
     }
 
     //Validate types
@@ -1948,17 +1957,17 @@ function saveSettings(customLocation) {
 
 //
 function loadSettings(customLocation) {
-    var gui = require('nw.gui');
+    var gui = require("nw.gui");
 
     var defaultLocation = "";
 
     //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
-        defaultLocation = (gui.App.dataPath + '\\uguisettings.json');
+        defaultLocation = (gui.App.dataPath + "\\uguisettings.json");
     } else {
         //Find the path to the settings file and store it
-        defaultLocation = (gui.App.dataPath + '/uguisettings.json');
+        defaultLocation = (gui.App.dataPath + "/uguisettings.json");
     }
 
     //Validate types
@@ -1975,7 +1984,7 @@ function loadSettings(customLocation) {
     var settingsFile = customLocation || defaultLocation;
 
     //Attempt to read the file
-    fs.readFile(settingsFile, {encoding: 'utf-8'}, function(err, data){
+    fs.readFile(settingsFile, {encoding: "utf-8"}, function(err, data){
         //Display console warning if unable to read the file
         if (err) {
             console.warn("Could not read settings file from location:");
@@ -1986,13 +1995,15 @@ function loadSettings(customLocation) {
             var settingsObj = JSON.parse(data);
             //Iterate through the saved settings and update the UI
             for (key in settingsObj) {
+                var htmltype = settingsObj[key].htmltype;
+
                 //Check if the key has a corresponding UI element
                 //and that it isn't set to 'do not save'
-                if ( $('[data-argName'+ key + ']') && !($('[data-argName'+ key + ']').hasClass('do-not-save')) ) {
-                    console.log(settingsObj[key].htmltype);
-                    //Update based on type of key:
-                    if (settingsObj[key].htmltype == 'file' && settingsObj[key].value !== "") {
-                        //File: file
+                if ( $("[data-argName" + key + "]") && !($("[data-argName" + key + "]").hasClass("do-not-save")) ) {
+                    /* console.log(htmltype); */
+                    //If `<input type="file">` and it has value
+                    if (htmltype == "file" && settingsObj[key].value !== "") {
+                        //Create an object with the correct file properties
                         var file = {
                             "type": settingsObj[key].type,
                             "path": settingsObj[key].fullpath,
@@ -2002,51 +2013,51 @@ function loadSettings(customLocation) {
                             "lastModifiedDate": settingsObj[key].lastModifiedDate,
                             "webkitRelativePath": settingsObj[key].webkitRelativePath
                         };
-                        $('[data-argName=' + key + ']')[0].files[0] = file;
-                        //Can't manually set the val, need to change the cmd preview in devtools to look at `.files[0]` instead of `.val()`
-                        //`$('[data-argName=' + key + ']').val(file.path);`
-                        //Update ezdz
-                        if ( $('[data-argName=' + key + ']').parent().hasClass("ezdz") ) {
-                            //run ezdz to update visuals on the page
+                        //Set the matching UI element in the app with the above properties
+                        $("[data-argName=" + key + "]")[0].files[0] = file;
+
+                        //Update EZDZ if the element is using it
+                        if ( $("[data-argName=" + key + "]").parent().hasClass("ezdz") ) {
+                            //Run EZDZ to update visuals on the page
                             ezdz(file);
                         }
-                    } else if (settingsObj[key].htmltype == 'radio') {
-                        //Radio dials: checked
+                    //If `<input type="checkbox">` or `<input type="radio">`
+                    } else if ( htmltype == "checkbox" || htmltype == "radio") {
+                        //Set the value of the element as checked or not
                         if (settingsObj[key].htmlticked == true) {
-                            $('[data-argName=' + key + ']').prop('checked', true);
+                            $("[data-argName=" + key + "]").prop("checked", true);
                         } else {
-                            $('[data-argName=' + key + ']').prop('checked', false);
+                            $("[data-argName=" + key + "]").prop("checked", false);
                         }
-                    } else if (settingsObj[key].htmltype == 'checkbox') {
-                        //Checkbox: checked
-                        if (settingsObj[key].htmlticked == true) {
-                            $('[data-argName=' + key + ']').prop('checked', true);
-                        } else {
-                            $('[data-argName=' + key + ']').prop('checked', false);
-                        }
-                    } else if (settingsObj[key].htmltype == 'color') {
-                        //Color: value
-                        //This one actually updates the color and is most important!
-                        $('[data-argName=' + key + ']').val(settingsObj[key].value);
-                        //This one updates the html value, which doesn't do anything that I can tell
-                        $('[data-argName=' + key + ']').attr('value', settingsObj[key].value);
-                    } else if (settingsObj[key].htmltype == 'range') {
-                        //Range: value
-                        //Check if the value is not a number, which means it's a `2` value slider like `'0,25'`
+                    //If the setting is for a radio in one of Bootstrap's fake dropdowns
+                    } else if (htmltype == "dropdown") {
+                        //Force the UI to be updated
+                        $("[data-argName=" + key + "]").trigger("click");
+                    //If the setting is for a range slider
+                    } else if (htmltype == "range") {
+                        //Check if the value is not a number, like `'0,25'` rather than `2`
                         if (isNaN(settingsObj[key].value)) {
-                            var parsedValue = settingsObj[key].value.split(',').map( function(num) {
-                                return parseInt (num);
+//TODO: cmd preview doesn't update this when doing a loadSettings()
+                            var parsedValue = settingsObj[key].value.split(",").map( function(num) {
+                                return parseInt(num);
                             });
-                            $('[data-argName=' + key + ']').slider('setValue', parsedValue);
+                            //Set the value to `0,25` and the data-slider-value to `[0,25]`
+                            $("[data-argName=" + key + "]").slider("setValue", parsedValue);
+                            $("[data-argName=" + key + "]").attr("data-slider-value", "[" + parsedValue + "]");
                         } else {
-                            $('[data-argName=' + key + ']').slider('setValue', parseInt(settingsObj[key].value));
+                            //Set the value to `2`
+                            $("[data-argName=" + key + "]").slider("setValue", parseInt(settingsObj[key].value));
                         }
-                    } else if (settingsObj[key].htmltype == 'textarea') {
-                        //Textarea: text
-                        $('[data-argName=' + key + ']').text(settingsObj[key].value);
+                    //If `<textarea>`
+                    } else if (htmltype == "textarea") {
+//TODO: cmd preview doesn't update this when doing a loadSettings()
+                        //Set the value and UI text for the matching textarea in the app
+                        $("[data-argName=" + key + "]").val(settingsObj[key].value);
+                        $("[data-argName=" + key + "]").text(settingsObj[key].value);
+                    //Catch-all for any generic other input types
                     } else if (settingsObj[key].value) {
-                        //Catch-all
-                        $('[data-argName=' + key + ']').val(settingsObj[key].value);
+                        //set the value for the matching element
+                        $("[data-argName=" + key + "]").val(settingsObj[key].value);
                     }
                 }
             }
