@@ -1937,6 +1937,11 @@ function saveSettings(customLocation) {
     fs.writeFileSync(settingsFile, settingsJSON);
 }
 
+//Make sure anything is a class of `save-ugui-settings` is wired up to save the UGUI settings
+$(".save-ugui-settings").click( function() {
+    saveSettings();
+} );
+
 
 
 
@@ -2067,6 +2072,12 @@ function loadSettings(customLocation) {
     });
 
 }
+
+//Make sure anything is a class of `load-ugui-settings` is wired up to load the UGUI settings
+$(".load-ugui-settings").click( function() {
+    loadSettings();
+});
+
 
 
 

@@ -122,7 +122,3 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 * [Bootstrap Dropdowns Enhancement](http://behigh.github.io/bootstrap_dropdowns_enhancement)
 * [Cut, Copy, Paste Context Menu](https://github.com/b1rdex/nw-contextmenu)
 * [Sass](http://sass-lang.com) - Just cuz it's awesome
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/UniversalGUI/ugui/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
