@@ -45,7 +45,7 @@
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U00. Intro
 //
 
@@ -71,7 +71,7 @@ var uguiVersion = "0.9.0";
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U01. UGUI Variables
 //
 //>Listing of Variables used throughout this library.
@@ -134,7 +134,7 @@ if (!window.ugui) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U02. Read a file
 //
 //>A function that allows you to set the contents of a file to
@@ -164,7 +164,7 @@ function readAFile(filePathAndName) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U03. Run CMD
 //
 //>This is what makes running your CLI program and arguments
@@ -219,7 +219,7 @@ function runcmd(executableAndArgs, callback) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U04. Run CMD (Advanced)
 //
 //>This is a more advanced option for running executables. You
@@ -330,7 +330,7 @@ function runcmdAdvanced(parameters) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U05. Prevent user from entering quotes in forms
 //
 //>In all input text fields and textareas, remove both single
@@ -361,69 +361,49 @@ removeTypedQuotes();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U06. Submit locked until required fulfilled
 //
 //>Gray out the submit button until all required elements are
-// filled out.
+// filled out. On every change, click, or keystroke, check all
+// forms to verify that if any need unlocked or locked.
 
 //
-function unlockSubmit(pickedExecutable) {
-    if (typeof(pickedExecutable) !== "string" && typeof(pickedExecutable) !== "undefined") {
-        console.info("Executable must be passed as a string.");
-        return;
-    }
-    //Find the id name for the form containing what triggered this function (id=executable name)
-    var whichExecutable = pickedExecutable || $(this).closest("form").attr("id");
-    var formClicked = "";
-
-    //cycle through all the executables in case they're using more than one.
+function unlockSubmit() {
+    //Cycle through each executable
     for (index = 0; index < executable.length; index++) {
-        //if the form arg executable matches the cmd arg excutable
-        if (whichExecutable === executable[index]) {
-            //Set all the data-argNames for the correct form to formClicked
-            formClicked = argsForm[index];
+        //Get the current executable
+        var currentExecutable = executable[index];
+        //If a required element wasn't filled out in this form
+        if ( $("#" + currentExecutable).is(":invalid") ) {
+            //Disable/Lock the submit button
+            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", true);
+        //If all required elements in a form have been fulfilled
+        } else {
+            //Enable/Unlock the submit button
+            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", false);
         }
     }
 
-    //Check if any of the required elements aren't filled out
-    for (index = 0; index < formClicked.length; index++) {
-        var cmdArg = $(formClicked[index]);
-        //If a required element wasn't filled out, make the submit button gray
-        if ( cmdArg.is(":invalid") ) {
-            $("#" + whichExecutable + " .sendCmdArgs").prop("disabled",true);
-            return;
-        }
-    }
-
-    //If all the required elements are filled out, enable the submit button
-    $("#" + whichExecutable + " .sendCmdArgs").prop("disabled",false);
 }
 
 for (index = 0; index < argsForm.length; index++) {
     //When you click out of a form element
-    $(argsForm[index]).keyup  ( function() {
-        unlockSubmit();
-    });
-    $(argsForm[index]).mouseup( function() {
-        unlockSubmit();
-    });
-    $(argsForm[index]).change ( function() {
-        unlockSubmit();
-    });
+    $(argsForm[index]).keyup  ( unlockSubmit );
+    $(argsForm[index]).mouseup( unlockSubmit );
+    $(argsForm[index]).change ( unlockSubmit );
 }
 
 //On page load have this run once to unlock submit if nothing is required.
-for (subindex = 0; subindex < executable.length; subindex++) {
-    unlockSubmit(executable[subindex]);
-}
+unlockSubmit();
 
 
 
 
 
 
-//* * *
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U07. Realtime updating dev tool command output
 //
 //>In the UGUI Dev Tools there is a CMD Output tab. This
@@ -442,12 +422,10 @@ if( $("body").hasClass("dev") ) {
                 var file = this.files[0];
                 //run a custom function before updating dev tools
                 ezdz(file);
-                //now that the variables have been set by the above function
-                updateUGUIDevCommandLine();
-            } else {
-                //otherwise just go ahead and update the dev tools
-                updateUGUIDevCommandLine();
             }
+
+            //Update the UGUI Developer Toolbar's "CMD Output" section
+            updateUGUIDevCommandLine();
         });
     }
 
@@ -481,9 +459,8 @@ function updateUGUIDevCommandLine() {
         }
     }
 
-    //Replace the text in the command line box in UGUI dev tools
+    //Replace the text in the "CMD Output" section of the UGUI Developer Toolbar
     $("#commandLine").html( devCommandOutputSpaces );
-
 }
 
 
@@ -491,7 +468,8 @@ function updateUGUIDevCommandLine() {
 
 
 
-//* * *
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U08. Clicking Submit
 //
 //>What happens when you click the submit button.
@@ -541,7 +519,7 @@ $(".sendCmdArgs").click( function(event) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U09. Building the Command Array
 //
 //>What happens when you click the submit button or when the
@@ -593,7 +571,7 @@ function buildCommandArray(thisExecutable) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U10. Build UGUI Arg Object
 //
 //>This grabs all the data about the elements on the page that
@@ -693,7 +671,7 @@ buildUGUIArgObject();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U11. Find Key Value
 //
 //>This is a general purpose function that allows retrieving
@@ -753,7 +731,7 @@ function findKeyValue(obj, arr) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U12. Parse Argument
 //
 //>This takes the argument from the `<cmd><arg>`, finds all
@@ -836,7 +814,7 @@ function parseArgument(argumentText) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U13. Process All CMD Definitions
 //
 //>This loops through all <def>'s and processes the value of
@@ -931,7 +909,7 @@ function patternMatchingDefinitionEngine() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U14. Set input file path, file name, and extension
 //
 //>This processes everything elements with a data-argName that
@@ -1017,7 +995,7 @@ function setInputFilePathNameExt(currentElement, argName) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U15. Color Processor
 //
 //>Process input elements with a type of color to generate
@@ -1100,7 +1078,7 @@ function colorProcessor(inputColor, argName) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U16. Convert Command Array to string
 //
 //>Take the array of executable and commands, remove empty
@@ -1154,7 +1132,7 @@ function convertCommandArraytoString( cmdArray ) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U17. Replace HTML text with text from package.json
 //
 //>Some text on the page can be auto-filled from the content in
@@ -1171,7 +1149,7 @@ getAboutModal();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U18. Update About modal
 //
 //>This pulls in information about the application from the
@@ -1224,7 +1202,7 @@ function getAboutModal() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U19. Navigation bar functionality
 //
 //>Everything in this section controls the visibility and the
@@ -1298,7 +1276,7 @@ $('.navbar a[href="#exit"]').click( function() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U20. Detect if in Developer environment
 //
 //>Detects if you're in Development or Production environment.
@@ -1386,7 +1364,7 @@ function updateCommandLineOutputPreviewHint() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U21. Put all executables in dropdowns
 //
 //>In the UGUI Dev Toolbar, there are dropdowns in the "CMD
@@ -1407,7 +1385,7 @@ function fillExecutableDropdowns() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U22. Warn if identical data-argNames
 //
 //>If the designer/developer uses the same data-argName value
@@ -1467,7 +1445,7 @@ function warnIfDuplicateArgNames() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U23. Put CLI help info in UGUI Dev Tools
 //
 //>This funciton is only ran when in dev mode. It adds another
@@ -1503,7 +1481,7 @@ function putExeHelpInDevTools() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U24. Swap Bootswatches
 //
 //>This funciton is only ran when in dev mode. It grabs a list
@@ -1547,7 +1525,7 @@ function swatchSwapper() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U25. Save chosen Bootswatch
 //
 //>In the UGUI Developer Tools panel under the "Style Swapper"
@@ -1613,7 +1591,7 @@ function saveNewSwatch(newSwatch) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U26. Custom keyboard shortcuts
 //
 //>This funciton is only ran when in dev mode. It gives the
@@ -1666,7 +1644,7 @@ function keyBindings() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U27. Launch links in default browser
 //
 //>Detects all links on the page with a class of external-link
@@ -1698,7 +1676,7 @@ openDefaultBrowser();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U28. EZDZ: Drag and Drop
 //
 //>Code for drag/drop/browse box. This was originally based on
@@ -1768,7 +1746,7 @@ function ezdz(fileInfo) {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U29. Range slider
 //
 //>Enables all elements with a class of slider to use the
@@ -1837,7 +1815,7 @@ sliderHandleColor();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U30 Cut/Copy/Paste context menu
 //
 //>Right-click on any text or text field and you can now C&P!
@@ -1894,7 +1872,7 @@ cutCopyPasteMenu();
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U31. Save settings
 //
 //>This saves the settings of your app into a local user
@@ -1960,7 +1938,7 @@ $(".save-ugui-settings").click( function() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U32. Load settings
 //
 //>This loads your settings from the default save location or
@@ -2055,7 +2033,7 @@ function loadSettings(customLocation) {
                     } else if (htmltype == "range") {
                         //Check if the value is not a number, like `'0,25'` rather than `2`
                         if (isNaN(settingsObj[key].value)) {
-//TODO: cmd preview doesn't update this when doing a loadSettings()
+                            //Split `0,25` into `0` and `25` and return them as numbers instead of strings
                             var parsedValue = settingsObj[key].value.split(",").map( function(num) {
                                 return parseInt(num);
                             });
@@ -2083,11 +2061,7 @@ function loadSettings(customLocation) {
             buildUGUIArgObject();
             patternMatchingDefinitionEngine();
             updateUGUIDevCommandLine();
-
-            //On page load have this run once to unlock submit if nothing is required.
-            for (subindex = 0; subindex < executable.length; subindex++) {
-                unlockSubmit(executable[subindex]);
-            }
+            unlockSubmit();
         }
     });
 
@@ -2104,7 +2078,7 @@ $(".load-ugui-settings").click( function() {
 
 
 
-//* * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U33. The UGUI Object
 //
 //>We expose parts of UGUI to developers via the UGUI object.
