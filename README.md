@@ -45,10 +45,11 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.~~
 * V1.0 ~~Implement Dan's definition pattern matching engine~~
 * V1.0 ~~UGUI Devtools needs to have an exectuable selector~~
-* V1.0 Test realworld usage of UGUI
-* V1.0 Save/Load Settings
+* V1.0 ~~Save/Load Settings~~
+* V1.0 Test realworld usage of UGUI and prod mode
 * V1.0 Test in OSX, Linux, and Windows (again)
 * V1.1 Multi-File import
+* V1.1 Create NPM compliant package.json alternative
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
 * V1.5 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.

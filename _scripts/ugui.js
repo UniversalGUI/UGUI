@@ -1139,7 +1139,7 @@ function convertCommandArraytoString( cmdArray ) {
 // the package.json. This replaces the text on the page.
 
 //
-$(".applicationName").html(appName);
+$(".applicationName").html(appTitle);
 $(".applicationTitle").html(appTitle);
 $(".applicationDescription").html(appDescription);
 getAboutModal();
@@ -1164,7 +1164,7 @@ function getAboutModal() {
 
         //Wait for the "UGUI about" info to be loaded before updating the "App about" section
         //Load application name, version number, and author from package.json
-        $(".applicationName").html(appName);
+        $(".applicationName").html(appTitle);
         $(".versionApp").html(appVersion).prepend("V");
         $(".authorName").html(authorName);
         $(".versionUGUI").html(uguiVersion);
@@ -1890,7 +1890,7 @@ cutCopyPasteMenu();
 // updated during `loadSettings()`
 
 //
-function saveSettings(customLocation) {
+function saveSettings(customLocation, callback) {
     var gui = require("nw.gui");
 
     var defaultLocation = "";
@@ -1904,13 +1904,29 @@ function saveSettings(customLocation) {
         defaultLocation = (gui.App.dataPath + "/uguisettings.json");
     }
 
+    //If a custom location isn't passed into the function, use the default location for the settings file
+    var settingsFile = defaultLocation;
+
     //Validate types
-    if (customLocation && typeof(customLocation) !== "string") {
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string
+    if (arguments.length === 2 && typeof(customLocation) !== "string") {
         console.info("The custom location for your save file must be passed a as a string");
         console.info("Example:");
         console.info('saveSettings("C:\\folder\\app-settings.json");');
         console.info("Or, if you don't pass anything in, UGUI defaults to:");
         console.info('"' + defaultLocation + '"');
+        return;
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string
+    } else if (arguments.length === 2 && typeof(customLocation) === "string") {
+        //Set the settings file to the custom, passed in, location
+        settingsFile = customLocation;
+    //Check if two arguments were passed into `saveSettings` and if the second one is a function
+    } else if (arguments.length === 2 && typeof(callback) !== "function") {
+        console.info("Your callback must be a function.");
+        return;
+    //Check if only one argument was passed into `saveSettings` and if it was a string or function
+    } else if (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) {
+        console.info("You must pass in a path to your file as a string, or your callback as a function");
         return;
     }
 
@@ -1920,11 +1936,22 @@ function saveSettings(customLocation) {
     //Grab the args object and JSONify it
     var settingsJSON = JSON.stringify(ugui.args);
 
-    //If a custom location isn't passed into the function, use the default location for the settings file
-    var settingsFile = customLocation || defaultLocation;
-
     //Save the ugui.args object to the `uguisettings.json` file
-    fs.writeFileSync(settingsFile, settingsJSON);
+    //fs.writeFileSync();
+    fs.writeFile(settingsFile, settingsJSON, function (err) {
+        if (err) {
+            console.warn("There was an error in attempting to save to the location:");
+            console.warn(settingsFile);
+            console.warn("Error: " + err);
+        } else {
+            //If a callback function was passed into `saveSettings`, run it
+            if (typeof(callback) === "function") {
+                callback();
+            } else if (typeof(customLocation) === "function") {
+                customLocation();
+            }
+        }
+    });
 }
 
 //Make sure anything is a class of `save-ugui-settings` is wired up to save the UGUI settings
@@ -1951,7 +1978,7 @@ $(".save-ugui-settings").click( function() {
 // give it a class of `do-not-save`.
 
 //
-function loadSettings(customLocation) {
+function loadSettings(customLocation, callback) {
     var gui = require("nw.gui");
 
     var defaultLocation = "";
@@ -1965,18 +1992,31 @@ function loadSettings(customLocation) {
         defaultLocation = (gui.App.dataPath + "/uguisettings.json");
     }
 
+    //If a custom location isn't passed into the function, use the default location for the settings file
+    var settingsFile = defaultLocation;
+
     //Validate types
-    if (customLocation && typeof(customLocation) !== "string") {
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string
+    if (arguments.length === 2 && typeof(customLocation) !== "string") {
         console.info("The custom location for your save file must be passed a as a string");
         console.info("Example:");
         console.info('loadSettings("C:\\folder\\app-settings.json");');
         console.info("Or, if you don't pass anything in, UGUI defaults to:");
         console.info('"' + defaultLocation + '"');
         return;
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string
+    } else if (arguments.length === 2 && typeof(customLocation) === "string") {
+        //Set the settings file to the custom, passed in, location
+        settingsFile = customLocation;
+    //Check if two arguments were passed into `saveSettings` and if the second one is a function
+    } else if (arguments.length === 2 && typeof(callback) !== "function") {
+        console.info("Your callback must be a function.");
+        return;
+    //Check if only one argument was passed into `saveSettings` and if it was a string or function
+    } else if (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) {
+        console.info("You must pass in a path to your file as a string, or your callback as a function");
+        return;
     }
-
-    //If a custom location isn't passed into the function, use the default location for the settings file
-    var settingsFile = customLocation || defaultLocation;
 
     //Attempt to read the file
     fs.readFile(settingsFile, {encoding: "utf-8"}, function(err, data){
@@ -2062,9 +2102,15 @@ function loadSettings(customLocation) {
             patternMatchingDefinitionEngine();
             updateUGUIDevCommandLine();
             unlockSubmit();
+
+            //If a callback function was passed into `saveSettings`, run it
+            if (typeof(callback) === "function") {
+                callback();
+            } else if (typeof(customLocation) === "function") {
+                customLocation();
+            }
         }
     });
-
 }
 
 //Make sure anything is a class of `load-ugui-settings` is wired up to load the UGUI settings
