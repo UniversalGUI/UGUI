@@ -368,9 +368,13 @@ removeTypedQuotes();
 // filled out.
 
 //
-function unlockSubmit() {
+function unlockSubmit(pickedExecutable) {
+    if (typeof(pickedExecutable) !== "string" && typeof(pickedExecutable) !== "undefined") {
+        console.info("Executable must be passed as a string.");
+        return;
+    }
     //Find the id name for the form containing what triggered this function (id=executable name)
-    var whichExecutable = $(this).closest("form").attr("id");
+    var whichExecutable = pickedExecutable || $(this).closest("form").attr("id");
     var formClicked = "";
 
     //cycle through all the executables in case they're using more than one.
@@ -398,13 +402,21 @@ function unlockSubmit() {
 
 for (index = 0; index < argsForm.length; index++) {
     //When you click out of a form element
-    $(argsForm[index]).keyup  ( unlockSubmit );
-    $(argsForm[index]).mouseup( unlockSubmit );
-    $(argsForm[index]).change ( unlockSubmit );
+    $(argsForm[index]).keyup  ( function() {
+        unlockSubmit();
+    });
+    $(argsForm[index]).mouseup( function() {
+        unlockSubmit();
+    });
+    $(argsForm[index]).change ( function() {
+        unlockSubmit();
+    });
 }
 
 //On page load have this run once to unlock submit if nothing is required.
-$(".sendCmdArgs").each( unlockSubmit );
+for (subindex = 0; subindex < executable.length; subindex++) {
+    unlockSubmit(executable[subindex]);
+}
 
 
 
@@ -788,6 +800,7 @@ function parseArgument(argumentText) {
         if (
             (matched.htmltype === "checkbox" && matched.htmlticked === false) ||
             (matched.htmltype === "radio" && matched.htmlticked === false) ||
+            (matched.htmltype === "dropdown" && matched.htmlticked === false) ||
             (typeof(matched.value) === "undefined") ||
             (matched.value === "")
            ) {
@@ -1377,15 +1390,14 @@ function updateCommandLineOutputPreviewHint() {
 //### U21. Put all executables in dropdowns
 //
 //>In the UGUI Dev Toolbar, there are dropdowns in the "CMD
-// Output" and "Exectuable Info" sections that contain all of
+// Output" and "Executable Info" sections that contain all of
 // the executables used in the app.
 
 //
 function fillExecutableDropdowns() {
-    var executables = ugui.executable;
     //check each file and put it in the dropdown box
-    for (index = 0; index < executables.length; index++) {
-        $(".executableName").append('<option value="' + executables[index] + '">' + executables[index] + '</option>');
+    for (index = 0; index < executable.length; index++) {
+        $(".executableName").append('<option value="' + executable[index] + '">' + executable[index] + '</option>');
     }
 }
 
@@ -2001,6 +2013,7 @@ function loadSettings(customLocation) {
             //Iterate through the saved settings and update the UI
             for (key in settingsObj) {
                 var htmltype = settingsObj[key].htmltype;
+                var htmlticked = settingsObj[key].htmlticked;
 
                 //Check if the key has a corresponding UI element
                 //and that it isn't set to 'do not save'
@@ -2029,13 +2042,13 @@ function loadSettings(customLocation) {
                     //If `<input type="checkbox">` or `<input type="radio">`
                     } else if ( htmltype == "checkbox" || htmltype == "radio") {
                         //Set the value of the element as checked or not
-                        if (settingsObj[key].htmlticked == true) {
+                        if (htmlticked == true) {
                             $("[data-argName=" + key + "]").prop("checked", true);
                         } else {
                             $("[data-argName=" + key + "]").prop("checked", false);
                         }
                     //If the setting is for a radio in one of Bootstrap's fake dropdowns
-                    } else if (htmltype == "dropdown") {
+                    } else if (htmltype == "dropdown" && htmlticked == true) {
                         //Force the UI to be updated
                         $("[data-argName=" + key + "]").trigger("click");
                     //If the setting is for a range slider
@@ -2055,7 +2068,6 @@ function loadSettings(customLocation) {
                         }
                     //If `<textarea>`
                     } else if (htmltype == "textarea") {
-//TODO: cmd preview doesn't update this when doing a loadSettings()
                         //Set the value and UI text for the matching textarea in the app
                         $("[data-argName=" + key + "]").val(settingsObj[key].value);
                         $("[data-argName=" + key + "]").text(settingsObj[key].value);
@@ -2067,7 +2079,15 @@ function loadSettings(customLocation) {
                 }
             }
             //Build the arg object based on our updated UI
+            removeTypedQuotes();
             buildUGUIArgObject();
+            patternMatchingDefinitionEngine();
+            updateUGUIDevCommandLine();
+
+            //On page load have this run once to unlock submit if nothing is required.
+            for (subindex = 0; subindex < executable.length; subindex++) {
+                unlockSubmit(executable[subindex]);
+            }
         }
     });
 
@@ -2125,7 +2145,8 @@ window.ugui = {
         "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
         "openDefaultBrowser": openDefaultBrowser,
         "saveSettings": saveSettings,
-        "loadSettings": loadSettings
+        "loadSettings": loadSettings,
+        "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine
     }
 };
 

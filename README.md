@@ -98,7 +98,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 ###Known Issues
 
-* Loading settings doesn't update the value of `<input type="file">`. It does update it's internal file list though and should be functional if ran. There seems to currently be no method of updating the value of these elements due to security restrictions originally placed in Chromium. To get around this, we visually update the EZDZ plugin to make it look as though it's been updated, this however will not make a required `<input type="file">` activate as being fullfilled until the user interacts with it.
+* Loading settings doesn't update the value of `<input type="file">`. It does update it's internal file list though and should be functional if ran. There seems to currently be no method of updating the value of these elements due to security restrictions originally placed in Chromium. To get around this, we visually update the EZDZ plugin to make it look as though it's been updated, this however will not make a required `<input type="file">` activate as being fullfilled until the user interacts with it. To work around this you can give the EZDZ input a class of `do-not-save` or remove the `required="required"`.
 * Range slider value is empty in the UGUI Arg Obj (window.ugui.args) on load. This doesn't matter though as it will get it's value when clicking run or any other form element with a data-argName, which in turn updates the UGUI Developer Toolbar's CMD Output Preview. Will not fix. Will accept pull request.
 
 * * *
