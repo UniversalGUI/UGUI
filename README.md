@@ -111,7 +111,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 * [Hai Nguyen](http://github.com/hai5nguy) - UGUI Project Architechture Consultant
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
 * [Grahammer](http://github.com/GWatt) - UGUI Engine Architechture Consultant
-* [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realword, and OSX testing
+* [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realworld, and OSX testing
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)
