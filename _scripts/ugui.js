@@ -104,10 +104,10 @@ var fs = require("fs");
 //Access the contents of the package.json file
 var packageJSON = require("nw.gui").App.manifest;
 
-//Name of the developer's application, set in package.json
+//Name of the developer's application as a URL/Filepath safe name, set in package.json
 var appName = packageJSON.name;
 
-//Window Title, set in package.json
+//The app title that is used dynamically throughout the UI and title bar, set in package.json
 var appTitle = packageJSON.window.title;
 
 //Version of the developer's application, set in package.json
@@ -119,7 +119,7 @@ var appDescription = packageJSON.description;
 //Name of the app developer or development team, set in package.json
 var authorName = packageJSON.author;
 
-//Name of the app developer or development team, set in package.json
+//Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
 //Make sure the ugui and ugui.args objects exist, if not create them
@@ -168,7 +168,7 @@ function readAFile(filePathAndName) {
 //### U03. Run CMD
 //
 //>This is what makes running your CLI program and arguments
-//easier. Cow & Taco examples below to make life simpler.
+// easier. Cow & Taco examples below to make life simpler.
 //>
 //
 //>     $("#taco").click( function() {
@@ -181,7 +181,7 @@ function readAFile(filePathAndName) {
 
 //
 function runcmd(executableAndArgs, callback) {
-    //Validate that required argument is passed
+    //Validate that the required argument is passed
     if (!executableAndArgs) {
         console.info("You must pass in a string containing the exectuable and arguments to be sent to the command line.");
         console.info('Example: ugui.helpers.runcmd("pngquant.exe --speed 11mph --force file.png");');
@@ -406,14 +406,14 @@ unlockSubmit();
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U07. Realtime updating dev tool command output
 //
-//>In the UGUI Dev Tools there is a CMD Output tab. This
-// section updates the contents of that section whenever the
-// developer interacts with any form elements rather than only
-// updating it on submit.
+//>This updates the contents the UGUI Developer Toolbar's
+// "CMD Output" section whenever the user interacts with any
+// form elements.
 
 //Make sure we're in dev mode first
 if( $("body").hasClass("dev") ) {
 
+    //Cycle through all executables used by the app
     for (index = 0; index < executable.length; index++) {
         //If any of the form elements with a data-argName change
         $(argsForm[index]).change( function() {
@@ -475,12 +475,13 @@ function updateUGUIDevCommandLine() {
 //>What happens when you click the submit button.
 //
 //>When the button is pressed, prevent it from submitting the
-// form like it normally would in a browser. Then grab all
-// elements with an argOrder except for unchecked checkboxes.
-// Combine the prefix, value and suffix into one variable per
-// element. Put them in the correct order. Send out all of the
-// prefix/value/suffix combos in the correct order to the CLI
-// executable.
+// form like it normally would in a browser. Detect which form
+// the submit button is in and what executable it corresponds
+// to. Remove quotes from all fields. Build the command line
+// array based on UGUI Args Object and turn it into a string.
+//
+//>Detect if text from the command line is meant to be printed
+// on the page. Then run the command.
 
 //When you click the submit button.
 $(".sendCmdArgs").click( function(event) {
@@ -511,7 +512,6 @@ $(".sendCmdArgs").click( function(event) {
         runcmd(builtCommandString);
     }
 
-
 });
 
 
@@ -523,8 +523,9 @@ $(".sendCmdArgs").click( function(event) {
 //### U09. Building the Command Array
 //
 //>What happens when you click the submit button or when the
-// UGUI Dev Tools are updated to preview the outputted command
-// that would be sent to the cmd line/terminal.
+// UGUI Developer Toolbar's "CMD Output" section is updated to
+// preview the outputted command that would be sent to the
+// command line/terminal.
 
 //
 function buildCommandArray(thisExecutable) {
@@ -592,6 +593,7 @@ function buildUGUIArgObject() {
         //get "bob" from `<input data-argName="bob" value="--kitten" />`
         var argName = $(cmdArgs[index]).attr("data-argName");
 
+        //Declare some variables to be set later
         var argValue = "";
         var argType = "";
 
@@ -818,8 +820,8 @@ function parseArgument(argumentText) {
 //### U13. Process All CMD Definitions
 //
 //>This loops through all <def>'s and processes the value of
-// them to create the correct key value pairs on the ugui args
-// object.
+// them to create the correct key value pairs on the UGUI Args
+// Object.
 
 //
 function patternMatchingDefinitionEngine() {
@@ -912,9 +914,10 @@ function patternMatchingDefinitionEngine() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U14. Set input file path, file name, and extension
 //
-//>This processes everything elements with a data-argName that
-// are also `<input type="file">`. It creates special properties
-// for it on the UGUI args object found here: `window.ugui.args`
+//>This processes elements with a data-argName that are
+// `<input type="file">`. It creates special properties for the
+// element and places them on the UGUI Args Object found here:
+// `window.ugui.args`
 
 //
 function setInputFilePathNameExt(currentElement, argName) {
@@ -1281,10 +1284,11 @@ $('.navbar a[href="#exit"]').click( function() {
 //
 //>Detects if you're in Development or Production environment.
 //
-//>If you have a class of "dev" or "prod" in the body tag UGUI
-// will enable key bindings such as F12 or CTRL+Shift+I to
-// launch Webkit's Developer Tools, or F5 to refresh. Also it
-// displays the Command Line output at the bottom of the page.
+//>If you have a class of "dev" or "prod" in the `body` tag
+// UGUI will enable key bindings such as `F12` or
+// `CTRL+Shift+I` to launch Webkit's Developer Tools, or `F5`
+// to refresh. Also it displays the Command Line output at the
+// bottom of the page.
 
 
 //Check if the body has a class of prod for Production Environment
@@ -1367,9 +1371,9 @@ function updateCommandLineOutputPreviewHint() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U21. Put all executables in dropdowns
 //
-//>In the UGUI Dev Toolbar, there are dropdowns in the "CMD
-// Output" and "Executable Info" sections that contain all of
-// the executables used in the app.
+//>In the UGUI Developer Toolbar, there are dropdowns in the
+// "CMD Output" and "Executable Info" sections that contain all
+// of the executables used in the app.
 
 //
 function fillExecutableDropdowns() {
@@ -1388,8 +1392,8 @@ function fillExecutableDropdowns() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U22. Warn if identical data-argNames
 //
-//>If the designer/developer uses the same data-argName value
-// for multiple elements, display a warning.
+//>If the developer uses the same data-argName value for
+// multiple elements, display a warning.
 
 //
 function warnIfDuplicateArgNames() {
@@ -1485,8 +1489,8 @@ function putExeHelpInDevTools() {
 //### U24. Swap Bootswatches
 //
 //>This funciton is only ran when in dev mode. It grabs a list
-// of all files in the ven.bootswatch folder and puts them in
-// a dropdown box in UGUI Developer Tools so developers can
+// of all files in the `ven.bootswatch` folder and puts them in
+// a dropdown box in UGUI Developer Toolbar so developers can
 // try out different stylesheets.
 
 //
@@ -1528,8 +1532,8 @@ function swatchSwapper() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U25. Save chosen Bootswatch
 //
-//>In the UGUI Developer Tools panel under the "Style Swapper"
-// section, when the user clicks the "Use this style" button,
+//>In the "Style Swapper" section of UGUI Developer Toolbar,
+// when the user clicks the "Use this style" button,
 // read the contents of the index.htm, find the line that sets
 // which swatch css to use and update it to the new chosen
 // swatch. Then replace the contents of index.htm with the new
@@ -1647,9 +1651,9 @@ function keyBindings() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U27. Launch links in default browser
 //
-//>Detects all links on the page with a class of external-link
-// and sets them to open the link in the user's default
-// default browser instead of using NW.js as a browser.
+//>Detects all links on the page with a class of `external-link`
+// and sets them to open the link in the user's default browser
+// instead of using NW.js as a browser which can cause issues.
 
 //
 function openDefaultBrowser() {
@@ -1749,18 +1753,20 @@ function ezdz(fileInfo) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U29. Range slider
 //
-//>Enables all elements with a class of slider to use the
+//>Enables all elements with a class of `slider` to use the
 // boostrap-slider plugin.
 //
 //>**Documentation**: [http://seiyria.github.io/bootstrap-slider](http://seiyria.github.io/bootstrap-slider)
 
-//
+//Initialize the bootstrap-slider plugin for all elements on the page with a class of `slider`
 $(".slider").slider({
     formatter: function(value) {
         return value;
     }
 });
 
+//Since bootstrap-slider is a plugin and not officially part of Bootstrap,
+//bootswatches don't contain styles for them. So we manually set the styles.
 function sliderHandleSolid(themeColor) {
     //Validate that the required argument is passed and the correct type
     if (!themeColor || typeof(themeColor) !== "string") {
@@ -1908,26 +1914,31 @@ function saveSettings(customLocation, callback) {
     var settingsFile = defaultLocation;
 
     //Validate types
-    //Check if two arguments were passed into `saveSettings` and if the first one is a string
-    if (arguments.length === 2 && typeof(customLocation) !== "string") {
-        console.info("The custom location for your save file must be passed a as a string");
-        console.info("Example:");
-        console.info('saveSettings("C:\\folder\\app-settings.json");');
-        console.info("Or, if you don't pass anything in, UGUI defaults to:");
-        console.info('"' + defaultLocation + '"');
+    //Check if only one argument was passed into `saveSettings` and if it was a string or function
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string, OR
+    //Check if two arguments were passed into `saveSettings` and if the second one is a function
+    if (
+        (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) ||
+        (arguments.length === 2 && typeof(customLocation) !== "string") ||
+        (arguments.length === 2 && typeof(callback) !== "function")
+       ) {
+        console.info("%cThe following arguments are allowed:", "font-family:sans-serif;font-weight:bold");
+        console.info("%c1. Just a string to a custom file path.", "font-family:sans-serif");
+        console.info('%cugui.helpers.saveSettings( "C:\\folder\\app-settings.json" );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c2. Just a function as a callback to be ran when save completes.", "font-family:sans-serif");
+        console.info('%cugui.helpers.saveSettings( function(){console.log("Saved.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c3. A string followed by a function, as a custom path and callback upon completion.", "font-family:sans-serif");
+        console.info('%cugui.helpers.saveSettings( "C:\\folder\\app-settings.json", function(){console.log("Saved.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c4. Nothing at all.", "font-family:sans-serif");
+        console.info('%cugui.helpers.saveSettings();', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%cBy passing in nothing, UGUI will use the default save location of:", "font-family:sans-serif");
+        console.info('%c"' + defaultLocation + '"', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%cAnd upon completion of saving the settings, nothing will be triggered.", "font-family:sans-serif");
         return;
-    //Check if two arguments were passed into `saveSettings` and if the first one is a string
-    } else if (arguments.length === 2 && typeof(customLocation) === "string") {
+    //Check if customLocation is exists and is a string
+    } else if ( customLocation && typeof(customLocation) === "string") {
         //Set the settings file to the custom, passed in, location
         settingsFile = customLocation;
-    //Check if two arguments were passed into `saveSettings` and if the second one is a function
-    } else if (arguments.length === 2 && typeof(callback) !== "function") {
-        console.info("Your callback must be a function.");
-        return;
-    //Check if only one argument was passed into `saveSettings` and if it was a string or function
-    } else if (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) {
-        console.info("You must pass in a path to your file as a string, or your callback as a function");
-        return;
     }
 
     //Make sure args object is up to date
@@ -1996,26 +2007,31 @@ function loadSettings(customLocation, callback) {
     var settingsFile = defaultLocation;
 
     //Validate types
-    //Check if two arguments were passed into `saveSettings` and if the first one is a string
-    if (arguments.length === 2 && typeof(customLocation) !== "string") {
-        console.info("The custom location for your save file must be passed a as a string");
-        console.info("Example:");
-        console.info('loadSettings("C:\\folder\\app-settings.json");');
-        console.info("Or, if you don't pass anything in, UGUI defaults to:");
-        console.info('"' + defaultLocation + '"');
+    //Check if only one argument was passed into `loadSettings` and if it was a string or function
+    //Check if two arguments were passed into `loadSettings` and if the first one is a string, OR
+    //Check if two arguments were passed into `loadSettings` and if the second one is a function
+    if (
+        (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) ||
+        (arguments.length === 2 && typeof(customLocation) !== "string") ||
+        (arguments.length === 2 && typeof(callback) !== "function")
+       ) {
+        console.info("%cThe following arguments are allowed:", "font-family:sans-serif;font-weight:bold");
+        console.info("%c1. Just a string to a custom file path.", "font-family:sans-serif");
+        console.info('%cugui.helpers.loadSettings( "C:\\folder\\app-settings.json" );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c2. Just a function as a callback to be ran when loading completes.", "font-family:sans-serif");
+        console.info('%cugui.helpers.loadSettings( function(){console.log("loaded.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c3. A string followed by a function, as a custom path and callback upon completion.", "font-family:sans-serif");
+        console.info('%cugui.helpers.loadSettings( "C:\\folder\\app-settings.json", function(){console.log("loadd.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%c4. Nothing at all.", "font-family:sans-serif");
+        console.info('%cugui.helpers.loadSettings();', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%cBy passing in nothing, UGUI will use the default load location of:", "font-family:sans-serif");
+        console.info('%c"' + defaultLocation + '"', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
+        console.info("%cAnd upon completion of saving the settings, nothing will be triggered.", "font-family:sans-serif");
         return;
-    //Check if two arguments were passed into `saveSettings` and if the first one is a string
-    } else if (arguments.length === 2 && typeof(customLocation) === "string") {
+    //Check if customLocation is exists and is a string
+    } else if ( customLocation && typeof(customLocation) === "string") {
         //Set the settings file to the custom, passed in, location
         settingsFile = customLocation;
-    //Check if two arguments were passed into `saveSettings` and if the second one is a function
-    } else if (arguments.length === 2 && typeof(callback) !== "function") {
-        console.info("Your callback must be a function.");
-        return;
-    //Check if only one argument was passed into `saveSettings` and if it was a string or function
-    } else if (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) {
-        console.info("You must pass in a path to your file as a string, or your callback as a function");
-        return;
     }
 
     //Attempt to read the file
@@ -2096,10 +2112,13 @@ function loadSettings(customLocation, callback) {
                     }
                 }
             }
+
             //Build the arg object based on our updated UI
             removeTypedQuotes();
             buildUGUIArgObject();
             patternMatchingDefinitionEngine();
+
+            //Update the UGUI Developer Toolbar and unlock/lock sumbit buttons accordingly
             updateUGUIDevCommandLine();
             unlockSubmit();
 
@@ -2129,45 +2148,48 @@ $(".load-ugui-settings").click( function() {
 //
 //>We expose parts of UGUI to developers via the UGUI object.
 // To quickly access what is available type "ugui" into the
-// NW.js Developer Tools console.
+// NW.js (Webkit) Developer Tools console.
 
 //
 window.ugui = {
     "allArgElements": allArgElements,
     "app": {
+        "author": authorName,
         "description": appDescription,
         "name": appName,
-        "title": appTitle,
-        "version": appVersion,
-        "author": authorName,
         "packageJSON": packageJSON,
         "startPage": indexFile,
+        "title": appTitle,
+        "version": appVersion,
     },
     "args": window.ugui.args,
     "executable": executable,
-    "platform": process.platform,
-    "textFields": textFields,
-    "version": uguiVersion,
     "helpers": {
-        "readAFile": readAFile,
-        "runcmd": runcmd,
-        "runcmdAdvanced": runcmdAdvanced,
-        "removeTypedQuotes": removeTypedQuotes,
-        "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
         "buildCommandArray": buildCommandArray,
         "buildUGUIArgObject": buildUGUIArgObject,
-        "findKeyValue": findKeyValue,
-        "parseArgument": parseArgument,
-        "convertCommandArraytoString": convertCommandArraytoString,
         "centerNavLogo": centerNavLogo,
-        "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
+        "convertCommandArraytoString": convertCommandArraytoString,
         "fillExecutableDropdowns": fillExecutableDropdowns,
-        "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
-        "openDefaultBrowser": openDefaultBrowser,
-        "saveSettings": saveSettings,
+        "findKeyValue": findKeyValue,
         "loadSettings": loadSettings,
-        "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine
-    }
+        "openDefaultBrowser": openDefaultBrowser,
+        "parseArgument": parseArgument,
+        "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine,
+        "readAFile": readAFile,
+        "removeTypedQuotes": removeTypedQuotes,
+        "runcmd": runcmd,
+        "runcmdAdvanced": runcmdAdvanced,
+        "saveSettings": saveSettings,
+        "sliderHandleSolid": sliderHandleSolid,
+        "sliderHandleGradient": sliderHandleGradient,
+        "sliderHandleColor": sliderHandleColor,
+        "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
+        "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
+        "warnIfDuplicateArgNames": warnIfDuplicateArgNames
+    },
+    "platform": process.platform,
+    "textFields": textFields,
+    "version": uguiVersion
 };
 
 
@@ -2209,15 +2231,6 @@ window.ugui = {
 /*  /////////////////////////////////////////////////////////////////  */
 /*  // 2. Running Docco/Updating the documentation                 //  */
 /*  /////////////////////////////////////////////////////////////////  */
-/*  //                                                             //  */
-/*  // a. Install Node.js (which in turn installs NPM).            //  */
-/*  //    * http://nodejs.org                                      //  */
-/*  // b. Verify NPM installed by running npm --version in your    //  */
-/*  //    command line.                                            //  */
-/*  // c. Install docco by running npm install -g docco in your    //  */
-/*  //    command line.                                            //  */
-/*  // d. Navigate to the directory ugui.s is in and run           //  */
-/*  //    docco ugui.js                                            //  */
 /*  //                                                             //  */
 /*  // These instructions will be updated when a more routine      //  */
 /*  // method is developed.                                        //  */
