@@ -122,6 +122,22 @@ var authorName = packageJSON.author;
 //Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
+//You can stylize console outputs in WebKit, these are essentially CSS classes
+var consoleNormal = "font-family: sans-serif";
+var consoleBold   = "font-family: sans-serif;" +
+                    "font-weight: bold";
+var consoleCode   = "background: #EEEEF6;" +
+                    "border: 1px solid #B2B0C1;" +
+                    "border-radius: 7px;" +
+                    "padding: 2px 8px 3px;" +
+                    "color: #5F5F5F;" +
+                    "line-height: 22px;" +
+                    "box-shadow: 0px 0px 1px 1px rgba(178,176,193,0.3)";
+
+//Placing this at the start of a console output will let you style it
+//**Example**: `console.info(ͼ+"Some bold text.", consoleBold);`
+var ͼ = "%c";
+
 //Make sure the ugui and ugui.args objects exist, if not create them
 if (!window.ugui) {
     window.ugui = {};
@@ -1922,18 +1938,18 @@ function saveSettings(customLocation, callback) {
         (arguments.length === 2 && typeof(customLocation) !== "string") ||
         (arguments.length === 2 && typeof(callback) !== "function")
        ) {
-        console.info("%cThe following arguments are allowed:", "font-family:sans-serif;font-weight:bold");
-        console.info("%c1. Just a string to a custom file path.", "font-family:sans-serif");
-        console.info('%cugui.helpers.saveSettings( "C:\\folder\\app-settings.json" );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c2. Just a function as a callback to be ran when save completes.", "font-family:sans-serif");
-        console.info('%cugui.helpers.saveSettings( function(){console.log("Saved.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c3. A string followed by a function, as a custom path and callback upon completion.", "font-family:sans-serif");
-        console.info('%cugui.helpers.saveSettings( "C:\\folder\\app-settings.json", function(){console.log("Saved.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c4. Nothing at all.", "font-family:sans-serif");
-        console.info('%cugui.helpers.saveSettings();', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%cBy passing in nothing, UGUI will use the default save location of:", "font-family:sans-serif");
-        console.info('%c"' + defaultLocation + '"', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%cAnd upon completion of saving the settings, nothing will be triggered.", "font-family:sans-serif");
+        console.info(ͼ+"The following arguments are allowed:", consoleBold);
+        console.info(ͼ+"1. Just a string to a custom file path.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.saveSettings( "C:\\folder\\app-settings.json" );', consoleCode);
+        console.info(ͼ+"2. Just a function as a callback to be ran when save completes.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.saveSettings( function(){console.log("Saved.")} );', consoleCode);
+        console.info(ͼ+"3. A string followed by a function, as a custom path and callback upon completion.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.saveSettings( "C:\\folder\\app-settings.json", function(){console.log("Saved.")} );', consoleCode);
+        console.info(ͼ+"4. Nothing at all.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.saveSettings();', consoleCode);
+        console.info(ͼ+"By passing in nothing, UGUI will use the default save location of:", consoleNormal);
+        console.info(ͼ+'"' + defaultLocation + '"', consoleCode);
+        console.info(ͼ+"And upon completion of saving the settings, nothing will be triggered.", consoleNormal);
         return;
     //Check if customLocation is exists and is a string
     } else if ( customLocation && typeof(customLocation) === "string") {
@@ -2015,18 +2031,18 @@ function loadSettings(customLocation, callback) {
         (arguments.length === 2 && typeof(customLocation) !== "string") ||
         (arguments.length === 2 && typeof(callback) !== "function")
        ) {
-        console.info("%cThe following arguments are allowed:", "font-family:sans-serif;font-weight:bold");
-        console.info("%c1. Just a string to a custom file path.", "font-family:sans-serif");
-        console.info('%cugui.helpers.loadSettings( "C:\\folder\\app-settings.json" );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c2. Just a function as a callback to be ran when loading completes.", "font-family:sans-serif");
-        console.info('%cugui.helpers.loadSettings( function(){console.log("loaded.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c3. A string followed by a function, as a custom path and callback upon completion.", "font-family:sans-serif");
-        console.info('%cugui.helpers.loadSettings( "C:\\folder\\app-settings.json", function(){console.log("loadd.")} );', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%c4. Nothing at all.", "font-family:sans-serif");
-        console.info('%cugui.helpers.loadSettings();', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%cBy passing in nothing, UGUI will use the default load location of:", "font-family:sans-serif");
-        console.info('%c"' + defaultLocation + '"', "background:#EEEEF6;border:1px solid #B2B0C1;border-radius:7px;padding:2px 8px 3px;color:#5F5F5F;line-height:22px;box-shadow:0px 0px 1px 1px rgba(178,176,193,0.3)");
-        console.info("%cAnd upon completion of saving the settings, nothing will be triggered.", "font-family:sans-serif");
+        console.info(ͼ+"The following arguments are allowed:", consoleBold);
+        console.info(ͼ+"1. Just a string to a custom file path.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.loadSettings( "C:\\folder\\app-settings.json" );', consoleCode);
+        console.info(ͼ+"2. Just a function as a callback to be ran when loading completes.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.loadSettings( function(){console.log("loaded.")} );', consoleCode);
+        console.info(ͼ+"3. A string followed by a function, as a custom path and callback upon completion.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.loadSettings( "C:\\folder\\app-settings.json", function(){console.log("loadd.")} );', consoleCode);
+        console.info(ͼ+"4. Nothing at all.", consoleNormal);
+        console.info(ͼ+'ugui.helpers.loadSettings();', consoleCode);
+        console.info(ͼ+"By passing in nothing, UGUI will use the default load location of:", consoleNormal);
+        console.info(ͼ+'"' + defaultLocation + '"', consoleCode);
+        console.info(ͼ+"And upon completion of saving the settings, nothing will be triggered.", consoleNormal);
         return;
     //Check if customLocation is exists and is a string
     } else if ( customLocation && typeof(customLocation) === "string") {
