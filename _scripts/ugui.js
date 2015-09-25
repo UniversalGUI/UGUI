@@ -4,37 +4,53 @@
 
 //## TABLE OF CONTENTS
 //
-//**U00**. [Intro](#u00-intro)  
-//**U01**. [UGUI variables](#u01-ugui-variables)  
-//**U02**. [Read a file](#u02-read-a-file)  
-//**U03**. [Run CMD](#u03-run-cmd)  
-//**U04**. [Run CMD (Advanced)](#u04-run-cmd-advanced)  
-//**U05**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
+//**A00. Intro**
+//**A01**. [UGUI Start](#a01-ugui-start)  
+//**A02**. [UGUI variables](#a02-ugui-variables)  
+//
+//**B00. Simplified Commands**
+//**B01**. [Run CMD](#b01-run-cmd)  
+//**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced)  
+//**B03**. [Read a file](#b03-read-a-file)  
+//**B04**. [Read contents of a folder](#b04-read-a-folder)  
+//**B05**. [Write to file](#b05-write-to-file)  
+//**B06**. [Create a folder](#b06-create-a-folder)  
+//**B07**. [Delete a file](#b07-delete-a-file)  
+//**B08**. [Delete a folder](#b08-delete-a-folder)  
+//
+//**C00. CLI Command Processing**
+//**C01**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
+//**C02**. [Clicking Submit](#u08-clicking-submit)  
+//**C03**. [Building the command array](#u09-building-the-command-array)  
+//**C04**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
+//**C05**. [Find key value](#u11-find-key-value)  
+//**C06**. [Parse argument](#u12-parse-argument)  
+//**C07**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
+//**C08**. [Set input file path, file name, and extension](#u14-set-input-file-path-file-name-and-extension)  
+//**C09**. [Color processor](#u15-color-processor)  
+//**C10**. [Convert command array to string](#u16-convert-command-array-to-string)  
+//UI Elements
 //**U06**. [Submit is locked until required is fulfilled](#u06-submit-locked-until-required-fulfilled)  
-//**U07**. [Realtime updating of command output in UGUI Dev Tools](#u07-realtime-updating-dev-tool-command-output)  
-//**U08**. [Clicking Submit](#u08-clicking-submit)  
-//**U09**. [Building the command array](#u09-building-the-command-array)  
-//**U10**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
-//**U11**. [Find key value](#u11-find-key-value)  
-//**U12**. [Parse argument](#u12-parse-argument)  
-//**U13**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
-//**U14**. [Set input file path, file name, and extension](#u14-set-input-file-path-file-name-and-extension)  
-//**U15**. [Color processor](#u15-color-processor)  
-//**U16**. [Convert command array to string](#u16-convert-command-array-to-string)  
 //**U17**. [Replace HTML text with text from package.json](#u17-replace-html-text-with-text-from-package-json)  
 //**U18**. [Update about modal](#u18-update-about-modal)  
 //**U19**. [Navigation bar functionality](#u19-navigation-bar-functionality)  
+//Warnings
+//**U22**. [Warn if identical data-argNames](#u22-warn-if-identical-data-argnames)  
+//UGUI Developer Toolbar
+//**U07**. [Realtime updating of command output in UGUI Dev Tools](#u07-realtime-updating-dev-tool-command-output)  
 //**U20**. [Detect if in developer environment](#u20-detect-if-in-developer-environment)  
 //**U21**. [Put all executables in dropdowns](#u21-put-all-executables-in-dropdowns)  
-//**U22**. [Warn if identical data-argNames](#u22-warn-if-identical-data-argnames)  
 //**U23**. [Put CLI help info in UGUI dev tools](#u23-put-cli-help-info-in-ugui-dev-tools)  
 //**U24**. [Swap bootswatches](#u24-swap-bootswatches)  
 //**U25**. [Save chosen bootswatch](#u25-save-chosen-bootswatch)  
 //**U26**. [Custom keyboard shortcuts](#u26-custom-keyboard-shortcuts)  
+//Basic functionality
 //**U27**. [Launch links in default browser](#u27-launch-links-in-default-browser)  
+//Plugins
 //**U28**. [EZDZ: Drag and drop file browse box](#u28-ezdz-drag-and-drop)  
 //**U29**. [Range slider](#u29-range-slider)  
 //**U30**. [Cut/copy/paste context menu](#u30-cut-copy-paste-context-menu)  
+//Settings
 //**U31**. [Save Settings](#u31-save-settings)  
 //**U32**. [Load Settings](#u32-load-settings)  
 //**U33**. [The UGUI Object](#u33-the-ugui-object)  
@@ -45,8 +61,38 @@
 
 
 
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U00. Intro
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## A00. Intro
+//
+//This is the start of the file. We have UGUI wait until the
+//document is ready before performing any actions. We've also
+//added in a way to delay the running of UGUI until Webkit
+//Developer Tools can launch. This will allow you to hit a
+//debugger in time, if contributing to UGUI.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### A01. UGUI Start
 //
 
 //Wait for the document to load before running ugui.js. Use either runUGUI or waitUGUI for immediate or delayed launch.
@@ -72,7 +118,7 @@ var uguiVersion = "0.9.0";
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U01. UGUI Variables
+//### A02. UGUI Variables
 //
 //>Listing of Variables used throughout this library.
 
@@ -150,29 +196,6 @@ if (!window.ugui) {
 
 
 
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U02. Read a file
-//
-//>A function that allows you to set the contents of a file to
-// a variable. Like so:
-//
-//>`var devToolsHTML = readAFile("_markup/ugui-devtools.htm");`
-
-//
-function readAFile(filePathAndName) {
-    //Validate that required argument is passed
-    if (!filePathAndName) {
-        console.info("Supply a path to the file you want to read as an argument to this function.");
-        return;
-    }
-    //Validate types
-    if (typeof(filePathAndName) !== "string") {
-        console.info("File path must be passed as a string.");
-        return;
-    }
-    var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
-    return fileData;
-}
 
 
 
@@ -181,7 +204,27 @@ function readAFile(filePathAndName) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U03. Run CMD
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## B00. Simplified Commands
+//
+//These are easy to run commands for common tasks a dekstop
+//application would perform. Such as reading, writing, and
+//deleting files and folders or running native executables.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B01. Run CMD
 //
 //>This is what makes running your CLI program and arguments
 // easier. Cow & Taco examples below to make life simpler.
@@ -197,15 +240,12 @@ function readAFile(filePathAndName) {
 
 //
 function runcmd(executableAndArgs, callback) {
-    //Validate that the required argument is passed
-    if (!executableAndArgs) {
-        console.info("You must pass in a string containing the exectuable and arguments to be sent to the command line.");
-        console.info('Example: ugui.helpers.runcmd("pngquant.exe --speed 11mph --force file.png");');
-        return;
-    }
-    //Validate types
-    if (typeof(executableAndArgs) !== "string") {
-        console.info("Executable and arguments must be passed as a string.");
+    //Validate that the required argument is passed and is a string
+    if (!executableAndArgs || typeof(executableAndArgs) !== "string") {
+        console.info(º+"You must pass in a string containing the exectuable " +
+            "and arguments to be sent to the command line.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.runcmd("pngquant.exe --speed 11mph --force file.png");', consoleCode);
         return;
     }
 
@@ -235,8 +275,9 @@ function runcmd(executableAndArgs, callback) {
 
 
 
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U04. Run CMD (Advanced)
+//### B02. Run CMD (Advanced)
 //
 //>This is a more advanced option for running executables. You
 // can pass in a parameters object to get additional
@@ -267,31 +308,31 @@ function runcmd(executableAndArgs, callback) {
 function runcmdAdvanced(parameters) {
     //Validate that required argument is passed
     if (!parameters) {
-        console.info("You must pass in an object with your options.");
-        console.info("Example:");
-        console.info("    var parameters = { 'executableAndArgs': 'node --version' };");
-        console.info("    ugui.helpers.runcmdAdv(parameters);");
+        console.info(º+"You must pass in an object with your options.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+"var parameters = { 'executableAndArgs': 'node --version' };", consoleCode);
+        console.info(º+"ugui.helpers.runcmdAdv(parameters);", consoleCode);
         return;
     }
     //Validate types
     if (Object.prototype.toString.call(parameters) !== "[object Object]") {
-        console.info("Your parameters must be passed as an object.");
+        console.info(º+"Your parameters must be passed as an object.", consoleNormal);
         return;
     } else if (typeof(parameters.executableAndArgs) !== "string") {
-        console.info("Executable and arguments must be passed as a string.");
-        console.info('Example: "node --version"');
+        console.info(º+"Executable and arguments must be passed as a string. Example:", consoleNormal);
+        console.info(º+'"node --version"', consoleCode);
         return;
     } else if (parameters.returnedData && typeof(parameters.returnedData) !== "function") {
-        console.info("returnedData must be a function.");
+        console.info(º+"returnedData must be a function.", consoleNormal);
         return;
     } else if (parameters.onExit && typeof(parameters.onExit) !== "function") {
-        console.info("onExit must be a function.");
-        return; 
+        console.info(º+"onExit must be a function.", consoleNormal);
+        return;
     } else if (parameters.onError && typeof(parameters.onError) !== "function") {
-        console.info("onError must be a function.");
+        console.info(º+"onError must be a function.", consoleNormal);
         return;
     } else if (parameters.onClose && typeof(parameters.onClose) !== "function") {
-        console.info("onClose must be a function.");
+        console.info(º+"onClose must be a function.", consoleNormal);
         return;
     }
 
@@ -347,6 +388,250 @@ function runcmdAdvanced(parameters) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B03. Read a file
+//
+//>A function that allows you to set the contents of a file to
+// a variable. Like so:
+//
+//>`var devToolsHTML = ugui.helpers.readAFile("_markup/ugui-devtools.htm");`
+
+//
+function readAFile(filePathAndName) {
+    //Validate that required argument is passed
+    if (!filePathAndName) {
+        console.info(º+"Supply a path to the file you want to read as " +
+            "an argument to this function.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (typeof(filePathAndName) !== "string") {
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        return;
+    }
+    var fileData = fs.readFileSync(filePathAndName, {encoding: "UTF-8"});
+    return fileData;
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B04. Read contents of a folder
+//
+//>Coming soon
+//
+//>`var mediaContents = ugui.helpers.readAFolder("_media");`
+
+//
+function readAFolder(filePath) {
+    //Validate that required argument is passed
+    if (!filePath) {
+        console.info(º+"Supply a path to the file you want to read as " +
+            "an argument to this function.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (typeof(filePath) !== "string") {
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    console.info(º+"Feature comming soon.", consoleNormal);
+/*
+    fs.readdir(filePath, function (err, files) {
+        if (err)  {
+            console.info(º+"Unable to read contents of the folder:", consoleNormal);
+            console.info(º+filePath, consoleCode);
+            console.info(º+"Error message:", consoleBold)
+            console.error(err);
+            return;
+        }
+
+        files.forEach( function (file) {
+            fs.lstat('/' + file, function(err, stats) {
+                if (!err && stats.isDirectory()) { //conditing for identifying folders
+                    $('ul#foldertree').append('<li class="folder">'+file+'</li>');
+                }
+                else {
+                    $('ul#foldertree').append('<li class="file">'+file+'</li>');
+                }
+            });
+        });
+    });
+*/
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B05. Write to file
+//
+//>This will override the contents of a file you pass in with
+// the data you supply. If the file you point to doesn't exist,
+// it will be created with your supplied data.
+//
+//>`ugui.helpers.writeToFile("C:/folder/new_file.htm", "Text.");`
+
+//
+function writeToFile(filePathAndName, data, callback) {
+    //Validate that required argument is passed
+    if (!filePathAndName) {
+        console.info(º+"Supply a path to the file you want to overide as the first argument to this function.", consoleNormal);
+        return;
+    } else if (!data) {
+        console.info(º+"You must pass in the data to be stored as the second argument to this function.", consoleNormal);
+        return;
+    }
+
+    //Validate types
+    if (typeof(filePathAndName) !== "string") {
+        console.info(º+"File path and name must be passed as a string.", consoleNormal);
+        return;
+    } else if (typeof(data) !== "string") {
+        console.info(º+"The data to be stored must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    console.info(º+"Feature comming soon.", consoleNormal);
+
+/*
+    //If a callback was passed in and it is a function
+    if (callback && typeof(callback) === "function") {
+        fs.unlink(filePathAndName, callback);
+    } else {
+        fs.unlink(filePathAndName);
+    }
+*/
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B06. Create a folder
+//
+//>Coming soon
+//
+//>`ugui.helpers.createAFolder("C:/folder/new-folder");`
+
+//
+function createAFolder(filePath, callback) {
+    //Validate that required argument is passed
+    if (!filePath) {
+        console.info(º+"Supply a path to where you want your folder as the first argument to this function.", consoleNormal);
+        return;
+    }
+
+    //Validate types
+    if (typeof(filePath) !== "string") {
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    console.info(º+"Feature comming soon.", consoleNormal);
+
+/*
+    //If a callback was passed in and it is a function
+    if (callback && typeof(callback) === "function") {
+        fs.unlink(filePath, callback);
+    } else {
+        fs.unlink(filePath);
+    }
+*/
+}
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B07. Delete a file
+//
+//>Though UGUI doesn't currently use this functionality anywhere
+// within itself, we thought it would be nice to offer a quick
+// and easy way of deleting files.
+//
+//>`ugui.helpers.deleteAFile("_markup/ugui-devtools.htm");`
+
+//
+function deleteAFile(filePathAndName, callback) {
+    //Validate that required argument is passed
+    if (!filePathAndName) {
+        console.info(º+"Supply a path to the file you want to delete as an argument to this function.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (typeof(filePathAndName) !== "string") {
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        return;
+    }
+    //If a callback was passed in and it is a function
+    if (callback && typeof(callback) === "function") {
+        fs.unlink(filePathAndName, callback);
+    } else {
+        fs.unlink(filePathAndName);
+    }
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B08. Delete a folder
+//
+//>Though UGUI doesn't currently use this functionality anywhere
+// within itself, we thought it would be nice to offer a quick
+// and easy way to delete folders.
+//
+//>`ugui.helpers.deleteAFolder("C:\path\to\folder");`
+
+//
+function deleteAFolder(filePath, callback) {
+    //Validate that required argument is passed
+    if (!filePath) {
+        console.info(º+"Supply a path to the folder you want to delete as " +
+            "an argument to this function.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (typeof(filePath) !== "string") {
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    console.info(º+"Feature comming soon.", consoleNormal);
+
+/*
+    //If a callback was passed in and it is a function
+    if (callback && typeof(callback) === "function") {
+        fs.unlink(filePath, callback);
+    } else {
+        fs.unlink(filePath);
+    }
+*/
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U05. Prevent user from entering quotes in forms
 //
 //>In all input text fields and textareas, remove both single
@@ -371,113 +656,6 @@ function removeTypedQuotes() {
 }
 
 removeTypedQuotes();
-
-
-
-
-
-
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U06. Submit locked until required fulfilled
-//
-//>Gray out the submit button until all required elements are
-// filled out. On every change, click, or keystroke, check all
-// forms to verify that if any need unlocked or locked.
-
-//
-function unlockSubmit() {
-    //Cycle through each executable
-    for (index = 0; index < executable.length; index++) {
-        //Get the current executable
-        var currentExecutable = executable[index];
-        //If a required element wasn't filled out in this form
-        if ( $("#" + currentExecutable).is(":invalid") ) {
-            //Disable/Lock the submit button
-            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", true);
-        //If all required elements in a form have been fulfilled
-        } else {
-            //Enable/Unlock the submit button
-            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", false);
-        }
-    }
-
-}
-
-for (index = 0; index < argsForm.length; index++) {
-    //When you click out of a form element
-    $(argsForm[index]).keyup  ( unlockSubmit );
-    $(argsForm[index]).mouseup( unlockSubmit );
-    $(argsForm[index]).change ( unlockSubmit );
-}
-
-//On page load have this run once to unlock submit if nothing is required.
-unlockSubmit();
-
-
-
-
-
-
-
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U07. Realtime updating dev tool command output
-//
-//>This updates the contents the UGUI Developer Toolbar's
-// "CMD Output" section whenever the user interacts with any
-// form elements.
-
-//Make sure we're in dev mode first
-if( $("body").hasClass("dev") ) {
-
-    //Cycle through all executables used by the app
-    for (index = 0; index < executable.length; index++) {
-        //If any of the form elements with a data-argName change
-        $(argsForm[index]).change( function() {
-            //check if it was the drag/drop input box
-            if ( $(this).parent().hasClass("ezdz") ) {
-                var file = this.files[0];
-                //run a custom function before updating dev tools
-                ezdz(file);
-            }
-
-            //Update the UGUI Developer Toolbar's "CMD Output" section
-            updateUGUIDevCommandLine();
-        });
-    }
-
-    //If the user types anything in a form
-    $(textFields).keyup( updateUGUIDevCommandLine );
-    $(textFields).blur( updateUGUIDevCommandLine );
-    $(".slider").on( "slide", updateUGUIDevCommandLine );
-} else {
-    //If we're not in Dev mode, make sure the ezdz can still run
-    $(".ezdz input").change( function() {
-        var file = this.files[0];
-        //run a custom function before updating dev tools
-        ezdz(file);
-    });
-}
-
-function updateUGUIDevCommandLine() {
-    //clear it out first
-    $("#commandLine").empty();
-
-    //Get the executable from the dropdown lists
-    var pickedExecutable = $(".uguiCommand .executableName").val();
-
-    //Get an array of all the commands being sent out
-    var devCommandOutput = buildCommandArray(pickedExecutable);
-    var devCommandOutputSpaces = [];
-
-    for (var index = 0; index < devCommandOutput.length; index++) {
-        if (devCommandOutput[index] !== "") {
-            devCommandOutputSpaces.push(" " + devCommandOutput[index]);
-        }
-    }
-
-    //Replace the text in the "CMD Output" section of the UGUI Developer Toolbar
-    $("#commandLine").html( devCommandOutputSpaces );
-}
 
 
 
@@ -547,7 +725,7 @@ $(".sendCmdArgs").click( function(event) {
 function buildCommandArray(thisExecutable) {
     //Validate types
     if (thisExecutable !== undefined && typeof(thisExecutable) !== "string") {
-        console.info("Executable must be passed as a string.");
+        console.info(º+"Executable must be passed as a string.", consoleNormal);
         return;
     }
 
@@ -713,21 +891,22 @@ buildUGUIArgObject();
 function findKeyValue(obj, arr) {
     //Validate that both required arguments are passed
     if(!obj || !arr) {
-        console.info("You need to supply an object and an array of strings to drill down within the object.");
+        console.info(º+"You need to supply an object and an array of " +
+            "strings to drill down within the object.", consoleNormal);
         return;
     }
     //Validate types
     if (Object.prototype.toString.call(obj) !== "[object Object]") {
-        console.info("First argument must be passed as an object.");
+        console.info(º+"First argument must be passed as an object.", consoleNormal);
         return;
     } else if (Object.prototype.toString.call(arr) !== "[object Array]") {
-        console.info("Second argument must be passed as strings in an array.");
+        console.info(º+"Second argument must be passed as strings in an array.", consoleNormal);
         return;
     }
     //Validate that all items of the array are strings
     for (i = 0; i < arr.length; i++) {
         if (typeof(arr[i]) !== "string") {
-            console.info("Second argument must be passed as strings in an array.");
+            console.info(º+"Second argument must be passed as strings in an array.", consoleNormal);
             return;
         }
     }
@@ -760,12 +939,13 @@ function findKeyValue(obj, arr) {
 function parseArgument(argumentText) {
     //Validate that required argument is passed
     if (!argumentText) {
-        console.info("This processes strings of text that contain ((keywords)) in them from the <cmd> tags.");
+        console.info(º+"This processes strings of text that contain " +
+            "((keywords)) in them from the <cmd> tags.", consoleNormal);
         return;
     }
     //Validate types
     if (typeof(argumentText) !== "string") {
-        console.info("Argument text must be passed as a string.");
+        console.info(º+"Argument text must be passed as a string.", consoleNormal);
         return;
     }
 
@@ -939,15 +1119,16 @@ function patternMatchingDefinitionEngine() {
 function setInputFilePathNameExt(currentElement, argName) {
     //Validate that both required arguments are passed
     if (!currentElement || !argName) {
-        console.info("You must pass in the element as an object and its argName as a string.");
+        console.info(º+"You must pass in the element as an object and " +
+            "its argName as a string.", consoleNormal);
         return;
     }
     //Validate types
     if (typeof(currentElement) !== "object") {
-        console.info("Element must be passed as a jQuery object.");
+        console.info(º+"Element must be passed as a jQuery object.", consoleNormal);
         return;
     } else if (typeof(argName) !== "string") {
-        console.info("The argName must be passed as a string.");
+        console.info(º+"The argName must be passed as a string.", consoleNormal);
         return;
     }
 
@@ -1025,18 +1206,19 @@ function setInputFilePathNameExt(currentElement, argName) {
 function colorProcessor(inputColor, argName) {
     //Validate that both required arguments are passed
     if (!inputColor || !argName) {
-        console.info("You must pass in your Hex color (#FF0000) as a string accompanied by it's argName.");
+        console.info(º+"You must pass in your Hex color (#FF0000) as a " +
+            "string accompanied by it's argName.", consoleNormal);
         return;
     }
     //Validate types
     if (typeof(inputColor) !== "string") {
-        console.info("Hex color must be passed as a string.");
+        console.info(º+"Hex color must be passed as a string.", consoleNormal);
         return;
     } else if (inputColor[0] !== "#") {
-        console.info("Hex color must begin with #.");
+        console.info(º+"Hex color must begin with #.", consoleNormal);
         return;
     } else if (typeof(argName) !== "string") {
-        console.info("argName must be passed as a string.");
+        console.info(º+"argName must be passed as a string.", consoleNormal);
         return;
     }
 
@@ -1108,22 +1290,20 @@ function colorProcessor(inputColor, argName) {
 function convertCommandArraytoString( cmdArray ) {
     //Validate that the required argument is passed
     if (!cmdArray) {
-        console.info(
-            "Accepts an array of executable and commands, " +
+        console.info(º+"Accepts an array of executable and commands, " +
             "removes empty arguments and puts everything into a string " +
-            "ready to be sent out to the command line."
-        );
+            "ready to be sent out to the command line.", consoleNormal);
         return;
     }
     //Validate types
     if (Object.prototype.toString.call(cmdArray) !== "[object Array]") {
-        console.info("Command array must be passed as strings in an array.");
+        console.info(º+"Command array must be passed as strings in an array.", consoleNormal);
         return;
     }
     //Validate that all items of the array are strings
     for (i = 0; i < cmdArray.length; i++) {
         if (typeof(cmdArray[i]) !== "string") {
-            console.info("Arguments must be passed as strings in an array.");
+            console.info(º+"Arguments must be passed as strings in an array.", consoleNormal);
             return;
         }
     }
@@ -1151,6 +1331,49 @@ function convertCommandArraytoString( cmdArray ) {
 
 
 
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### U06. Submit locked until required fulfilled
+//
+//>Gray out the submit button until all required elements are
+// filled out. On every change, click, or keystroke, check all
+// forms to verify that if any need unlocked or locked.
+
+//
+function unlockSubmit() {
+    //Cycle through each executable
+    for (index = 0; index < executable.length; index++) {
+        //Get the current executable
+        var currentExecutable = executable[index];
+        //If a required element wasn't filled out in this form
+        if ( $("#" + currentExecutable).is(":invalid") ) {
+            //Disable/Lock the submit button
+            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", true);
+        //If all required elements in a form have been fulfilled
+        } else {
+            //Enable/Unlock the submit button
+            $("#" + currentExecutable + " .sendCmdArgs").prop("disabled", false);
+        }
+    }
+
+}
+
+for (index = 0; index < argsForm.length; index++) {
+    //When you click out of a form element
+    $(argsForm[index]).keyup  ( unlockSubmit );
+    $(argsForm[index]).mouseup( unlockSubmit );
+    $(argsForm[index]).change ( unlockSubmit );
+}
+
+//On page load have this run once to unlock submit if nothing is required.
+unlockSubmit();
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U17. Replace HTML text with text from package.json
 //
@@ -1158,7 +1381,7 @@ function convertCommandArraytoString( cmdArray ) {
 // the package.json. This replaces the text on the page.
 
 //
-$(".applicationName").html(appTitle);
+$(".applicationName").html(appName);
 $(".applicationTitle").html(appTitle);
 $(".applicationDescription").html(appDescription);
 getAboutModal();
@@ -1295,6 +1518,133 @@ $('.navbar a[href="#exit"]').click( function() {
 
 
 
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### U22. Warn if identical data-argNames
+//
+//>If the developer uses the same data-argName value for
+// multiple elements, display a warning.
+
+//
+function warnIfDuplicateArgNames() {
+    var duplicatesArray = {};
+    var cmdArgs = "";
+    var cmdArgsWithoutDuplicates = [];
+
+    //Cycle through each executable
+    for (index = 0; index < executable.length; index++) {
+        //all elements with a data-argName in a form with a matching executable ID
+        cmdArgs = "";
+        cmdArgs = argsForm[index];
+        duplicatesArray = {};
+
+        //loop through all form elements for this executable
+        for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
+            //put each element's data-argName and into an array
+            duplicatesArray[cmdArgs[subindex].dataset.argname] = cmdArgs[subindex];
+        }
+
+        //Create a new array with duplicate argOrders removed
+        cmdArgsWithoutDuplicates = [];
+        for ( var key in duplicatesArray ) {
+            cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
+        }
+
+        //If the new array had any duplicates removed display a warning.
+        if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
+            $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
+                //Put alert mesage at top of page
+                $("body.dev").prepend( multiArgNamesMarkup );
+            });
+            //Keep the console warning formatted nicely for cli filenames under 16 characters in length
+            var spacesNeeded = 16 - executable[index].length;
+            var spaces = "";
+            if (spacesNeeded > 0) {
+                for (subindex = 0; subindex < spacesNeeded; subindex ++) {
+                    spaces = spaces + " ";
+                }
+            }
+            console.warn( "" );
+            console.warn( "////////////////////////////////////////" );
+            console.warn( "// All data-argName's must be unique. //" );
+            console.warn( "// FOUND IN " + executable[index].toUpperCase() + " SECTION. " + spaces + "//");
+            console.warn( "////////////////////////////////////////" );
+        }
+    }
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### U07. Realtime updating dev tool command output
+//
+//>This updates the contents the UGUI Developer Toolbar's
+// "CMD Output" section whenever the user interacts with any
+// form elements.
+
+//Make sure we're in dev mode first
+if( $("body").hasClass("dev") ) {
+
+    //Cycle through all executables used by the app
+    for (index = 0; index < executable.length; index++) {
+        //If any of the form elements with a data-argName change
+        $(argsForm[index]).change( function() {
+            //check if it was the drag/drop input box
+            if ( $(this).parent().hasClass("ezdz") ) {
+                var file = this.files[0];
+                //run a custom function before updating dev tools
+                ezdz(file);
+            }
+
+            //Update the UGUI Developer Toolbar's "CMD Output" section
+            updateUGUIDevCommandLine();
+        });
+    }
+
+    //If the user types anything in a form
+    $(textFields).keyup( updateUGUIDevCommandLine );
+    $(textFields).blur( updateUGUIDevCommandLine );
+    $(".slider").on( "slide", updateUGUIDevCommandLine );
+} else {
+    //If we're not in Dev mode, make sure the ezdz can still run
+    $(".ezdz input").change( function() {
+        var file = this.files[0];
+        //run a custom function before updating dev tools
+        ezdz(file);
+    });
+}
+
+function updateUGUIDevCommandLine() {
+    //clear it out first
+    $("#commandLine").empty();
+
+    //Get the executable from the dropdown lists
+    var pickedExecutable = $(".uguiCommand .executableName").val();
+
+    //Get an array of all the commands being sent out
+    var devCommandOutput = buildCommandArray(pickedExecutable);
+    var devCommandOutputSpaces = [];
+
+    for (var index = 0; index < devCommandOutput.length; index++) {
+        if (devCommandOutput[index] !== "") {
+            devCommandOutputSpaces.push(" " + devCommandOutput[index]);
+        }
+    }
+
+    //Replace the text in the "CMD Output" section of the UGUI Developer Toolbar
+    $("#commandLine").html( devCommandOutputSpaces );
+}
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U20. Detect if in Developer environment
 //
@@ -1406,66 +1756,6 @@ function fillExecutableDropdowns() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U22. Warn if identical data-argNames
-//
-//>If the developer uses the same data-argName value for
-// multiple elements, display a warning.
-
-//
-function warnIfDuplicateArgNames() {
-    var duplicatesArray = {};
-    var cmdArgs = "";
-    var cmdArgsWithoutDuplicates = [];
-
-    //Cycle through each executable
-    for (index = 0; index < executable.length; index++) {
-        //all elements with a data-argName in a form with a matching executable ID
-        cmdArgs = "";
-        cmdArgs = argsForm[index];
-        duplicatesArray = {};
-
-        //loop through all form elements for this executable
-        for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
-            //put each element's data-argName and into an array
-            duplicatesArray[cmdArgs[subindex].dataset.argname] = cmdArgs[subindex];
-        }
-
-        //Create a new array with duplicate argOrders removed
-        cmdArgsWithoutDuplicates = [];
-        for ( var key in duplicatesArray ) {
-            cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
-        }
-
-        //If the new array had any duplicates removed display a warning.
-        if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
-            $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
-                //Put alert mesage at top of page
-                $("body.dev").prepend( multiArgNamesMarkup );
-            });
-            //Keep the console warning formatted nicely for cli filenames under 16 characters in length
-            var spacesNeeded = 16 - executable[index].length;
-            var spaces = "";
-            if (spacesNeeded > 0) {
-                for (subindex = 0; subindex < spacesNeeded; subindex ++) {
-                    spaces = spaces + " ";
-                }
-            }
-            console.warn( "" );
-            console.warn( "////////////////////////////////////////" );
-            console.warn( "// All data-argName's must be unique. //" );
-            console.warn( "// FOUND IN " + executable[index].toUpperCase() + " SECTION. " + spaces + "//" );
-            console.warn( "////////////////////////////////////////" );
-        }
-    }
-}
-
-
-
-
-
-
-
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### U23. Put CLI help info in UGUI Dev Tools
 //
 //>This funciton is only ran when in dev mode. It adds another
@@ -1522,7 +1812,7 @@ function swatchSwapper() {
                 $("#swatchSwapper").append('<option value="_style/ven.bootswatch/' + cssFileName + '">' + swatchName + '</option>');
             }
         } else {
-            console.warn("Could not return list of style swatches.");
+            console.warn(º+"Could not return list of style swatches.", consoleBold);
         }
     });
 
@@ -1559,7 +1849,7 @@ function swatchSwapper() {
 function saveNewSwatch(newSwatch) {
     //Validate that the required argument is passed and is the correct type
     if (!newSwatch || typeof(newSwatch) !== "string") {
-        console.info("You must pass in a new swatch as a string");
+        console.info(º+"You must pass in a new swatch as a string", consoleNormal);
         return;
     }
 
@@ -1624,7 +1914,7 @@ function keyBindings() {
         ///Check CTRL + F key and do nothing :(
         if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
             pressed.preventDefault();
-            console.info("NW.js currently has no 'Find' feature built in. Sorry :(");
+            console.info(º+"NW.js currently has no 'Find' feature built in. Sorry :(", consoleNormal);
             return false;
         //Check CTRL+F5, CTRL+R, or CMD+R keys and hard refresh the page
         } else if (
@@ -1724,7 +2014,7 @@ $(".ezdz").on("dragleave", function() {
 function ezdz(fileInfo) {
     //Validate that the required argument is passed and the correct type
     if (!fileInfo || typeof(fileInfo) !== "object") {
-        console.info("You must pass in your file information as an object.");
+        console.info(º+"You must pass in your file information as an object.", consoleNormal);
         return;
     }
 
@@ -1786,8 +2076,8 @@ $(".slider").slider({
 function sliderHandleSolid(themeColor) {
     //Validate that the required argument is passed and the correct type
     if (!themeColor || typeof(themeColor) !== "string") {
-        console.info("You must pass in your theme color as a string in RGB format.");
-        console.info('Example: rgb(141, 12, 70)');
+        console.info(º+"You must pass in your theme color as a string in RGB format. Example:", consoleNormal);
+        console.info(º+'rgb(141, 12, 70)', consoleCode);
         return;
     }
 
@@ -1803,8 +2093,8 @@ function sliderHandleSolid(themeColor) {
 function sliderHandleGradient(themeGradient) {
     //Validate that the required argument is passed and the correct type
     if (!themeGradient || typeof(themeGradient) !== "string") {
-        console.info("You must pass in your theme gradient as a string in RGB format.");
-        console.info('Example: linear-gradient(rgb(84, 180, 235), rgb(47, 164, 231) 60%, rgb(29, 156, 229))');
+        console.info(º+"You must pass in your theme gradient as a string in RGB format. Example:", consoleNormal);
+        console.info(º+'linear-gradient(rgb(84, 180, 235), rgb(47, 164, 231) 60%, rgb(29, 156, 229))', consoleCode);
         return;
     }
 
@@ -1854,7 +2144,7 @@ function cutCopyPasteMenu() {
             label: cutLabel || "Cut",
             click: function() {
                 document.execCommand("cut");
-                console.log("Menu:", "cutted to clipboard");
+                console.log("Menu:", "cut to clipboard");
             }
         });
         var copy = new gui.MenuItem({
@@ -1967,9 +2257,10 @@ function saveSettings(customLocation, callback) {
     //fs.writeFileSync();
     fs.writeFile(settingsFile, settingsJSON, function (err) {
         if (err) {
-            console.warn("There was an error in attempting to save to the location:");
-            console.warn(settingsFile);
-            console.warn("Error: " + err);
+            console.warn(º+"There was an error in attempting to save to the location:", consoleNormal);
+            console.warn(º+settingsFile, consoleCode);
+            console.warn(º+"Error: ", consoleBold)
+            console.error(err);
         } else {
             //If a callback function was passed into `saveSettings`, run it
             if (typeof(callback) === "function") {
@@ -2054,8 +2345,10 @@ function loadSettings(customLocation, callback) {
     fs.readFile(settingsFile, {encoding: "utf-8"}, function(err, data){
         //Display console warning if unable to read the file
         if (err) {
-            console.warn("Could not read settings file from location:");
-            console.warn('"' + settingsFile + '"');
+            console.warn(º+"Could not read settings file from location:", consoleNormal);
+            console.warn(º+'"' + settingsFile + '"', consoleCode);
+            console.warn(º+"Error:", consoleBold)
+            console.error(err);
             return;
         //Load the file if it's found
         } else {
@@ -2185,6 +2478,9 @@ window.ugui = {
         "buildUGUIArgObject": buildUGUIArgObject,
         "centerNavLogo": centerNavLogo,
         "convertCommandArraytoString": convertCommandArraytoString,
+        "createAFolder": createAFolder,
+        "deleteAFile": deleteAFile,
+        "deleteAFolder": deleteAFolder,
         "fillExecutableDropdowns": fillExecutableDropdowns,
         "findKeyValue": findKeyValue,
         "loadSettings": loadSettings,
@@ -2192,6 +2488,7 @@ window.ugui = {
         "parseArgument": parseArgument,
         "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine,
         "readAFile": readAFile,
+        "readAFolder": readAFolder,
         "removeTypedQuotes": removeTypedQuotes,
         "runcmd": runcmd,
         "runcmdAdvanced": runcmdAdvanced,
@@ -2201,7 +2498,8 @@ window.ugui = {
         "sliderHandleColor": sliderHandleColor,
         "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
         "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
-        "warnIfDuplicateArgNames": warnIfDuplicateArgNames
+        "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
+        "writeToFile": writeToFile
     },
     "platform": process.platform,
     "textFields": textFields,
