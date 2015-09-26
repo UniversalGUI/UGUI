@@ -19,16 +19,17 @@
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
 //
 //**C00. CLI Command Processing**
-//**C01**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
-//**C02**. [Clicking Submit](#u08-clicking-submit)  
-//**C03**. [Building the command array](#u09-building-the-command-array)  
-//**C04**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
-//**C05**. [Find key value](#u11-find-key-value)  
-//**C06**. [Parse argument](#u12-parse-argument)  
-//**C07**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
+//**C01**. [Clicking Submit](#u08-clicking-submit)  
+//**C02**. [Building the command array](#u09-building-the-command-array)  
+//**C03**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
+//**C04**. [Find key value](#u11-find-key-value)  
+//**C05**. [Parse argument](#u12-parse-argument)  
+//**C06**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
+//**C07**. [Convert command array to string](#u16-convert-command-array-to-string)  
 //**C08**. [Set input file path, file name, and extension](#u14-set-input-file-path-file-name-and-extension)  
-//**C09**. [Color processor](#u15-color-processor)  
-//**C10**. [Convert command array to string](#u16-convert-command-array-to-string)  
+//**C09**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
+//**C10**. [Color processor](#u15-color-processor)  
+//
 //UI Elements
 //**U06**. [Submit is locked until required is fulfilled](#u06-submit-locked-until-required-fulfilled)  
 //**U17**. [Replace HTML text with text from package.json](#u17-replace-html-text-with-text-from-package-json)  
@@ -631,31 +632,30 @@ function deleteAFolder(filePath, callback) {
 
 
 
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U05. Prevent user from entering quotes in forms
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //
-//>In all input text fields and textareas, remove both single
-// and double quotes as they are typed, on page load, and when
-// the form is submitted.
-
-//Remove all quotes on every textfield whenever typing or leaving the field
-$(textFields).keyup( removeTypedQuotes );
-$(textFields).blur( removeTypedQuotes );
-
-function removeTypedQuotes() {
-    //Loop through all text fields on the page
-    for (index = 0; index < textFields.length; index++) {
-        //User entered text of current text field
-        var textFieldValue = $( textFields[index] ).val();
-        //If the current text field has a double or single quote in it
-        if ( textFieldValue.indexOf('"') != -1 || textFieldValue.indexOf("'") != -1 ) {
-            //Remove quotes in current text field
-            $( textFields[index] ).val( $( textFields[index] ).val().replace(/['"]/g, '') );
-        }
-    }
-}
-
-removeTypedQuotes();
+//## C00. CLI Command Processing
+//
+//This section is the primary purpose, and the heart of UGUI.
+//It's what takes the `<cmd>`, `<arg>`, `<def>` stuff, matches
+//it with the data-argName stuff, and ultimately outputs it to
+//the command-line.
+//
+//It's also responsible for building the UGUI Arg object,
+//which is used for other things, like saving settings.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 
@@ -664,7 +664,7 @@ removeTypedQuotes();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U08. Clicking Submit
+//### C01. Clicking Submit
 //
 //>What happens when you click the submit button.
 //
@@ -714,7 +714,7 @@ $(".sendCmdArgs").click( function(event) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U09. Building the Command Array
+//### C02. Building the Command Array
 //
 //>What happens when you click the submit button or when the
 // UGUI Developer Toolbar's "CMD Output" section is updated to
@@ -767,7 +767,7 @@ function buildCommandArray(thisExecutable) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U10. Build UGUI Arg Object
+//### C03. Build UGUI Arg Object
 //
 //>This grabs all the data about the elements on the page that
 // have a data-argName and puts that information on the window
@@ -868,7 +868,7 @@ buildUGUIArgObject();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U11. Find Key Value
+//### C04. Find Key Value
 //
 //>This is a general purpose function that allows retrieving
 // information from an object. Here is an example object and
@@ -929,7 +929,7 @@ function findKeyValue(obj, arr) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U12. Parse Argument
+//### C05. Parse Argument
 //
 //>This takes the argument from the `<cmd><arg>`, finds all
 // the `((keywords))` and replaces them with the information on
@@ -1013,7 +1013,7 @@ function parseArgument(argumentText) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U13. Process All CMD Definitions
+//### C06. Process All CMD Definitions
 //
 //>This loops through all <def>'s and processes the value of
 // them to create the correct key value pairs on the UGUI Args
@@ -1108,7 +1108,60 @@ function patternMatchingDefinitionEngine() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U14. Set input file path, file name, and extension
+//### C07. Convert Command Array to string
+//
+//>Take the array of executable and commands, remove empty
+// arguments and put everything into a string to be sent out
+// to the command line.
+
+//
+function convertCommandArraytoString( cmdArray ) {
+    //Validate that the required argument is passed
+    if (!cmdArray) {
+        console.info(º+"Accepts an array of executable and commands, " +
+            "removes empty arguments and puts everything into a string " +
+            "ready to be sent out to the command line.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (Object.prototype.toString.call(cmdArray) !== "[object Array]") {
+        console.info(º+"Command array must be passed as strings in an array.", consoleNormal);
+        return;
+    }
+    //Validate that all items of the array are strings
+    for (i = 0; i < cmdArray.length; i++) {
+        if (typeof(cmdArray[i]) !== "string") {
+            console.info(º+"Arguments must be passed as strings in an array.", consoleNormal);
+            return;
+        }
+    }
+
+    //Create and empty variable
+    var cmdString = "";
+
+    //`cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]`
+    for (index = 0; index < cmdArray.length; index++) {
+        //Make sure the executable isn't preceeded with a space
+        if (index === 0) {
+            cmdString = cmdArray[0];
+        //add in the rest of the arguments, skipping blank ones
+        } else if (cmdArray[index]) {
+            cmdString = cmdString + " " + cmdArray[index];
+        }
+    }
+
+    //Return the command string that will be ran
+    return cmdString;
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### C08. Set input file path, file name, and extension
 //
 //>This processes elements with a data-argName that are
 // `<input type="file">`. It creates special properties for the
@@ -1196,7 +1249,39 @@ function setInputFilePathNameExt(currentElement, argName) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U15. Color Processor
+//### C09. Prevent user from entering quotes in forms
+//
+//>In all input text fields and textareas, remove both single
+// and double quotes as they are typed, on page load, and when
+// the form is submitted.
+
+//Remove all quotes on every textfield whenever typing or leaving the field
+$(textFields).keyup( removeTypedQuotes );
+$(textFields).blur( removeTypedQuotes );
+
+function removeTypedQuotes() {
+    //Loop through all text fields on the page
+    for (index = 0; index < textFields.length; index++) {
+        //User entered text of current text field
+        var textFieldValue = $( textFields[index] ).val();
+        //If the current text field has a double or single quote in it
+        if ( textFieldValue.indexOf('"') != -1 || textFieldValue.indexOf("'") != -1 ) {
+            //Remove quotes in current text field
+            $( textFields[index] ).val( $( textFields[index] ).val().replace(/['"]/g, '') );
+        }
+    }
+}
+
+removeTypedQuotes();
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### C10. Color Processor
 //
 //>Process input elements with a type of color to generate
 // RGB, Hex, and Decimal values, then place them on the
@@ -1279,52 +1364,7 @@ function colorProcessor(inputColor, argName) {
 
 
 
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U16. Convert Command Array to string
-//
-//>Take the array of executable and commands, remove empty
-// arguments and put everything into a string to be sent out
-// to the command line.
 
-//
-function convertCommandArraytoString( cmdArray ) {
-    //Validate that the required argument is passed
-    if (!cmdArray) {
-        console.info(º+"Accepts an array of executable and commands, " +
-            "removes empty arguments and puts everything into a string " +
-            "ready to be sent out to the command line.", consoleNormal);
-        return;
-    }
-    //Validate types
-    if (Object.prototype.toString.call(cmdArray) !== "[object Array]") {
-        console.info(º+"Command array must be passed as strings in an array.", consoleNormal);
-        return;
-    }
-    //Validate that all items of the array are strings
-    for (i = 0; i < cmdArray.length; i++) {
-        if (typeof(cmdArray[i]) !== "string") {
-            console.info(º+"Arguments must be passed as strings in an array.", consoleNormal);
-            return;
-        }
-    }
-
-    //Create and empty variable
-    var cmdString = "";
-
-    //`cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]`
-    for (index = 0; index < cmdArray.length; index++) {
-        //Make sure the executable isn't preceeded with a space
-        if (index === 0) {
-            cmdString = cmdArray[0];
-        //add in the rest of the arguments, skipping blank ones
-        } else if (cmdArray[index]) {
-            cmdString = cmdString + " " + cmdArray[index];
-        }
-    }
-
-    //Return the command string that will be ran
-    return cmdString;
-}
 
 
 
