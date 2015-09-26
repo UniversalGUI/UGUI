@@ -19,42 +19,45 @@
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
 //
 //**C00. CLI Command Processing**
-//**C01**. [Clicking Submit](#u08-clicking-submit)  
-//**C02**. [Building the command array](#u09-building-the-command-array)  
-//**C03**. [Build UGUI Args object](#u10-build-ugui-arg-object)  
-//**C04**. [Find key value](#u11-find-key-value)  
-//**C05**. [Parse argument](#u12-parse-argument)  
-//**C06**. [Process all <cmd> definitions](#u13-process-all-cmd-definitions)  
-//**C07**. [Convert command array to string](#u16-convert-command-array-to-string)  
-//**C08**. [Set input file path, file name, and extension](#u14-set-input-file-path-file-name-and-extension)  
-//**C09**. [Prevent user from entering quotes in forms](#u05-prevent-user-from-entering-quotes-in-forms)  
-//**C10**. [Color processor](#u15-color-processor)  
+//**C01**. [Clicking Submit](#c01-clicking-submit)  
+//**C02**. [Building the command array](#c02-building-the-command-array)  
+//**C03**. [Build UGUI Args object](#c03-build-ugui-arg-object)  
+//**C04**. [Find key value](#c04-find-key-value)  
+//**C05**. [Parse argument](#c05-parse-argument)  
+//**C06**. [Process all <cmd> definitions](#c06-process-all-cmd-definitions)  
+//**C07**. [Convert command array to string](#c07-convert-command-array-to-string)  
+//**C08**. [Set input file path, file name, and extension](#c08-set-input-file-path-file-name-and-extension)  
+//**C09**. [Prevent user from entering quotes in forms](#c09-prevent-user-from-entering-quotes-in-forms)  
+//**C10**. [Color processor](#c10-color-processor)  
 //
-//UI Elements
-//**U06**. [Submit is locked until required is fulfilled](#u06-submit-locked-until-required-fulfilled)  
-//**U17**. [Replace HTML text with text from package.json](#u17-replace-html-text-with-text-from-package-json)  
-//**U18**. [Update about modal](#u18-update-about-modal)  
-//**U19**. [Navigation bar functionality](#u19-navigation-bar-functionality)  
-//Warnings
-//**U22**. [Warn if identical data-argNames](#u22-warn-if-identical-data-argnames)  
-//UGUI Developer Toolbar
-//**U07**. [Realtime updating of command output in UGUI Dev Tools](#u07-realtime-updating-dev-tool-command-output)  
-//**U20**. [Detect if in developer environment](#u20-detect-if-in-developer-environment)  
-//**U21**. [Put all executables in dropdowns](#u21-put-all-executables-in-dropdowns)  
-//**U23**. [Put CLI help info in UGUI dev tools](#u23-put-cli-help-info-in-ugui-dev-tools)  
-//**U24**. [Swap bootswatches](#u24-swap-bootswatches)  
-//**U25**. [Save chosen bootswatch](#u25-save-chosen-bootswatch)  
-//**U26**. [Custom keyboard shortcuts](#u26-custom-keyboard-shortcuts)  
-//Basic functionality
-//**U27**. [Launch links in default browser](#u27-launch-links-in-default-browser)  
-//Plugins
-//**U28**. [EZDZ: Drag and drop file browse box](#u28-ezdz-drag-and-drop)  
-//**U29**. [Range slider](#u29-range-slider)  
-//**U30**. [Cut/copy/paste context menu](#u30-cut-copy-paste-context-menu)  
-//Settings
-//**U31**. [Save Settings](#u31-save-settings)  
-//**U32**. [Load Settings](#u32-load-settings)  
-//**U33**. [The UGUI Object](#u33-the-ugui-object)  
+//**D00. UI Elements**
+//**D01**. [Submit is locked until required is fulfilled](#d01-submit-locked-until-required-fulfilled)  
+//**D02**. [Replace HTML text with text from package.json](#d02-replace-html-text-with-text-from-package-json)  
+//**D03**. [Update about modal](#d03-update-about-modal)  
+//**D04**. [Navigation bar functionality](#d04-navigation-bar-functionality)  
+//**D05**. [Launch links in default browser](#d05-launch-links-in-default-browser)  
+//
+//**E00. Warnings**
+//**E01**. [Warn if identical data-argNames](#e01-warn-if-identical-data-argnames)  
+//
+//**F00. UGUI Developer Toolbar**
+//**F01**. [Realtime updating of command output in UGUI Dev Tools](#f01-realtime-updating-dev-tool-command-output)  
+//**F02**. [Detect if in developer environment](#f02-detect-if-in-developer-environment)  
+//**F03**. [Put all executables in dropdowns](#f03-put-all-executables-in-dropdowns)  
+//**F04**. [Put CLI help info in UGUI dev tools](#f04-put-cli-help-info-in-ugui-dev-tools)  
+//**F05**. [Swap bootswatches](#f05-swap-bootswatches)  
+//**F06**. [Save chosen bootswatch](#f06-save-chosen-bootswatch)  
+//**F07**. [Custom keyboard shortcuts](#f07-custom-keyboard-shortcuts)  
+//
+//**G00. Plugins**
+//**G01**. [EZDZ: Drag and drop file browse box](#g01-ezdz-drag-and-drop)  
+//**G02**. [Range slider](#g02-range-slider)  
+//**G03**. [Cut/copy/paste context menu](#g03-cut-copy-paste-context-menu)  
+//
+//**H00. Settings**
+//**H01**. [Save Settings](#h01-save-settings)  
+//**H02**. [Load Settings](#h02-load-settings)  
+//**H03**. [The UGUI Object](#h03-the-ugui-object)  
 
 
 
@@ -1373,7 +1376,27 @@ function colorProcessor(inputColor, argName) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U06. Submit locked until required fulfilled
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## D00. UI Elements
+//
+//These are things specific to the stuff on the page. These may
+//not be relavent to apps made using UGUI that do a lot of
+//custom UI work.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### D01. Submit locked until required fulfilled
 //
 //>Gray out the submit button until all required elements are
 // filled out. On every change, click, or keystroke, check all
@@ -1415,7 +1438,7 @@ unlockSubmit();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U17. Replace HTML text with text from package.json
+//### D02. Replace HTML text with text from package.json
 //
 //>Some text on the page can be auto-filled from the content in
 // the package.json. This replaces the text on the page.
@@ -1431,8 +1454,9 @@ getAboutModal();
 
 
 
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U18. Update About modal
+//### D03. Update About modal
 //
 //>This pulls in information about the application from the
 // package.json file and puts in in the About modal. It also
@@ -1484,8 +1508,9 @@ function getAboutModal() {
 
 
 
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U19. Navigation bar functionality
+//### D04. Navigation bar functionality
 //
 //>Everything in this section controls the visibility and the
 // functionality of the items in the top nav bar.
@@ -1560,7 +1585,67 @@ $('.navbar a[href="#exit"]').click( function() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U22. Warn if identical data-argNames
+//### D05. Launch links in default browser
+//
+//>Detects all links on the page with a class of `external-link`
+// and sets them to open the link in the user's default browser
+// instead of using NW.js as a browser which can cause issues.
+
+//
+function openDefaultBrowser() {
+
+    // Load native UI library.
+    var gui = require("nw.gui");
+
+    // Open URL with default browser.
+    $(".external-link").click( function( event ) {
+        //prevent the link from loading in NW.js
+        event.preventDefault();
+        //get the href url for the current link
+        var url = $(this).attr("href");
+        //launch the user's default browser and load the URL for the link they clicked
+        gui.Shell.openExternal(url);
+    });
+}
+//Run once on page load
+openDefaultBrowser();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## E00. Warnings
+//
+//These are warnings that occur when UGUI detects you are doing
+//something that could break it's functionality. They are
+//designed to be precautionary and informitve. They only occur
+//when in `dev` mode.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### E01. Warn if identical data-argNames
 //
 //>If the developer uses the same data-argName value for
 // multiple elements, display a warning.
@@ -1619,65 +1704,26 @@ function warnIfDuplicateArgNames() {
 
 
 
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U07. Realtime updating dev tool command output
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //
-//>This updates the contents the UGUI Developer Toolbar's
-// "CMD Output" section whenever the user interacts with any
-// form elements.
-
-//Make sure we're in dev mode first
-if( $("body").hasClass("dev") ) {
-
-    //Cycle through all executables used by the app
-    for (index = 0; index < executable.length; index++) {
-        //If any of the form elements with a data-argName change
-        $(argsForm[index]).change( function() {
-            //check if it was the drag/drop input box
-            if ( $(this).parent().hasClass("ezdz") ) {
-                var file = this.files[0];
-                //run a custom function before updating dev tools
-                ezdz(file);
-            }
-
-            //Update the UGUI Developer Toolbar's "CMD Output" section
-            updateUGUIDevCommandLine();
-        });
-    }
-
-    //If the user types anything in a form
-    $(textFields).keyup( updateUGUIDevCommandLine );
-    $(textFields).blur( updateUGUIDevCommandLine );
-    $(".slider").on( "slide", updateUGUIDevCommandLine );
-} else {
-    //If we're not in Dev mode, make sure the ezdz can still run
-    $(".ezdz input").change( function() {
-        var file = this.files[0];
-        //run a custom function before updating dev tools
-        ezdz(file);
-    });
-}
-
-function updateUGUIDevCommandLine() {
-    //clear it out first
-    $("#commandLine").empty();
-
-    //Get the executable from the dropdown lists
-    var pickedExecutable = $(".uguiCommand .executableName").val();
-
-    //Get an array of all the commands being sent out
-    var devCommandOutput = buildCommandArray(pickedExecutable);
-    var devCommandOutputSpaces = [];
-
-    for (var index = 0; index < devCommandOutput.length; index++) {
-        if (devCommandOutput[index] !== "") {
-            devCommandOutputSpaces.push(" " + devCommandOutput[index]);
-        }
-    }
-
-    //Replace the text in the "CMD Output" section of the UGUI Developer Toolbar
-    $("#commandLine").html( devCommandOutputSpaces );
-}
+//## F00. UGUI Developer Toolbar
+//
+//The UGUI Developer Toolbar appears at the bottom of your app
+//when the `<body>` has a class of `dev`. It is meant to be
+//informative and give you access to quick/common tasks.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
 
@@ -1686,7 +1732,7 @@ function updateUGUIDevCommandLine() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U20. Detect if in Developer environment
+//### F01. Detect if in Developer environment
 //
 //>Detects if you're in Development or Production environment.
 //
@@ -1695,7 +1741,6 @@ function updateUGUIDevCommandLine() {
 // `CTRL+Shift+I` to launch Webkit's Developer Tools, or `F5`
 // to refresh. Also it displays the Command Line output at the
 // bottom of the page.
-
 
 //Check if the body has a class of prod for Production Environment
 if ( $("body").hasClass("prod") ) {
@@ -1774,8 +1819,9 @@ function updateCommandLineOutputPreviewHint() {
 
 
 
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U21. Put all executables in dropdowns
+//### F02. Put all executables in dropdowns
 //
 //>In the UGUI Developer Toolbar, there are dropdowns in the
 // "CMD Output" and "Executable Info" sections that contain all
@@ -1796,7 +1842,73 @@ function fillExecutableDropdowns() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U23. Put CLI help info in UGUI Dev Tools
+//### F03. Realtime updating dev tool command output
+//
+//>This updates the contents the UGUI Developer Toolbar's
+// "CMD Output" section whenever the user interacts with any
+// form elements.
+
+//Make sure we're in dev mode first
+if( $("body").hasClass("dev") ) {
+
+    //Cycle through all executables used by the app
+    for (index = 0; index < executable.length; index++) {
+        //If any of the form elements with a data-argName change
+        $(argsForm[index]).change( function() {
+            //check if it was the drag/drop input box
+            if ( $(this).parent().hasClass("ezdz") ) {
+                var file = this.files[0];
+                //run a custom function before updating dev tools
+                ezdz(file);
+            }
+
+            //Update the UGUI Developer Toolbar's "CMD Output" section
+            updateUGUIDevCommandLine();
+        });
+    }
+
+    //If the user types anything in a form
+    $(textFields).keyup( updateUGUIDevCommandLine );
+    $(textFields).blur( updateUGUIDevCommandLine );
+    $(".slider").on( "slide", updateUGUIDevCommandLine );
+} else {
+    //If we're not in Dev mode, make sure the ezdz can still run
+    $(".ezdz input").change( function() {
+        var file = this.files[0];
+        //run a custom function before updating dev tools
+        ezdz(file);
+    });
+}
+
+function updateUGUIDevCommandLine() {
+    //clear it out first
+    $("#commandLine").empty();
+
+    //Get the executable from the dropdown lists
+    var pickedExecutable = $(".uguiCommand .executableName").val();
+
+    //Get an array of all the commands being sent out
+    var devCommandOutput = buildCommandArray(pickedExecutable);
+    var devCommandOutputSpaces = [];
+
+    for (var index = 0; index < devCommandOutput.length; index++) {
+        if (devCommandOutput[index] !== "") {
+            devCommandOutputSpaces.push(" " + devCommandOutput[index]);
+        }
+    }
+
+    //Replace the text in the "CMD Output" section of the UGUI Developer Toolbar
+    $("#commandLine").html( devCommandOutputSpaces );
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### F04. Put CLI help info in UGUI Dev Tools
 //
 //>This funciton is only ran when in dev mode. It adds another
 // tab in the UGUI Developer Tools that returns information
@@ -1832,7 +1944,7 @@ function putExeHelpInDevTools() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U24. Swap Bootswatches
+//### F05. Swap Bootswatches
 //
 //>This funciton is only ran when in dev mode. It grabs a list
 // of all files in the `ven.bootswatch` folder and puts them in
@@ -1866,7 +1978,6 @@ function swatchSwapper() {
         window.setTimeout(centerNavLogo, 71);
         window.setTimeout(sliderHandleColor, 71);
     });
-
 }
 
 
@@ -1876,7 +1987,7 @@ function swatchSwapper() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U25. Save chosen Bootswatch
+//### F06. Save chosen Bootswatch
 //
 //>In the "Style Swapper" section of UGUI Developer Toolbar,
 // when the user clicks the "Use this style" button,
@@ -1942,7 +2053,7 @@ function saveNewSwatch(newSwatch) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U26. Custom keyboard shortcuts
+//### F07. Custom keyboard shortcuts
 //
 //>This funciton is only ran when in dev mode. It gives the
 // developer access to common/expected keyboard shortcuts.
@@ -1994,31 +2105,6 @@ function keyBindings() {
 
 
 
-//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U27. Launch links in default browser
-//
-//>Detects all links on the page with a class of `external-link`
-// and sets them to open the link in the user's default browser
-// instead of using NW.js as a browser which can cause issues.
-
-//
-function openDefaultBrowser() {
-
-    // Load native UI library.
-    var gui = require("nw.gui");
-
-    // Open URL with default browser.
-    $(".external-link").click( function( event ) {
-        //prevent the link from loading in NW.js
-        event.preventDefault();
-        //get the href url for the current link
-        var url = $(this).attr("href");
-        //launch the user's default browser and load the URL for the link they clicked
-        gui.Shell.openExternal(url);
-    });
-}
-//Run once on page load
-openDefaultBrowser();
 
 
 
@@ -2027,7 +2113,26 @@ openDefaultBrowser();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U28. EZDZ: Drag and Drop
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## G00. Plugins
+//
+//Here are some plugins written by other's that are used to by
+//UGUI to make things easier. Some of these have been modified.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//G01 U28. EZDZ: Drag and Drop
 //
 //>Code for drag/drop/browse box. This was originally based on
 // EZDZ, but has been heavily modified for Bootstrap and NW.js
@@ -2088,7 +2193,6 @@ function ezdz(fileInfo) {
     //Update the text on screen to display the name of the file that was dropped
     var droppedFilename = file.name + " selected";
     $(".ezdz label").html(droppedFilename);
-
 }
 
 
@@ -2096,8 +2200,9 @@ function ezdz(fileInfo) {
 
 
 
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U29. Range slider
+//### G02. Range slider
 //
 //>Enables all elements with a class of `slider` to use the
 // boostrap-slider plugin.
@@ -2168,7 +2273,7 @@ sliderHandleColor();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U30 Cut/Copy/Paste context menu
+//### G03 Cut/Copy/Paste context menu
 //
 //>Right-click on any text or text field and you can now C&P!
 //
@@ -2224,8 +2329,35 @@ cutCopyPasteMenu();
 
 
 
+
+
+
+
+
+
+
+
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U31. Save settings
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//
+//## H00. Settings
+//
+//This section deals with saving/loading settings and exposing
+//parts of UGUI to the developer.
+//
+//
+//
+//
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### H01. Save settings
 //
 //>This saves the settings of your app into a local user
 // account specific folder on the computer that is different
@@ -2324,7 +2456,7 @@ $(".save-ugui-settings").click( function() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U32. Load settings
+//### H02. Load settings
 //
 //>This loads your settings from the default save location or
 // a location that you've passed in. It reads the file, which
@@ -2493,7 +2625,7 @@ $(".load-ugui-settings").click( function() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### U33. The UGUI Object
+//### H03. The UGUI Object
 //
 //>We expose parts of UGUI to developers via the UGUI object.
 // To quickly access what is available type "ugui" into the
@@ -2554,6 +2686,13 @@ window.ugui = {
 
 // end `ugui();`
 }
+
+
+
+
+
+
+
 
 
 
