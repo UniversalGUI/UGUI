@@ -4,21 +4,21 @@
 
 //## TABLE OF CONTENTS
 //
-//**A00. Intro**
+//**A00. [Intro](#a00-intro)**  
 //**A01**. [UGUI Start](#a01-ugui-start)  
 //**A02**. [UGUI variables](#a02-ugui-variables)  
 //
-//**B00. Simplified Commands**
+//**B00. [Simplified Commands](#b00-simplified-commands)**  
 //**B01**. [Run CMD](#b01-run-cmd)  
-//**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced)  
+//**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced-)  
 //**B03**. [Read a file](#b03-read-a-file)  
-//**B04**. [Read contents of a folder](#b04-read-a-folder)  
+//**B04**. [Read contents of a folder](#b04-read-contents-of-a-folder)  
 //**B05**. [Write to file](#b05-write-to-file)  
 //**B06**. [Create a folder](#b06-create-a-folder)  
 //**B07**. [Delete a file](#b07-delete-a-file)  
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
 //
-//**C00. CLI Command Processing**
+//**C00. [CLI Command Processing](#c00-cli-command-processing)**  
 //**C01**. [Clicking Submit](#c01-clicking-submit)  
 //**C02**. [Building the command array](#c02-building-the-command-array)  
 //**C03**. [Build UGUI Args object](#c03-build-ugui-arg-object)  
@@ -30,31 +30,31 @@
 //**C09**. [Prevent user from entering quotes in forms](#c09-prevent-user-from-entering-quotes-in-forms)  
 //**C10**. [Color processor](#c10-color-processor)  
 //
-//**D00. UI Elements**
+//**D00. [UI Elements](#d00-ui-elements)**  
 //**D01**. [Submit is locked until required is fulfilled](#d01-submit-locked-until-required-fulfilled)  
 //**D02**. [Replace HTML text with text from package.json](#d02-replace-html-text-with-text-from-package-json)  
 //**D03**. [Update about modal](#d03-update-about-modal)  
 //**D04**. [Navigation bar functionality](#d04-navigation-bar-functionality)  
 //**D05**. [Launch links in default browser](#d05-launch-links-in-default-browser)  
 //
-//**E00. Warnings**
+//**E00. [Warnings](#e00-warnings)**  
 //**E01**. [Warn if identical data-argNames](#e01-warn-if-identical-data-argnames)  
 //
-//**F00. UGUI Developer Toolbar**
-//**F01**. [Realtime updating of command output in UGUI Dev Tools](#f01-realtime-updating-dev-tool-command-output)  
-//**F02**. [Detect if in developer environment](#f02-detect-if-in-developer-environment)  
-//**F03**. [Put all executables in dropdowns](#f03-put-all-executables-in-dropdowns)  
+//**F00. [UGUI Developer Toolbar](#f00-ugui-developer-toolbar)**  
+//**F01**. [Detect if in developer environment](#f01-detect-if-in-developer-environment)  
+//**F02**. [Put all executables in dropdowns](#f02-put-all-executables-in-dropdowns)  
+//**F03**. [Realtime updating of command output in UGUI Dev Tools](#f03-realtime-updating-dev-tool-command-output)  
 //**F04**. [Put CLI help info in UGUI dev tools](#f04-put-cli-help-info-in-ugui-dev-tools)  
 //**F05**. [Swap bootswatches](#f05-swap-bootswatches)  
 //**F06**. [Save chosen bootswatch](#f06-save-chosen-bootswatch)  
 //**F07**. [Custom keyboard shortcuts](#f07-custom-keyboard-shortcuts)  
 //
-//**G00. Plugins**
+//**G00. [Plugins](#g00-plugins)**  
 //**G01**. [EZDZ: Drag and drop file browse box](#g01-ezdz-drag-and-drop)  
 //**G02**. [Range slider](#g02-range-slider)  
 //**G03**. [Cut/copy/paste context menu](#g03-cut-copy-paste-context-menu)  
 //
-//**H00. Settings**
+//**H00. [Settings](#h00-settings)**  
 //**H01**. [Save Settings](#h01-save-settings)  
 //**H02**. [Load Settings](#h02-load-settings)  
 //**H03**. [The UGUI Object](#h03-the-ugui-object)  
@@ -2132,7 +2132,7 @@ function keyBindings() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//G01 U28. EZDZ: Drag and Drop
+//## G01. EZDZ: Drag and Drop
 //
 //>Code for drag/drop/browse box. This was originally based on
 // EZDZ, but has been heavily modified for Bootstrap and NW.js
@@ -2273,7 +2273,7 @@ sliderHandleColor();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### G03 Cut/Copy/Paste context menu
+//### G03. Cut/Copy/Paste context menu
 //
 //>Right-click on any text or text field and you can now C&P!
 //
