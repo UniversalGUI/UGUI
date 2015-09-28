@@ -43,10 +43,10 @@
 //**F00. [UGUI Developer Toolbar](#f00-ugui-developer-toolbar)**  
 //**F01**. [Detect if in developer environment](#f01-detect-if-in-developer-environment)  
 //**F02**. [Put all executables in dropdowns](#f02-put-all-executables-in-dropdowns)  
-//**F03**. [Realtime updating of command output in UGUI Dev Tools](#f03-realtime-updating-dev-tool-command-output)  
+//**F03**. [Real-time updating of command output in UGUI Dev Tools](#f03-real-time-updating-dev-tool-command-output)  
 //**F04**. [Put CLI help info in UGUI dev tools](#f04-put-cli-help-info-in-ugui-dev-tools)  
-//**F05**. [Swap bootswatches](#f05-swap-bootswatches)  
-//**F06**. [Save chosen bootswatch](#f06-save-chosen-bootswatch)  
+//**F05**. [Swap Bootswatches](#f05-swap-bootswatches)  
+//**F06**. [Save chosen Bootswatch](#f06-save-chosen-bootswatch)  
 //**F07**. [Custom keyboard shortcuts](#f07-custom-keyboard-shortcuts)  
 //
 //**G00. [Plugins](#g00-plugins)**  
@@ -102,8 +102,8 @@
 //Wait for the document to load before running ugui.js. Use either runUGUI or waitUGUI for immediate or delayed launch.
 $(document).ready( runUGUI );
 
-//Lets you open NW.js, then immediately launch the devtools, then a few seconds later run UGUI.
-//Good for hitting a debugger in time, as often the JS runs before the devtools can open.
+//This lets you open NW.js, then immediately launch the Webkit Developer Tools, then a few seconds later run UGUI.
+//Good for hitting a debugger in time, as often the JS runs before the Webkit Developer Tools can open.
 function waitUGUI() {
     require("nw.gui").Window.get().showDevTools();
     setTimeout(runUGUI, 6000);
@@ -113,7 +113,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "0.9.0";
+var uguiVersion = "1.0.0";
 
 
 
@@ -138,8 +138,7 @@ for (index = 0; index < $("cmd").length; index++) {
     executable.push($(currentCommandBlock).attr("executable"));
 }
 
-//Create the cmdArgs object containing all elements with an argOrder for each executable form.  
-//`var cmdArgs = $("#argsForm *[data-argName]");`
+//Create the argsForm array containing all elements with a `data-argName` for each executable form.
 var argsForm = [];
 for (index = 0; index < executable.length; index++) {
     argsForm.push( $("#" + executable[index] + " *[data-argName]" ) );
@@ -154,7 +153,7 @@ var fs = require("fs");
 //Access the contents of the package.json file
 var packageJSON = require("nw.gui").App.manifest;
 
-//Name of the developer's application as a URL/Filepath safe name, set in package.json
+//Name of the developer's application as a URL/File path safe name, set in package.json
 var appName = packageJSON.name;
 
 //The app title that is used dynamically throughout the UI and title bar, set in package.json
@@ -172,7 +171,7 @@ var authorName = packageJSON.author;
 //Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
-//You can stylize console outputs in WebKit, these are essentially CSS classes
+//You can stylize console outputs in Webkit, these are essentially CSS classes
 var consoleNormal = "font-family: sans-serif";
 var consoleBold   = "font-family: sans-serif;" +
                     "font-weight: bold";
@@ -183,12 +182,19 @@ var consoleCode   = "background: #EEEEF6;" +
                     "color: #5F5F5F;" +
                     "line-height: 22px;" +
                     "box-shadow: 0px 0px 1px 1px rgba(178,176,193,0.3)";
+var consoleError  = "background: #F6EEEE;" +
+                    "border: 1px solid #C1B0B2;" +
+                    "border-radius: 7px;" +
+                    "padding: 2px 8px 3px;" +
+                    "color: #5F5F5F;" +
+                    "line-height: 22px;" +
+                    "box-shadow: 0px 0px 1px 1px rgba(193,176,178,0.3)";
 
-//Placing this at the start of a console output will let you style it
+//Placing this at the start of a console output will let you style it.  
 //**Example**: `console.info(º+"Some bold text.", consoleBold);`
 var º = "%c";
 
-//Make sure the ugui and ugui.args objects exist, if not create them
+//Make sure the `ugui` and `ugui.args` objects exist, if not create them
 if (!window.ugui) {
     window.ugui = {};
     window.ugui.args = {};
@@ -212,7 +218,7 @@ if (!window.ugui) {
 //
 //## B00. Simplified Commands
 //
-//These are easy to run commands for common tasks a dekstop
+//These are easy to run commands for common tasks a desktop
 //application would perform. Such as reading, writing, and
 //deleting files and folders or running native executables.
 //
@@ -288,14 +294,14 @@ function runcmd(executableAndArgs, callback) {
 // functionality such as running a function when an executable
 // closes, finishes, errors, or returns data.
 //
-//>`ugui.helpers.runcmdAdvanced(parameters);`
+//>     ugui.helpers.runcmdAdvanced(parameters);
 //
 //>Below is an example parameters object.
 //
 //>     var parameters = {
 //         "executableAndArgs": "node --version",
 //         "returnedData": function(data) {
-//             console.log("The text from the exectuable: " + data);
+//             console.log("The text from the executable: " + data);
 //         },
 //         "onExit": function(code) {
 //             console.log("Executable finished with the exit code: " + code);
@@ -306,7 +312,7 @@ function runcmd(executableAndArgs, callback) {
 //         "onClose": function(code) {
 //             console.log("Executable has closed with the exit code: " + code);
 //         }
-//     }
+//     };
 
 //
 function runcmdAdvanced(parameters) {
@@ -397,7 +403,7 @@ function runcmdAdvanced(parameters) {
 //>A function that allows you to set the contents of a file to
 // a variable. Like so:
 //
-//>`var devToolsHTML = ugui.helpers.readAFile("_markup/ugui-devtools.htm");`
+//>     var devToolsHTML = ugui.helpers.readAFile("_markup/ugui-devtools.htm");
 
 //
 function readAFile(filePathAndName) {
@@ -425,12 +431,27 @@ function readAFile(filePathAndName) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### B04. Read contents of a folder
 //
-//>Coming soon
+//>Supply a path to a folder as a string and UGUI will return an
+// object with each file and folder as a sub-object. Each item
+// returned will have an "isFolder" property to tell if it's a
+// file or a folder, and with the exception of some system
+// files, they should all have a file size as well.
 //
-//>`var mediaContents = ugui.helpers.readAFolder("_media");`
+//>To make things easier, we also return an array that lists all
+// items returned.
+//
+//>     var mediaContents = ugui.helpers.readAFolder("_media");
+//
+//>Since you can't use spaces or dots in dot notation, folders
+// and files like "Hello World" and "file.txt" can't be
+// accessed by doing `mediaContents.Hello World.size` or
+// `mediaContents.file.txt.isFolder`. So to access those use:
+//
+//>     mediaContents["Hello World"].size
+//     mediaContents["file.txt"].isFolder
 
 //
-function readAFolder(filePath) {
+function readAFolder(filePath, callback) {
     //Validate that required argument is passed
     if (!filePath) {
         console.info(º+"Supply a path to the file you want to read as " +
@@ -441,31 +462,59 @@ function readAFolder(filePath) {
     if (typeof(filePath) !== "string") {
         console.info(º+"File path must be passed as a string.", consoleNormal);
         return;
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Callback must be passed as a function.", consoleNormal);
+        return;
     }
 
-    console.info(º+"Feature comming soon.", consoleNormal);
-/*
+    //Create an object with an array in it
+    var contents = { "_folder_contents_array": [] };
+
+    //Read the directory passed in
     fs.readdir(filePath, function (err, files) {
+        //If there were problems reading the contents of a folder, stop and report them
         if (err)  {
             console.info(º+"Unable to read contents of the folder:", consoleNormal);
-            console.info(º+filePath, consoleCode);
-            console.info(º+"Error message:", consoleBold)
-            console.error(err);
+            console.warn(º+err.message, consoleError);
             return;
         }
 
         files.forEach( function (file) {
-            fs.lstat('/' + file, function(err, stats) {
-                if (!err && stats.isDirectory()) { //conditing for identifying folders
-                    $('ul#foldertree').append('<li class="folder">'+file+'</li>');
+            fs.lstat(filePath + file, function(err, stats) {
+                //Retain an array of all files and folders
+                contents._folder_contents_array.push(file);
+
+                //Check if it's a folder
+                if (!err && stats.isDirectory()) {
+                    contents[file] = {
+                        "isFolder": true,
+                        "size": 0
+                    }
+                //Check if it has a file size
+                } else if (!err && file !== "undefined") {
+                    contents[file] = {
+                        "isFolder": false,
+                        "size": stats.size
+                    }
+                //Catch-all
+                } else {
+                    contents[file] = {
+                        "isFolder": false
+                    }
                 }
-                else {
-                    $('ul#foldertree').append('<li class="file">'+file+'</li>');
-                }
+
             });
         });
     });
-*/
+
+    //If a callback was passed in, run it
+    if (callback) {
+        callback(contents);
+    //Otherwise just return the contents of the folder
+    } else {
+        return contents;
+    }
+
 }
 
 
@@ -481,38 +530,42 @@ function readAFolder(filePath) {
 // the data you supply. If the file you point to doesn't exist,
 // it will be created with your supplied data.
 //
-//>`ugui.helpers.writeToFile("C:/folder/new_file.htm", "Text.");`
+//>     ugui.helpers.writeToFile("C:/folder/new_file.htm", "Text.");
 
 //
 function writeToFile(filePathAndName, data, callback) {
-    //Validate that required argument is passed
-    if (!filePathAndName) {
-        console.info(º+"Supply a path to the file you want to overide as the first argument to this function.", consoleNormal);
+    //Validate that required arguments are passed and are the correct types
+    if (!filePathAndName || typeof(filePathAndName) !== "string") {
+        console.info(º+"Supply a path to the file you want to create or replace the " +
+            "contents of as the first argument to this function.", consoleNormal);
+        console.info(º+"File path and name must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.writeToFile("C:/folder/file.htm", "Your data.");', consoleCode);
         return;
     } else if (!data) {
-        console.info(º+"You must pass in the data to be stored as the second argument to this function.", consoleNormal);
-        return;
-    }
-
-    //Validate types
-    if (typeof(filePathAndName) !== "string") {
-        console.info(º+"File path and name must be passed as a string.", consoleNormal);
+        console.info(º+"You must pass in the data to be stored as the second argument " +
+            "to this function.", consoleNormal);
         return;
     } else if (typeof(data) !== "string") {
         console.info(º+"The data to be stored must be passed as a string.", consoleNormal);
         return;
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Your callback must be passed as a function.", consoleNormal);
+        return;
     }
 
-    console.info(º+"Feature comming soon.", consoleNormal);
-
-/*
-    //If a callback was passed in and it is a function
-    if (callback && typeof(callback) === "function") {
-        fs.unlink(filePathAndName, callback);
-    } else {
-        fs.unlink(filePathAndName);
-    }
-*/
+    //Write to the file the user passed in
+    fs.writeFile(filePathAndName, data, function(err) {
+        //If there was a problem writing to the file
+        if (err) {
+            console.info(º+"There was an error attempting to save your data.", consoleNormal);
+            console.warn(º+err.message, consoleError);
+            return;
+        //If the file was updated and the user passed in a callback function, run it
+        } else if (callback) {
+            callback();
+        }
+    });
 }
 
 
@@ -524,34 +577,49 @@ function writeToFile(filePathAndName, data, callback) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### B06. Create a folder
 //
-//>Coming soon
+//>This will create a new folder in the location you pass in.
+// You cannot create a new folder with a folder in it. So if
+// `C:/Taco` doesn't exist then the following wouldn't work:
 //
-//>`ugui.helpers.createAFolder("C:/folder/new-folder");`
+//>     ugui.helpers.createAFolder("C:/Taco/Cheese");
+//
+//>You'd need to create the "Taco" folder first, then the
+// "Cheese" folder, like so:
+//
+//>     ugui.helpers.createAFolder("C:/Taco", ugui.helpers.createAFolder("C:/Taco/Cheese"));
+//
+//>In this example we are using a callback to create a
+// subfolder. This ensures that the "Taco" folder will exist
+// before we attempt to create the "Cheese" folder.
 
 //
 function createAFolder(filePath, callback) {
-    //Validate that required argument is passed
-    if (!filePath) {
-        console.info(º+"Supply a path to where you want your folder as the first argument to this function.", consoleNormal);
+    //Validate that required argument is passed and is the correct types
+    if (!filePath || typeof(filePath) !== "string") {
+        console.info(º+"Supply a path to where you want your folder as the first " +
+            "argument to this function.", consoleNormal);
+        console.info(º+"Folder path must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.createAFolder("C:/folder/new_folder");', consoleCode);
+        return;
+    //If a callback was passed in and it isn't a function
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Your callback must be passed as a function.", consoleNormal);
         return;
     }
 
-    //Validate types
-    if (typeof(filePath) !== "string") {
-        console.info(º+"File path must be passed as a string.", consoleNormal);
-        return;
-    }
-
-    console.info(º+"Feature comming soon.", consoleNormal);
-
-/*
-    //If a callback was passed in and it is a function
-    if (callback && typeof(callback) === "function") {
-        fs.unlink(filePath, callback);
-    } else {
-        fs.unlink(filePath);
-    }
-*/
+    //Create the folder in the supplied location
+    fs.mkdir(filePath, function(err) {
+        //If there was a problem creating the folder
+        if (err) {
+            console.info(º+"There was an error attempting to create the folder.", consoleNormal);
+            console.warn(º+err.message, consoleError);
+            return;
+        //If the folder was created and the user passed in a callback function, run it now
+        } else if (callback) {
+            callback();
+        }
+    });
 }
 
 
@@ -566,26 +634,36 @@ function createAFolder(filePath, callback) {
 // within itself, we thought it would be nice to offer a quick
 // and easy way of deleting files.
 //
-//>`ugui.helpers.deleteAFile("_markup/ugui-devtools.htm");`
+//>     ugui.helpers.deleteAFile("C:/folder/delete_me.htm");
 
 //
 function deleteAFile(filePathAndName, callback) {
-    //Validate that required argument is passed
-    if (!filePathAndName) {
-        console.info(º+"Supply a path to the file you want to delete as an argument to this function.", consoleNormal);
-        return;
-    }
-    //Validate types
-    if (typeof(filePathAndName) !== "string") {
+    //Validate that required argument is passed and is the correct types
+    if (!filePathAndName || typeof(filePathAndName) !== "string") {
+        console.info(º+"Supply a path to the file you want to delete as " +
+            "the first argument to this function.", consoleNormal);
         console.info(º+"File path must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.deleteAFile("C:/folder/delete_me.txt");', consoleCode);
+        return;
+    //If a callback was passed in and it isn't a function
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Your callback must be passed as a function.", consoleNormal);
         return;
     }
-    //If a callback was passed in and it is a function
-    if (callback && typeof(callback) === "function") {
-        fs.unlink(filePathAndName, callback);
-    } else {
-        fs.unlink(filePathAndName);
-    }
+
+    //Delete the selected file
+    fs.unlink(filePathAndName, function(err) {
+        //If there was a problem deleting the file
+        if (err) {
+            console.info(º+"There was an error attempting to delete the file.", consoleNormal);
+            console.warn(º+err.message, consoleError);
+            return;
+        //If the file deleted and the user passed in a callback function, run it now
+        } else if (callback) {
+            callback();
+        }
+    });
 }
 
 
@@ -601,32 +679,38 @@ function deleteAFile(filePathAndName, callback) {
 // within itself, we thought it would be nice to offer a quick
 // and easy way to delete folders.
 //
-//>`ugui.helpers.deleteAFolder("C:\path\to\folder");`
+//>     ugui.helpers.deleteAFolder("C:/path/to/folder");
+//
+//>**NOTE:** This will not delete a folder unless it is empty.
 
 //
 function deleteAFolder(filePath, callback) {
-    //Validate that required argument is passed
-    if (!filePath) {
+    //Validate that required argument is passed and is the correct types
+    if (!filePath || typeof(filePath) !== "string") {
         console.info(º+"Supply a path to the folder you want to delete as " +
-            "an argument to this function.", consoleNormal);
+            "the first argument to this function.", consoleNormal);
+        console.info(º+"Folder path must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.deleteAFolder("C:/folder/delete_me");', consoleCode);
         return;
-    }
-    //Validate types
-    if (typeof(filePath) !== "string") {
-        console.info(º+"File path must be passed as a string.", consoleNormal);
+    //If a callback was passed in and it isn't a function
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Your callback must be passed as a function.", consoleNormal);
         return;
     }
 
-    console.info(º+"Feature comming soon.", consoleNormal);
-
-/*
-    //If a callback was passed in and it is a function
-    if (callback && typeof(callback) === "function") {
-        fs.unlink(filePath, callback);
-    } else {
-        fs.unlink(filePath);
-    }
-*/
+    //Delete the selected folder
+    fs.rmdir(filePath, function(err) {
+        //If there was a problem deleting the folder
+        if (err) {
+            console.info(º+"There was an error attempting to delete the folder.", consoleNormal);
+            console.warn(º+err.message, consoleError);
+            return;
+        //If the folder deleted and the user passed in a callback function, run it now
+        } else if (callback) {
+            callback();
+        }
+    });
 }
 
 
@@ -648,9 +732,9 @@ function deleteAFolder(filePath, callback) {
 //## C00. CLI Command Processing
 //
 //This section is the primary purpose, and the heart of UGUI.
-//It's what takes the `<cmd>`, `<arg>`, `<def>` stuff, matches
-//it with the data-argName stuff, and ultimately outputs it to
-//the command-line.
+//It's what takes the `<cmd>`, `<arg>`, and `<def>` stuff,
+//matches it with the `data-argName` stuff, and ultimately
+//outputs it to the command-line.
 //
 //It's also responsible for building the UGUI Arg object,
 //which is used for other things, like saving settings.
@@ -698,7 +782,7 @@ $(".sendCmdArgs").click( function(event) {
     //Convert the array to a string that can be ran in a command line using the runcmd function
     var builtCommandString = convertCommandArraytoString(builtCommandArray);
 
-    //Check if the form has an element with a class of returnedCmdText
+    //Check if the form has an element with a class of `returnedCmdText`
     if ( $("#" + thisExecutable + " .returnedCmdText").length > 0 ) {
         //If so, run a command and put its returned text on the page
         runcmd( builtCommandString, function(data) {
@@ -732,31 +816,31 @@ function buildCommandArray(thisExecutable) {
         return;
     }
 
-    //If no executable was passed in, just use the first one in <cmd>'s
+    //If no executable was passed in, just use the first one in `<cmd>`'s
     thisExecutable = thisExecutable || executable[0];
 
     //Set up commands to be sent to command line
     var cmds = [ thisExecutable ];
 
-    //fill out `window.ugui.args` object
+    //Fill out `window.ugui.args` object
     buildUGUIArgObject();
 
-    //Process all definitions and place them in window.ugui.args
+    //Process all definitions and place them in `window.ugui.args`
     patternMatchingDefinitionEngine();
 
     //Setting up arrays
     var cmdArgsText = [];
-    //Loop through all the args in the selected executable
+    //Loop through all the `<args>` in the `<cmd>` with the selected executable
     for (index = 0; index < $("cmd[executable=" + thisExecutable + "] arg").length; index++) {
-        //set the current arg
+        //Set the current `<arg>`
         var currentArg = $("cmd[executable=" + thisExecutable + "] arg")[index];
-        //Put the arg text into an array
+        //Put the `<arg>` text into an array
         cmdArgsText.push( $(currentArg).text() );
     }
 
-    //loop through all phrases and add processed versions to output array
+    //Loop through all phrases and add processed versions to output array
     for (index = 0; index < cmdArgsText.length; index++) {
-        //`cmdArgsText[index]` is "--quality ((meow)) to ((oink.min))"
+        //`cmdArgsText[index]` is `--quality ((meow)) to ((oink.min))`
         cmds.push( parseArgument(cmdArgsText[index]) );
     }
 
@@ -773,12 +857,12 @@ function buildCommandArray(thisExecutable) {
 //### C03. Build UGUI Arg Object
 //
 //>This grabs all the data about the elements on the page that
-// have a data-argName and puts that information on the window
+// have a `data-argName` and puts that information on the window
 // object, located here: `window.ugui.args`
 
 //
 function buildUGUIArgObject() {
-    //Reset the Args Object to remove any stragglers
+    //Reset the UGUI Args Object to remove any stragglers
     window.ugui.args = {};
 
     //Make an array containing every element on the page with an attribute of `data-argName`
@@ -787,7 +871,7 @@ function buildUGUIArgObject() {
     //Cycle through all elements with a `data-argName` in `<form id="currentexecutable">`
     for (index = 0; index < cmdArgs.length; index++) {
 
-        //get "bob" from `<input data-argName="bob" value="--kitten" />`
+        //Get `bob` from `<input data-argName="bob" value="--kitten" />`
         var argName = $(cmdArgs[index]).attr("data-argName");
 
         //Declare some variables to be set later
@@ -796,28 +880,28 @@ function buildUGUIArgObject() {
 
         //See if the current item is a range slider
         if ( $(cmdArgs[index]).hasClass("slider") ) {
-            //get "6" from `<input data-argName="bob" value="6" type="text" class="slider" />`
+            //Get `6` from `<input data-argName="bob" value="6" type="text" class="slider" />`
             argValue = $(cmdArgs[index]).val();
 
-            //manually set the type to "range" for range slider elements
+            //Manually set the type to `range` for range slider elements
             argType = "range";
         //See if the element is an item in one of Bootstrap's fake dropdowns
         } else if ( $(cmdArgs[index]).parent().parent().hasClass("dropdown-menu") ) {
 
-            //get "--carrot" from `<input type="radio" data-argName="vegCarrot" value="--carrot" />`
+            //Get `--carrot` from `<input type="radio" data-argName="vegCarrot" value="--carrot" />`
             argValue = $(cmdArgs[index]).val();
 
-            //manually set the type to "range" for range slider elements
+            //Manually set the type to `range` for range slider elements
             argType = "dropdown";
         } else {
-            //get "--kitten" from `<input data-argName="bob" value="--kitten" />`
+            //Get `--kitten` from `<input data-argName="bob" value="--kitten" />`
             argValue = $(cmdArgs[index]).val();
 
-            //get checkbox from `<input data-argName="bob" type="checkbox" />`
+            //Get `checkbox` from `<input data-argName="bob" type="checkbox" />`
             argType = $(cmdArgs[index]).attr("type");
         }
 
-        //get input from `<input data-argName="bob" type="checkbox" />`
+        //Get `input` from `<input data-argName="bob" type="checkbox" />`
         var argTag = $(cmdArgs[index]).prop("tagName").toLowerCase();
 
         //Basic info put on every object
@@ -918,7 +1002,7 @@ function findKeyValue(obj, arr) {
     for (var i = 0; i < arr.length; i++) {
         obj = obj[arr[i]];
     }
-    //For stuff like ((moo)), assume the user means ((moo.value))
+    //For stuff like `((moo))`, assume the user means `((moo.value))`
     if (Object.prototype.toString.call(obj) === "[object Object]") {
         obj = obj.value;
     }
@@ -955,7 +1039,7 @@ function parseArgument(argumentText) {
     //`argumentText = "and ((meow)), with ((oink)) too. "`
     var regexToMatch = /\(\((.*?)\)\)/;
 
-    //Keep rerunning this until all ((keywords)) in argumentText are replaced with their actual values
+    //Keep rerunning this until all `((keywords))` in `argumentText` are replaced with their actual values
     while ( regexToMatch.test(argumentText) ) {
 
         //`match = ["((meow))","meow"]`
@@ -983,7 +1067,7 @@ function parseArgument(argumentText) {
             (typeof(matched.value) === "undefined") ||
             (matched.value === "")
            ) {
-            //Replace the "--quality ((meow))" with ""
+            //Replace the `--quality ((meow))` with an empty string
             argumentText = "";
             return argumentText;
         //Run all the non-checkbox/radio/file elements,
@@ -1018,87 +1102,87 @@ function parseArgument(argumentText) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### C06. Process All CMD Definitions
 //
-//>This loops through all <def>'s and processes the value of
+//>This loops through all `<def>`'s and processes the value of
 // them to create the correct key value pairs on the UGUI Args
 // Object.
 
 //
 function patternMatchingDefinitionEngine() {
-    //A regular expression that matches ((x)) and captures x
+    //A regular expression that matches `((x))` and captures `x`
     var re = /\(\((.*?)\)\)/gi;
 
     $("def").each(function(index, value) {
-        //Assign "value" to def
+        //Assign "value" to `def`
         //`def = <def name="quality">((min)),((max))</def>`
         var def = value;
 
-        //Get the actual definition from the def
+        //Get the actual definition from the `<def>`
         //`definition = "((min)),((max))"`
         var definition = $("def").html();
 
-        //Get the arg associated with this def
+        //Get the argument associated with this `<def>`
         //`arg = ugui.args.quality`
         var arg = ugui.args[$("def").attr("name")];
 
         var match;
         var currentIndex = 0;
-        var seperators = [];
+        var separators = [];
         var args = [];
-        //Loop through the definition grabbing all the seperators and args
+        //Loop through the definition grabbing all the separators and arguments
         while (true) {
             //Assign the RegEx result to match and check to see if there is a match
             if ((match = re.exec(definition)) !== null) {
-                //Grab any text seperating the values and push it to a collector array
-                seperators.push(definition.slice(currentIndex, match.index));
+                //Grab any text separating the values and push it to a collector array
+                separators.push(definition.slice(currentIndex, match.index));
                 //Update the slice start index for the next iteration
                 currentIndex = re.lastIndex;
 
-                //Add the arg from the definition to the global UGUI object
+                //Add the argument from the definition to the global UGUI object
                 arg[match[1]] = "";
 
-                //Add the arg to the args array for value assignment in next loop
+                //Add the argument to the `args` array for value assignment in next loop
                 args.push(match[1]);
-            //If there are no more args:
+            //If there are no more arguments:
             } else {
-                //Put the last part of the def into the seperator array
-                seperators.push(definition.slice(currentIndex));
-                //End the loop. Very important!!!
+                //Put the last part of the definition into the separator array
+                separators.push(definition.slice(currentIndex));
+                //End the loop
                 break;
             }
         };
 
-        //Get the value of the associated arg
+        //Get the value of the associated argument
         //`argValue = "0,75"`
         var argValue = arg.value;
 
-        //splitIndex is used to keep track of where we are in the value
+        //`splitIndex` is used to keep track of where we are in the value
         splitIndex = 0;
 
-        //Loop through the args defined by this def, parse the value using the seperators, and assign the correct value
+        //Loop through the arguments defined by this `<def>`, parse the value using the separators, and assign the correct value
         for (var i = 0; i < args.length; i++) {
-            //The seperators around the current arg
-            //firstSeperator = ""
-            //secondSeperator = ","
-            firstSeperator = seperators[i];
-            secondSeperator = seperators[i + 1];
+            //The separators around the current argument  
+            //`firstSeparator = ""`  
+            //`secondSeparator = ","`
+            firstSeparator = separators[i];
+            secondSeparator = separators[i + 1];
 
-            //The first if catches cases where the dev has unnecessarily used a def
-            if (firstSeperator == "" && secondSeperator == "") {
+            //The first if catches cases where the dev has unnecessarily used a `<def>`
+            if (firstSeparator == "" && secondSeparator == "") {
                 arg[args[i]] = argValue;
             //This catches if there is no text before the first value to map
-            } else if (firstSeperator == "") {
-                arg[args[i]] = argValue.slice(splitIndex, argValue.indexOf(secondSeperator));
-                splitIndex = argValue.indexOf(secondSeperator);
+            } else if (firstSeparator == "") {
+                arg[args[i]] = argValue.slice(splitIndex, argValue.indexOf(secondSeparator));
+                splitIndex = argValue.indexOf(secondSeparator);
             //This catches if there is no text after the last value to map
-            } else if (secondSeperator == "") {
-                arg[args[i]] = argValue.slice((argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length));
+            } else if (secondSeparator == "") {
+                arg[args[i]] = argValue.slice((argValue.indexOf(firstSeparator, splitIndex) + firstSeparator.length));
             //This catches in all other cases
             } else {
                 arg[args[i]] = argValue.slice(
-                    (argValue.indexOf(firstSeperator, splitIndex) + firstSeperator.length),
-                    argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
+                    (argValue.indexOf(firstSeparator, splitIndex) + firstSeparator.length),
+                    argValue.indexOf(secondSeparator, (splitIndex + firstSeparator.length))
                 );
-                splitIndex = argValue.indexOf(secondSeperator, (splitIndex + firstSeperator.length))
+                splitIndex = argValue.indexOf(secondSeparator, (splitIndex + firstSeparator.length))
             }
         }
     })
@@ -1144,10 +1228,10 @@ function convertCommandArraytoString( cmdArray ) {
 
     //`cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]`
     for (index = 0; index < cmdArray.length; index++) {
-        //Make sure the executable isn't preceeded with a space
+        //Make sure the executable isn't preceded with a space
         if (index === 0) {
             cmdString = cmdArray[0];
-        //add in the rest of the arguments, skipping blank ones
+        //Add in the rest of the arguments, skipping blank ones
         } else if (cmdArray[index]) {
             cmdString = cmdString + " " + cmdArray[index];
         }
@@ -1166,7 +1250,7 @@ function convertCommandArraytoString( cmdArray ) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### C08. Set input file path, file name, and extension
 //
-//>This processes elements with a data-argName that are
+//>This processes elements with a `data-argName` that are
 // `<input type="file">`. It creates special properties for the
 // element and places them on the UGUI Args Object found here:
 // `window.ugui.args`
@@ -1188,35 +1272,35 @@ function setInputFilePathNameExt(currentElement, argName) {
         return;
     }
 
-    //Create a variable that contains all the file information supplied by webkit
+    //Create a variable that contains all the file information supplied by Webkit
     var fileAttributes = currentElement.files[0];
 
     //Before continuing, verify that the user has selected a file
     if (fileAttributes) {
 
-        //Detect if in darwin, freebsd, linux, sunos or win32
+        //Detect if in `darwin`, `freebsd`, `linux`, `sunos`, or `win32`
         var platform = process.platform;
 
-        //Create filename and filepath variables to be used below
+        //Create filename and file path variables to be used below
         var filename = "";
         var filepath = "";
 
-        // Either C:\users\bob\desktop\cows.new.png or /home/bob/desktop/cows.new.png
+        // Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`
         var fullFilepath = fileAttributes.path;
 
-        //cows.new.png
+        //`cows.new.png`
         filename = fileAttributes.name;
 
-        //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
+        //If you're on Windows then folders in file paths are separated with `\`, otherwise OS's use `/`
         if ( platform == "win32" ) {
             //Get the index of the final backslash so we can split the name from the path
             var lastBackslash = fullFilepath.lastIndexOf("\\");
-            // `C:\users\bob\desktop\`
+            //`C:\users\bob\desktop\`
             filepath = fullFilepath.substring(0, lastBackslash+1);
         } else {
             //Get the index of the final backslash so we can split the name from the path
             var lastSlash = fullFilepath.lastIndexOf("/");
-            // `/home/bob/desktop/`
+            //`/home/bob/desktop/`
             filepath = fullFilepath.substring(0, lastSlash+1);
         }
 
@@ -1224,10 +1308,10 @@ function setInputFilePathNameExt(currentElement, argName) {
         var filenameSplit = filename.split(".");
         //Remove last item in array, `["cows", "new"]`
         filenameSplit.pop();
-        //Combine them back together as a string putting the . back in, `"cows.new"`
+        //Combine them back together as a string putting the `.` back in, `"cows.new"`
         var filenameNoExt = filenameSplit.join(".");
 
-        //create the args object parameters on the ugui object
+        //Create the args object parameters on the UGUI Args Object
         window.ugui.args[argName] = {
             "fullpath": fileAttributes.path,
             "path": filepath,
@@ -1258,7 +1342,7 @@ function setInputFilePathNameExt(currentElement, argName) {
 // and double quotes as they are typed, on page load, and when
 // the form is submitted.
 
-//Remove all quotes on every textfield whenever typing or leaving the field
+//Remove all quotes on every text field whenever typing or leaving the field
 $(textFields).keyup( removeTypedQuotes );
 $(textFields).blur( removeTypedQuotes );
 
@@ -1310,7 +1394,7 @@ function colorProcessor(inputColor, argName) {
         return;
     }
 
-    //setup variables
+    //Setup variables
     var R = ""; var r = "";
     var G = ""; var g = "";
     var B = ""; var b = "";
@@ -1327,7 +1411,7 @@ function colorProcessor(inputColor, argName) {
         if (rgbi == "E" || rgbi == "e") { rgbi = "14" }
         if (rgbi == "F" || rgbi == "f") { rgbi = "15" }
 
-        //set RrGgBb to decimal
+        //Set RrGgBb to decimal
         if (i === 1) { R = rgbi; } else
         if (i === 2) { r = rgbi; } else
         if (i === 3) { G = rgbi; } else
@@ -1336,18 +1420,18 @@ function colorProcessor(inputColor, argName) {
         if (i === 6) { b = rgbi; }
     }
 
-    //as 0-255
+    //As 0-255
     var Red   = (parseInt(R) * 16) + parseInt(r);
     var Green = (parseInt(G) * 16) + parseInt(g);
     var Blue  = (parseInt(B) * 16) + parseInt(b);
 
-    //as 0-100%
+    //As 0-100%
     var RP = Math.floor( (Red/255) * 100 );
     var GP = Math.floor( (Green/255) * 100 );
     var BP = Math.floor( (Blue/255) * 100 );
 
     var DecRrGgBb = R + " " + r + " " + G + " " + g + " " + B + " " + b;
-    //create the args object parameters on the ugui object
+    //Create the args object parameters on the UGUI Args Object
     window.ugui.args[argName] = {
         "rgb": "rgb(" + Red + "," + Green + "," + Blue + ")",
         "decred": Red,
@@ -1381,7 +1465,7 @@ function colorProcessor(inputColor, argName) {
 //## D00. UI Elements
 //
 //These are things specific to the stuff on the page. These may
-//not be relavent to apps made using UGUI that do a lot of
+//not be relevent to apps made using UGUI that do a lot of
 //custom UI work.
 //
 //
@@ -1459,7 +1543,7 @@ getAboutModal();
 //### D03. Update About modal
 //
 //>This pulls in information about the application from the
-// package.json file and puts in in the About modal. It also
+// package.json file and puts in in the "About" modal. It also
 // pulls in UGUI's about info from the `_markdown` folder.
 
 //
@@ -1494,7 +1578,7 @@ function getAboutModal() {
 
         //When clicking on background or X, remove modal
         $("#aboutModal").click( removeModal );
-        //allow you to click in the modal without triggering the removeModal function called when you click it's parent element
+        //Allow you to click in the modal without triggering the `removeModal` function called when you click its parent element
         $("#aboutModal .modal-content").click( function( event ) {
             event.stopPropagation();
         });
@@ -1513,7 +1597,7 @@ function getAboutModal() {
 //### D04. Navigation bar functionality
 //
 //>Everything in this section controls the visibility and the
-// functionality of the items in the top nav bar.
+// functionality of the items in the top navigation bar.
 
 //Clicking View > Command Line Output in the Nav Bar
 $('.navbar a[href="#cmdoutput"]').click( function() {
@@ -1573,7 +1657,7 @@ function centerNavLogo() {
 //Run once on page load
 centerNavLogo();
 
-//When you click on the X in the top corner, close this instance of Node-Webkit
+//When you click on the exit in the navigation, close this instance of NW.js
 $('.navbar a[href="#exit"]').click( function() {
     require("nw.gui").Window.get().close(true);
 });
@@ -1594,16 +1678,16 @@ $('.navbar a[href="#exit"]').click( function() {
 //
 function openDefaultBrowser() {
 
-    // Load native UI library.
+    //Load native UI library.
     var gui = require("nw.gui");
 
-    // Open URL with default browser.
+    //Open URL with default browser.
     $(".external-link").click( function( event ) {
-        //prevent the link from loading in NW.js
+        //Prevent the link from loading in NW.js
         event.preventDefault();
-        //get the href url for the current link
+        //Get the `href` URL for the current link
         var url = $(this).attr("href");
-        //launch the user's default browser and load the URL for the link they clicked
+        //Launch the user's default browser and load the URL for the link they clicked
         gui.Shell.openExternal(url);
     });
 }
@@ -1629,8 +1713,8 @@ openDefaultBrowser();
 //## E00. Warnings
 //
 //These are warnings that occur when UGUI detects you are doing
-//something that could break it's functionality. They are
-//designed to be precautionary and informitve. They only occur
+//something that could break its functionality. They are
+//designed to be precautionary and informative. They only occur
 //when in `dev` mode.
 //
 //
@@ -1647,7 +1731,7 @@ openDefaultBrowser();
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### E01. Warn if identical data-argNames
 //
-//>If the developer uses the same data-argName value for
+//>If the developer uses the same `data-argName` value for
 // multiple elements, display a warning.
 
 //
@@ -1658,18 +1742,18 @@ function warnIfDuplicateArgNames() {
 
     //Cycle through each executable
     for (index = 0; index < executable.length; index++) {
-        //all elements with a data-argName in a form with a matching executable ID
+        //All elements with a `data-argName` in a form with a matching executable ID
         cmdArgs = "";
         cmdArgs = argsForm[index];
         duplicatesArray = {};
 
-        //loop through all form elements for this executable
+        //Loop through all form elements for this executable
         for (var subindex = 0; subindex < cmdArgs.length; subindex++) {
-            //put each element's data-argName and into an array
+            //Put each element's `data-argName` and into an array
             duplicatesArray[cmdArgs[subindex].dataset.argname] = cmdArgs[subindex];
         }
 
-        //Create a new array with duplicate argOrders removed
+        //Create a new array with duplicate `argName`s removed
         cmdArgsWithoutDuplicates = [];
         for ( var key in duplicatesArray ) {
             cmdArgsWithoutDuplicates.push(duplicatesArray[key]);
@@ -1678,7 +1762,7 @@ function warnIfDuplicateArgNames() {
         //If the new array had any duplicates removed display a warning.
         if ( cmdArgsWithoutDuplicates.length < cmdArgs.length ) {
             $.get("_markup/ugui-multiargnames.htm", function(multiArgNamesMarkup) {
-                //Put alert mesage at top of page
+                //Put alert message at the top of page
                 $("body.dev").prepend( multiArgNamesMarkup );
             });
             //Keep the console warning formatted nicely for cli filenames under 16 characters in length
@@ -1736,7 +1820,7 @@ function warnIfDuplicateArgNames() {
 //
 //>Detects if you're in Development or Production environment.
 //
-//>If you have a class of "dev" or "prod" in the `body` tag
+//>If you have a class of `dev` or `prod` in the `body` tag
 // UGUI will enable key bindings such as `F12` or
 // `CTRL+Shift+I` to launch Webkit's Developer Tools, or `F5`
 // to refresh. Also it displays the Command Line output at the
@@ -1746,9 +1830,9 @@ function warnIfDuplicateArgNames() {
 if ( $("body").hasClass("prod") ) {
     $("#uguiDevTools").remove();
 } else if ( $("body").hasClass("dev") ) {
-    //Create UGUI Dev Tools markup
+    //Grab the UGUI Developer Toolbar markup
     $.get("_markup/ugui-devtools.htm", function( uguiDevToolsMarkup ) {
-        //Put Dev Tool Markup on the page
+        //Put Developer Toolbar markup on the page
         $("body.dev").append( uguiDevToolsMarkup );
         //Update the UGUI version to the correct version
         $("#uguiDevTools .versionUGUI").html(window.ugui.version);
@@ -1792,15 +1876,15 @@ if ( $("body").hasClass("prod") ) {
 
     });
 
-    //get node webkit GUI - WIN
+    //Get NW.js GUI and WIN
     var gui = require("nw.gui");
-    // get the window object
+    //Get the window object
     var win = require("nw.gui").Window.get();
 
     //Keyboard shortcuts
     keyBindings();
 
-    //Check for duplicat Arg Names
+    //Check for duplicate `data-argName`s
     warnIfDuplicateArgNames();
 
 }
@@ -1829,7 +1913,7 @@ function updateCommandLineOutputPreviewHint() {
 
 //
 function fillExecutableDropdowns() {
-    //check each file and put it in the dropdown box
+    //Check each file and put it in the dropdown box
     for (index = 0; index < executable.length; index++) {
         $(".executableName").append('<option value="' + executable[index] + '">' + executable[index] + '</option>');
     }
@@ -1842,7 +1926,7 @@ function fillExecutableDropdowns() {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### F03. Realtime updating dev tool command output
+//### F03. Real-time updating dev tool command output
 //
 //>This updates the contents the UGUI Developer Toolbar's
 // "CMD Output" section whenever the user interacts with any
@@ -1853,12 +1937,12 @@ if( $("body").hasClass("dev") ) {
 
     //Cycle through all executables used by the app
     for (index = 0; index < executable.length; index++) {
-        //If any of the form elements with a data-argName change
+        //If any of the form elements with a `data-argName` change
         $(argsForm[index]).change( function() {
-            //check if it was the drag/drop input box
+            //Check if it was the drag/drop input box
             if ( $(this).parent().hasClass("ezdz") ) {
                 var file = this.files[0];
-                //run a custom function before updating dev tools
+                //Run a custom function before updating dev tools
                 ezdz(file);
             }
 
@@ -1872,16 +1956,15 @@ if( $("body").hasClass("dev") ) {
     $(textFields).blur( updateUGUIDevCommandLine );
     $(".slider").on( "slide", updateUGUIDevCommandLine );
 } else {
-    //If we're not in Dev mode, make sure the ezdz can still run
+    //If we're not in `dev` mode, make sure the EZDZ can still run
     $(".ezdz input").change( function() {
         var file = this.files[0];
-        //run a custom function before updating dev tools
         ezdz(file);
     });
 }
 
 function updateUGUIDevCommandLine() {
-    //clear it out first
+    //Clear it out first
     $("#commandLine").empty();
 
     //Get the executable from the dropdown lists
@@ -1910,13 +1993,13 @@ function updateUGUIDevCommandLine() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### F04. Put CLI help info in UGUI Dev Tools
 //
-//>This funciton is only ran when in dev mode. It adds another
+//>This function is only ran when in dev mode. It adds another
 // tab in the UGUI Developer Tools that returns information
 // from the user's executable with arguments like `--help`.
 
 //
 function putExeHelpInDevTools() {
-    //Everytime the dropdown changes update the `<pre>`
+    //Every time the dropdown changes update the `<pre>`
     $("#uguiDevTools .executableName").change(getHelpInfo);
     $("#uguiDevTools .helpDropdown").change(getHelpInfo);
 
@@ -1928,7 +2011,7 @@ function putExeHelpInDevTools() {
 
         //Don't run if there isn't a help choice
         if (helpChoice) {
-            //Run the executable using the user's chosen argument to get it's help info
+            //Run the executable using the user's chosen argument to get its help info
             runcmd( executableChoice + " " + helpChoice, function(returnedHelpInfo) {
                 //Put the help info in a `<pre>`
                 $("#uguiDevTools pre.executableHelp").text( returnedHelpInfo );
@@ -1946,7 +2029,7 @@ function putExeHelpInDevTools() {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### F05. Swap Bootswatches
 //
-//>This funciton is only ran when in dev mode. It grabs a list
+//>This function is only ran when in dev mode. It grabs a list
 // of all files in the `ven.bootswatch` folder and puts them in
 // a dropdown box in UGUI Developer Toolbar so developers can
 // try out different stylesheets.
@@ -1955,9 +2038,9 @@ function putExeHelpInDevTools() {
 function swatchSwapper() {
     //Grab all the files in the `ven.bootswatch` folder and put them in an array
     var allSwatches = fs.readdir("_style/ven.bootswatch", function(err, files) {
-        //if that works
+        //If that works
         if (!err) {
-            //check each file and put it in the dropdown box
+            //Check each file and put it in the dropdown box
             for (index = 0; index < files.length; index++) {
                 var cssFileName = files[index];                     //cerulean.min.css
                 var swatchName = files[index].split(".min.css")[0]; //cerulean
@@ -1992,7 +2075,7 @@ function swatchSwapper() {
 //>In the "Style Swapper" section of UGUI Developer Toolbar,
 // when the user clicks the "Use this style" button,
 // read the contents of the index.htm, find the line that sets
-// which swatch css to use and update it to the new chosen
+// which swatch CSS to use and update it to the new chosen
 // swatch. Then replace the contents of index.htm with the new
 // data so on every load it uses the correct swatch.
 
@@ -2019,12 +2102,12 @@ function saveNewSwatch(newSwatch) {
         var re_file = '((?:[a-z][a-z\\.\\d_]+)\\.(?:[a-z\\d]{3}))(?![\\w\\.])';
         var re_end = '(" data-swatch="swapper">)';
 
-        //would match: `<link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">`
+        //Would match: `<link rel="stylesheet" href="_style/ven.bootswatch/cerulean.min.css" data-swatch="swapper">`
         var createRegex = RegExp(re_start + re_file + re_end, ["i"]);
         var findSwatchLine = createRegex.exec(data);
         //If we could find the line in the file
         if (findSwatchLine != null) {
-            //Though not currently using this line, it may come in handy some day
+            //Though not currently using this line, it may come in handy someday
             //`var currentSwatch = findSwatchLine[52];`
 
             //Take the contents of index.htm, find the correct line, and replace that line with the updated swatch
@@ -2055,19 +2138,19 @@ function saveNewSwatch(newSwatch) {
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### F07. Custom keyboard shortcuts
 //
-//>This funciton is only ran when in dev mode. It gives the
+//>This function is only ran when in dev mode. It gives the
 // developer access to common/expected keyboard shortcuts.
 
 //
 function keyBindings() {
     //Keyboard shortcuts
     document.onkeydown = function(pressed) {
-        ///Check CTRL + F key and do nothing :(
+        //Check `CTRL+F` key and do nothing :(
         if ( pressed.ctrlKey && pressed.keyCode === 70 ) {
             pressed.preventDefault();
             console.info(º+"NW.js currently has no 'Find' feature built in. Sorry :(", consoleNormal);
             return false;
-        //Check CTRL+F5, CTRL+R, or CMD+R keys and hard refresh the page
+        //Check `CTRL+F5`, `CTRL+R`, or `CMD+R` keys and hard refresh the page
         } else if (
             pressed.ctrlKey && pressed.keyCode === 116 ||
             pressed.ctrlKey && pressed.keyCode === 82 ||
@@ -2075,19 +2158,19 @@ function keyBindings() {
                 pressed.preventDefault();
                 win.reloadDev();
                 return false;
-        //Check Shift+F5 and CMD+Shift+R keys and refresh ignoring cache
+        //Check `Shift+F5` and `CMD+Shift+R` keys and refresh ignoring cache
         } else if (
             pressed.shiftKey && pressed.keyCode === 116 ||
             pressed.metaKey && pressed.shiftKey && pressed.keyCode === 82 ) {
                 pressed.preventDefault();
                 win.reloadIgnoringCache();
                 return false;
-        //Check F5 key and soft refresh
+        //Check `F5` key and soft refresh
         } else if ( pressed.keyCode === 116 ) {
             pressed.preventDefault();
             win.reload();
             return false;
-        //Check F12, Ctrl+Shift+I, or Option+Shift+I and display Webkit Dev Tools
+        //Check `F12`, `Ctrl+Shift+I`, or `Option+Shift+I` and display Webkit Dev Tools
         } else if (
             pressed.keyCode === 123 ||
             pressed.ctrlKey && pressed.shiftKey && pressed.keyCode === 73 ||
@@ -2176,18 +2259,18 @@ function ezdz(fileInfo) {
     $(".ezdz img").remove();
 
     if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
-        //var reader = new FileReader(file);
+        /* var reader = new FileReader(file); */
 
-        //reader.readAsDataURL(file);
+        /* reader.readAsDataURL(file); */
 
-        //reader.onload = function(event) {
-            //var data = event.target.result;
-            //var $img = $("<img />").attr("src", data).fadeIn();
+        /* reader.onload = function(event) { */
+            /* var data = event.target.result; */
+            /* var $img = $("<img />").attr("src", data).fadeIn(); */
             var $img = $("<img />").attr("src", file.path).fadeIn();
 
             $(".ezdz img").attr("alt", "Thumbnail of dropped image.");
             $(".ezdz span").html($img);
-        //};
+        /* }; */
     }
 
     //Update the text on screen to display the name of the file that was dropped
@@ -2217,7 +2300,7 @@ $(".slider").slider({
 });
 
 //Since bootstrap-slider is a plugin and not officially part of Bootstrap,
-//bootswatches don't contain styles for them. So we manually set the styles.
+//Bootswatches don't contain styles for them. So we manually set the styles.
 function sliderHandleSolid(themeColor) {
     //Validate that the required argument is passed and the correct type
     if (!themeColor || typeof(themeColor) !== "string") {
@@ -2226,11 +2309,11 @@ function sliderHandleSolid(themeColor) {
         return;
     }
 
-    //If the navbar is white set the slider handle to gray
+    //If the navigation bar is white set the slider handle to gray
     if (themeColor == "rgb(255, 255, 255)") {
         $(".slider .slider-handle").css("background-color", "#7E7E7E");
     } else {
-        //Set the color of the slider handle to match the color of the nav bar
+        //Set the color of the slider handle to match the color of the navigation bar
         $(".slider .slider-handle").css("background-color", themeColor);
     }
 }
@@ -2247,12 +2330,12 @@ function sliderHandleGradient(themeGradient) {
 }
 
 function sliderHandleColor() {
-    //remove the color of the slider handle
+    //Remove the color of the slider handle
     $(".slider .slider-handle").css("background-image", "none");
 
-    //get the color of the nav bar
+    //Get the color of the navigation bar
     var themeColor = $(".navbar").css("background-color");
-    //get the background image or gradient
+    //Get the background image or gradient
     var themeGradient = $(".navbar").css("background-image");
 
     if (themeGradient == "none") {
@@ -2321,7 +2404,7 @@ function cutCopyPasteMenu() {
     });
 }
 
-//run once on page load
+//Run once on page load
 cutCopyPasteMenu();
 
 
@@ -2364,7 +2447,7 @@ cutCopyPasteMenu();
 // for each Operating System. You can run the following to see
 // what the default location is on your OS:
 //
-//>`ugui.helpers.saveSettings(["Show Default"]);`
+//>     ugui.helpers.saveSettings(["Show Default"]);
 //
 //>Or you can pass in a custom path for the location of your
 // settings file. Add `data-argName` to an element in your HTML
@@ -2379,7 +2462,7 @@ function saveSettings(customLocation, callback) {
 
     var defaultLocation = "";
 
-    //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
+    //If you're on windows then folders in file paths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
         defaultLocation = (gui.App.dataPath + "\\uguisettings.json");
@@ -2391,9 +2474,9 @@ function saveSettings(customLocation, callback) {
     //If a custom location isn't passed into the function, use the default location for the settings file
     var settingsFile = defaultLocation;
 
-    //Validate types
-    //Check if only one argument was passed into `saveSettings` and if it was a string or function
-    //Check if two arguments were passed into `saveSettings` and if the first one is a string, OR
+    //Validate types  
+    //Check if only one argument was passed into `saveSettings` and if it was a string or function.
+    //Check if two arguments were passed into `saveSettings` and if the first one is a string.
     //Check if two arguments were passed into `saveSettings` and if the second one is a function
     if (
         (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) ||
@@ -2413,26 +2496,25 @@ function saveSettings(customLocation, callback) {
         console.info(º+'"' + defaultLocation + '"', consoleCode);
         console.info(º+"And upon completion of saving the settings, nothing will be triggered.", consoleNormal);
         return;
-    //Check if customLocation is exists and is a string
+    //Check if `customLocation` is exists and is a string
     } else if ( customLocation && typeof(customLocation) === "string") {
         //Set the settings file to the custom, passed in, location
         settingsFile = customLocation;
     }
 
-    //Make sure args object is up to date
+    //Make sure the UGUI Args Object is up to date
     window.ugui.helpers.buildUGUIArgObject();
 
-    //Grab the args object and JSONify it
+    //Grab the UGUI Args Object and JSONify it
     var settingsJSON = JSON.stringify(ugui.args);
 
-    //Save the ugui.args object to the `uguisettings.json` file
-    //fs.writeFileSync();
+    //Save the `ugui.args` object to the `uguisettings.json` file
     fs.writeFile(settingsFile, settingsJSON, function (err) {
         if (err) {
             console.warn(º+"There was an error in attempting to save to the location:", consoleNormal);
             console.warn(º+settingsFile, consoleCode);
             console.warn(º+"Error: ", consoleBold)
-            console.error(err);
+            console.warn(º+err.message, consoleError);
         } else {
             //If a callback function was passed into `saveSettings`, run it
             if (typeof(callback) === "function") {
@@ -2473,7 +2555,7 @@ function loadSettings(customLocation, callback) {
 
     var defaultLocation = "";
 
-    //If you're on windows then folders in filepaths are separated with `\`, otherwise OS's use `/`
+    //If you're on windows then folders in file paths are separated with `\`, otherwise OS's use `/`
     if ( process.platform == "win32" ) {
         //Find the path to the settings file and store it
         defaultLocation = (gui.App.dataPath + "\\uguisettings.json");
@@ -2485,10 +2567,10 @@ function loadSettings(customLocation, callback) {
     //If a custom location isn't passed into the function, use the default location for the settings file
     var settingsFile = defaultLocation;
 
-    //Validate types
-    //Check if only one argument was passed into `loadSettings` and if it was a string or function
-    //Check if two arguments were passed into `loadSettings` and if the first one is a string, OR
-    //Check if two arguments were passed into `loadSettings` and if the second one is a function
+    //Validate types  
+    //Check if only one argument was passed into `loadSettings` and if it was a string or function.
+    //Check if two arguments were passed into `loadSettings` and if the first one is a string.
+    //Check if two arguments were passed into `loadSettings` and if the second one is a function.
     if (
         (arguments.length === 1 && (typeof(customLocation) !== "string") && (typeof(customLocation) !== "function")) ||
         (arguments.length === 2 && typeof(customLocation) !== "string") ||
@@ -2507,7 +2589,7 @@ function loadSettings(customLocation, callback) {
         console.info(º+'"' + defaultLocation + '"', consoleCode);
         console.info(º+"And upon completion of saving the settings, nothing will be triggered.", consoleNormal);
         return;
-    //Check if customLocation is exists and is a string
+    //Check if `customLocation` is exists and is a string
     } else if ( customLocation && typeof(customLocation) === "string") {
         //Set the settings file to the custom, passed in, location
         settingsFile = customLocation;
@@ -2519,8 +2601,8 @@ function loadSettings(customLocation, callback) {
         if (err) {
             console.warn(º+"Could not read settings file from location:", consoleNormal);
             console.warn(º+'"' + settingsFile + '"', consoleCode);
-            console.warn(º+"Error:", consoleBold)
-            console.error(err);
+            console.warn(º+"Error:", consoleBold);
+            console.warn(º+err.message, consoleError);
             return;
         //Load the file if it's found
         } else {
@@ -2583,23 +2665,23 @@ function loadSettings(customLocation, callback) {
                         }
                     //If `<textarea>`
                     } else if (htmltype == "textarea") {
-                        //Set the value and UI text for the matching textarea in the app
+                        //Set the value and UI text for the matching `<textarea>` in the app
                         $("[data-argName=" + key + "]").val(settingsObj[key].value);
                         $("[data-argName=" + key + "]").text(settingsObj[key].value);
                     //Catch-all for any generic other input types
                     } else if (settingsObj[key].value) {
-                        //set the value for the matching element
+                        //Set the value for the matching element
                         $("[data-argName=" + key + "]").val(settingsObj[key].value);
                     }
                 }
             }
 
-            //Build the arg object based on our updated UI
+            //Build the UGUI Arg Object based on our updated UI
             removeTypedQuotes();
             buildUGUIArgObject();
             patternMatchingDefinitionEngine();
 
-            //Update the UGUI Developer Toolbar and unlock/lock sumbit buttons accordingly
+            //Update the UGUI Developer Toolbar and unlock/lock submit buttons accordingly
             updateUGUIDevCommandLine();
             unlockSubmit();
 
@@ -2684,7 +2766,7 @@ window.ugui = {
 
 
 
-// end `ugui();`
+// End of `ugui();`
 }
 
 
@@ -2714,7 +2796,7 @@ window.ugui = {
 /*  // with MarkDown and Docco in mind. Markdown is a simple way   //  */
 /*  // to add formatting to text that can then be converted to     //  */
 /*  // HTML. It is used by sites like GitHub, StackOverflow, and   //  */
-/*  // Reddit. Since the UGUI project is hosted on GitHub and it's //  */
+/*  // Reddit. Since the UGUI project is hosted on GitHub and its  //  */
 /*  // community is based in ugui.reddit.com, it seemed logical    //  */
 /*  // MarkDown be the common language used for the documentation. //  */
 /*  // Fortunately Jeremy Ashkenas created a tool called Docco     //  */
@@ -2722,7 +2804,7 @@ window.ugui = {
 /*  // source files.                                               //  */
 /*  //                                                             //  */
 /*  /////////////////////////////////////////////////////////////////  */
-/*  // 2. Running Docco/Updating the documentation                 //  */
+/*  // 2. Running Docco/updating the documentation                 //  */
 /*  /////////////////////////////////////////////////////////////////  */
 /*  //                                                             //  */
 /*  // These instructions will be updated when a more routine      //  */

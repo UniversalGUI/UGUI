@@ -12,7 +12,8 @@ Create your own cross-platform desktop applications in minutes using UGUI.
 
 Download UGUI to use it for your project:
 
-* Version 1.0 (Coming soon) | Tutorial for Version 1.0 (Coming Soon)
+* [Version 1.0.0](https://github.com/UniversalGUI/UGUI/archive/master.zip) (One year in the making!)
+* [Tutorial for Version 1.0.0](http://ugui.io/tutorials/getting-started.htm)
 
 * * *
 
@@ -26,8 +27,8 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version:** V0.9
-**Status:** You know when you have to break something first before you can fix it? Wellll, that parts accomplished!
+**Current Version:** V1.0.0
+**Status:** One year to the day, Version 1 is released!
 
 **Phase 1: The library and framwork.**
 
@@ -46,8 +47,8 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.0 ~~Implement Dan's definition pattern matching engine~~
 * V1.0 ~~UGUI Devtools needs to have an exectuable selector~~
 * V1.0 ~~Save/Load Settings~~
-* V1.0 Test realworld usage of UGUI and prod mode
-* V1.0 Test in OSX, Linux, and Windows (again)
+* V1.0 ~~Test realworld usage of UGUI and prod mode~~
+* V1.0 ~~Test in OSX, Linux, and Windows (again)~~
 * V1.1 Multi-File import
 * V1.1 Create NPM compliant package.json alternative
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
@@ -106,12 +107,17 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 ###Credits
 
+People
+
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Dan O'Dea](http://github.com/DanOdea) - Definition Pattern Matching Engine Architect - Save/Load Settings features
 * [Hai Nguyen](http://github.com/hai5nguy) - UGUI Project Architechture Consultant
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
 * [Grahammer](http://github.com/GWatt) - UGUI Engine Architechture Consultant
 * [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realworld, and OSX testing
+
+Technology
+
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)
