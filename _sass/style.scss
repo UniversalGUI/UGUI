@@ -11,6 +11,7 @@
 @import "_footer.sass";               // CSS for the footer at the bottom of the app.
 
 //Stuff that effects specific pages
+@import "_app.sass";                  // CSS specifc to the app you create using UGUI
 
 //Stuff that goes at the end
 @import "_ugui.sass";                 // UGUI specific styles for UGUI dev tools and such

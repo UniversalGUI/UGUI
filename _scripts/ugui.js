@@ -113,7 +113,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.0.0";
+var uguiVersion = "1.0.1";
 
 
 
@@ -1568,7 +1568,7 @@ function getAboutModal() {
         //Remove modal, enable scrollbar
         function removeModal() {
             $("#aboutModal").slideUp("slow", function() {
-                $("body").css("overflow","auto");
+                $("body").removeClass('no-overflow');
                 //If the navigation is expanded, then close it after exiting the modal
                 if ( !$(".navbar-toggle").hasClass("collapsed") ) {
                     $(".navbar-toggle").trigger("click");
@@ -1642,7 +1642,7 @@ $('.navbar a[href="#about"]').click( function() {
     win.on("resize", setModalHeight );
 
     //Remove page scrollbar when modal displays
-    $("body").css("overflow", "hidden");
+    $("body").addClass('no-overflow');
 
 });
 
