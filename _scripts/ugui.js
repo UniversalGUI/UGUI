@@ -171,6 +171,12 @@ var authorName = packageJSON.author;
 //Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
+//Detect if Bootstrap is loaded
+var bootstrap3_enabled = (typeof $().emulateTransitionEnd == 'function');
+
+//Detect if Bootstrap Slider is loaded
+var slider_enabled = (typeof $().slider == 'function' );
+
 //You can stylize console outputs in Webkit, these are essentially CSS classes
 var consoleNormal = "font-family: sans-serif";
 var consoleBold   = "font-family: sans-serif;" +
@@ -2292,62 +2298,76 @@ function ezdz(fileInfo) {
 //
 //>**Documentation**: [http://seiyria.github.io/bootstrap-slider](http://seiyria.github.io/bootstrap-slider)
 
-//Initialize the bootstrap-slider plugin for all elements on the page with a class of `slider`
-$(".slider").slider({
-    formatter: function(value) {
-        return value;
-    }
-});
+//Verify the developer is using Bootstrap slider
+if (bootstrap3_enabled && slider_enabled) {
+    //Initialize the bootstrap-slider plugin for all elements on the page with a class of `slider`
+    $(".slider").slider({
+        formatter: function(value) {
+            return value;
+        }
+    });
+}
 
 //Since bootstrap-slider is a plugin and not officially part of Bootstrap,
 //Bootswatches don't contain styles for them. So we manually set the styles.
 function sliderHandleSolid(themeColor) {
-    //Validate that the required argument is passed and the correct type
-    if (!themeColor || typeof(themeColor) !== "string") {
-        console.info(º+"You must pass in your theme color as a string in RGB format. Example:", consoleNormal);
-        console.info(º+'rgb(141, 12, 70)', consoleCode);
-        return;
-    }
+    //Verify the developer is using Bootstrap slider
+    if (bootstrap3_enabled && slider_enabled) {
+        //Validate that the required argument is passed and the correct type
+        if (!themeColor || typeof(themeColor) !== "string") {
+            console.info(º+"You must pass in your theme color as a string in RGB format. Example:", consoleNormal);
+            console.info(º+'rgb(141, 12, 70)', consoleCode);
+            return;
+        }
 
-    //If the navigation bar is white set the slider handle to gray
-    if (themeColor == "rgb(255, 255, 255)") {
-        $(".slider .slider-handle").css("background-color", "#7E7E7E");
-    } else {
-        //Set the color of the slider handle to match the color of the navigation bar
-        $(".slider .slider-handle").css("background-color", themeColor);
+        //If the navigation bar is white set the slider handle to gray
+        if (themeColor == "rgb(255, 255, 255)") {
+            $(".slider .slider-handle").css("background-color", "#7E7E7E");
+        } else {
+            //Set the color of the slider handle to match the color of the navigation bar
+            $(".slider .slider-handle").css("background-color", themeColor);
+        }
     }
 }
 
 function sliderHandleGradient(themeGradient) {
-    //Validate that the required argument is passed and the correct type
-    if (!themeGradient || typeof(themeGradient) !== "string") {
-        console.info(º+"You must pass in your theme gradient as a string in RGB format. Example:", consoleNormal);
-        console.info(º+'linear-gradient(rgb(84, 180, 235), rgb(47, 164, 231) 60%, rgb(29, 156, 229))', consoleCode);
-        return;
-    }
+    //Verify the developer is using Bootstrap slider
+    if (bootstrap3_enabled && slider_enabled) {
+        //Validate that the required argument is passed and the correct type
+        if (!themeGradient || typeof(themeGradient) !== "string") {
+            console.info(º+"You must pass in your theme gradient as a string in RGB format. Example:", consoleNormal);
+            console.info(º+'linear-gradient(rgb(84, 180, 235), rgb(47, 164, 231) 60%, rgb(29, 156, 229))', consoleCode);
+            return;
+        }
 
-    $(".slider .slider-handle").css("background-image", themeGradient);
+        $(".slider .slider-handle").css("background-image", themeGradient);
+    }
 }
 
 function sliderHandleColor() {
-    //Remove the color of the slider handle
-    $(".slider .slider-handle").css("background-image", "none");
+    //Verify the developer is using Bootstrap slider
+    if (bootstrap3_enabled && slider_enabled) {
+        //Remove the color of the slider handle
+        $(".slider .slider-handle").css("background-image", "none");
 
-    //Get the color of the navigation bar
-    var themeColor = $(".navbar").css("background-color");
-    //Get the background image or gradient
-    var themeGradient = $(".navbar").css("background-image");
+        //Get the color of the navigation bar
+        var themeColor = $(".navbar").css("background-color");
+        //Get the background image or gradient
+        var themeGradient = $(".navbar").css("background-image");
 
-    if (themeGradient == "none") {
-        sliderHandleSolid(themeColor);
-    } else {
-        sliderHandleGradient(themeGradient);
+        if (themeGradient == "none") {
+            sliderHandleSolid(themeColor);
+        } else {
+            sliderHandleGradient(themeGradient);
+        }
     }
-
 }
 
-//Run once on page load
-sliderHandleColor();
+//Verify the developer is using Bootstrap slider
+if (bootstrap3_enabled && slider_enabled) {
+    //Run once on page load
+    sliderHandleColor();
+}
 
 
 
