@@ -113,7 +113,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.0.1";
+var uguiVersion = "1.0.2";
 
 
 
@@ -1879,6 +1879,8 @@ if ( $("body").hasClass("prod") ) {
             //Update index.htm to use the selected swatch as the new default
             saveNewSwatch(newSwatch);
         });
+
+        openDefaultBrowser();
 
     });
 
