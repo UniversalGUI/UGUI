@@ -111,9 +111,9 @@ People
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Dan O'Dea](http://github.com/DanOdea) - Definition Pattern Matching Engine Architect - Save/Load Settings features
-* [Hai Nguyen](http://github.com/hai5nguy) - UGUI Project Architechture Consultant
+* [Hai Nguyen](http://github.com/hai5nguy) - UGUI Project Architecture Consultant
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
-* [Grahammer](http://github.com/GWatt) - UGUI Engine Architechture Consultant
+* [Grahammer](http://github.com/GWatt) - UGUI Engine Architecture Consultant
 * [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realworld, and OSX testing
 
 Technology
