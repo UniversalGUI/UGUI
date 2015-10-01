@@ -27,8 +27,9 @@
 //**C06**. [Process all <cmd> definitions](#c06-process-all-cmd-definitions)  
 //**C07**. [Convert command array to string](#c07-convert-command-array-to-string)  
 //**C08**. [Set input file path, file name, and extension](#c08-set-input-file-path-file-name-and-extension)  
-//**C09**. [Prevent user from entering quotes in forms](#c09-prevent-user-from-entering-quotes-in-forms)  
-//**C10**. [Color processor](#c10-color-processor)  
+//**C09**. [Set input folder path and folder name](#c09-set-input-folder-path-and-folder-name)  
+//**c10**. [Prevent user from entering quotes in forms](#c10-prevent-user-from-entering-quotes-in-forms)  
+//**C11**. [Color processor](#c11-color-processor)  
 //
 //**D00. [UI Elements](#d00-ui-elements)**  
 //**D01**. [Submit is locked until required is fulfilled](#d01-submit-locked-until-required-fulfilled)  
@@ -113,7 +114,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.0.2";
+var uguiVersion = "1.1.0";
 
 
 
@@ -880,29 +881,23 @@ function buildUGUIArgObject() {
         //Get `bob` from `<input data-argName="bob" value="--kitten" />`
         var argName = $(cmdArgs[index]).attr("data-argName");
 
-        //Declare some variables to be set later
-        var argValue = "";
+        //Get `--carrot` from `<input type="radio" data-argName="vegCarrot" value="--carrot" />`
+        var argValue = $(cmdArgs[index]).val();
+
+        //Declare variable now to be defined below
         var argType = "";
 
         //See if the current item is a range slider
         if ( $(cmdArgs[index]).hasClass("slider") ) {
-            //Get `6` from `<input data-argName="bob" value="6" type="text" class="slider" />`
-            argValue = $(cmdArgs[index]).val();
-
             //Manually set the type to `range` for range slider elements
             argType = "range";
         //See if the element is an item in one of Bootstrap's fake dropdowns
         } else if ( $(cmdArgs[index]).parent().parent().hasClass("dropdown-menu") ) {
-
-            //Get `--carrot` from `<input type="radio" data-argName="vegCarrot" value="--carrot" />`
-            argValue = $(cmdArgs[index]).val();
-
             //Manually set the type to `range` for range slider elements
             argType = "dropdown";
+        } else if ( $(cmdArgs[index]).attr("nwdirectory") ) {
+            argType = "folder";
         } else {
-            //Get `--kitten` from `<input data-argName="bob" value="--kitten" />`
-            argValue = $(cmdArgs[index]).val();
-
             //Get `checkbox` from `<input data-argName="bob" type="checkbox" />`
             argType = $(cmdArgs[index]).attr("type");
         }
@@ -916,6 +911,13 @@ function buildUGUIArgObject() {
             "htmltag": argTag,
             "htmltype": argType
         };
+
+        //Special info just for `<input type="file" nwdirectory="nwdirectory">`
+        if (argType === "folder") {
+            setInputFolderPathName(cmdArgs[index], argName);
+            window.ugui.args[argName].htmltag = argTag;
+            window.ugui.args[argName].htmltype = argType;
+        }
 
         //Special info just for `<input type="file">`
         if (argType === "file") {
@@ -1342,7 +1344,83 @@ function setInputFilePathNameExt(currentElement, argName) {
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### C09. Prevent user from entering quotes in forms
+//### C09. Set input folder path and folder name
+//
+//>This processes elements with a `data-argName` that are
+// `<input type="file" nwdirectory="nwdirectory">`. It creates
+// special properties for the element and places them on the
+// UGUI Args Object found here: `window.ugui.args`
+
+//
+function setInputFolderPathName(currentElement, argName) {
+    //Validate that both required arguments are passed
+    if (!currentElement || !argName) {
+        console.info(º+"You must pass in the element as an object and " +
+            "its argName as a string.", consoleNormal);
+        return;
+    }
+    //Validate types
+    if (typeof(currentElement) !== "object") {
+        console.info(º+"Element must be passed as a jQuery object.", consoleNormal);
+        return;
+    } else if (typeof(argName) !== "string") {
+        console.info(º+"The argName must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    //Create a variable that contains all the file information supplied by Webkit
+    var fileAttributes = currentElement.files[0];
+
+    //Before continuing, verify that the user has selected a file
+    if (fileAttributes) {
+
+        //Detect if in `darwin`, `freebsd`, `linux`, `sunos`, or `win32`
+        var platform = process.platform;
+
+        //Create filename and file path variables to be used below
+        var filepath = "";
+
+        // Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`
+        var fullFilepath = fileAttributes.path;
+
+        //If you're on Windows then folders in file paths are separated with `\`, otherwise OS's use `/`
+        if ( platform == "win32" ) {
+            //Get the index of the final backslash so we can split the name from the path
+            var lastBackslash = fullFilepath.lastIndexOf("\\");
+            //`C:\users\bob\desktop\`
+            filepath = fullFilepath.substring(0, lastBackslash+1);
+        } else {
+            //Get the index of the final backslash so we can split the name from the path
+            var lastSlash = fullFilepath.lastIndexOf("/");
+            //`/home/bob/desktop/`
+            filepath = fullFilepath.substring(0, lastSlash+1);
+        }
+
+        //Create the args object parameters on the UGUI Args Object
+        window.ugui.args[argName] = {
+            "contents": readAFolder(fullFilepath.replace("\\","/")),
+            "fullpath": fullFilepath,
+            "path": filepath,
+            "folderName": fileAttributes.name,
+            "lastModified": fileAttributes.lastModified,
+            "lastModifiedDate": fileAttributes.lastModifiedDate,
+            "size": fileAttributes.size,
+            "type": fileAttributes.type,
+            "value": fileAttributes.path,
+            "webkitRelativePath": fileAttributes.webkitRelativePath
+        };
+
+    }
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### C10. Prevent user from entering quotes in forms
 //
 //>In all input text fields and textareas, remove both single
 // and double quotes as they are typed, on page load, and when
@@ -1374,7 +1452,7 @@ removeTypedQuotes();
 
 
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//### C10. Color Processor
+//### C11. Color Processor
 //
 //>Process input elements with a type of color to generate
 // RGB, Hex, and Decimal values, then place them on the
@@ -2052,7 +2130,11 @@ function swatchSwapper() {
             for (index = 0; index < files.length; index++) {
                 var cssFileName = files[index];                     //cerulean.min.css
                 var swatchName = files[index].split(".min.css")[0]; //cerulean
-                $("#swatchSwapper").append('<option value="_style/ven.bootswatch/' + cssFileName + '">' + swatchName + '</option>');
+                $("#swatchSwapper").append(
+                    '<option value="_style/ven.bootswatch/' + cssFileName + '">' +
+                      swatchName +
+                    '</option>'
+                );
             }
         } else {
             console.warn(º+"Could not return list of style swatches.", consoleBold);
@@ -2118,8 +2200,10 @@ function saveNewSwatch(newSwatch) {
             //Though not currently using this line, it may come in handy someday
             //`var currentSwatch = findSwatchLine[52];`
 
+            var lineToFind = '<link rel="stylesheet" href="' + newSwatch + '" data-swatch="swapper">';
+
             //Take the contents of index.htm, find the correct line, and replace that line with the updated swatch
-            data = data.replace(createRegex, '<link rel="stylesheet" href="' + newSwatch + '" data-swatch="swapper">');
+            data = data.replace(createRegex, lineToFind);
         }
 
         //With the contents of index.htm update, save over the file
@@ -2347,8 +2431,8 @@ function sliderHandleGradient(themeGradient) {
 }
 
 function sliderHandleColor() {
-    //Verify the developer is using Bootstrap slider
-    if (bootstrap3_enabled && slider_enabled) {
+    //Verify the developer is using Bootstrap slider and that the navbar exists
+    if ( bootstrap3_enabled && slider_enabled && ( $(".navbar").length > 0 ) ) {
         //Remove the color of the slider handle
         $(".slider .slider-handle").css("background-image", "none");
 
@@ -2510,8 +2594,10 @@ function saveSettings(customLocation, callback) {
         console.info(º+'ugui.helpers.saveSettings( "C:\\folder\\app-settings.json" );', consoleCode);
         console.info(º+"2. Just a function as a callback to be ran when save completes.", consoleNormal);
         console.info(º+'ugui.helpers.saveSettings( function(){console.log("Saved.")} );', consoleCode);
-        console.info(º+"3. A string followed by a function, as a custom path and callback upon completion.", consoleNormal);
-        console.info(º+'ugui.helpers.saveSettings( "C:\\folder\\app-settings.json", function(){console.log("Saved.")} );', consoleCode);
+        console.info(º+"3. A string followed by a function, as a custom path and " +
+            "callback upon completion.", consoleNormal);
+        console.info(º+'ugui.helpers.saveSettings( "C:\\folder\\app-settings.json", ' +
+            'function(){console.log("Saved.")} );', consoleCode);
         console.info(º+"4. Nothing at all.", consoleNormal);
         console.info(º+'ugui.helpers.saveSettings();', consoleCode);
         console.info(º+"By passing in nothing, UGUI will use the default save location of:", consoleNormal);
@@ -2603,8 +2689,10 @@ function loadSettings(customLocation, callback) {
         console.info(º+'ugui.helpers.loadSettings( "C:\\folder\\app-settings.json" );', consoleCode);
         console.info(º+"2. Just a function as a callback to be ran when loading completes.", consoleNormal);
         console.info(º+'ugui.helpers.loadSettings( function(){console.log("Loaded.")} );', consoleCode);
-        console.info(º+"3. A string followed by a function, as a custom path and callback upon completion.", consoleNormal);
-        console.info(º+'ugui.helpers.loadSettings( "C:\\folder\\app-settings.json", function(){console.log("loadd.")} );', consoleCode);
+        console.info(º+"3. A string followed by a function, as a custom path and " +
+            "callback upon completion.", consoleNormal);
+        console.info(º+'ugui.helpers.loadSettings( "C:\\folder\\app-settings.json", ' +
+            'function(){console.log("loadd.")} );', consoleCode);
         console.info(º+"4. Nothing at all.", consoleNormal);
         console.info(º+'ugui.helpers.loadSettings();', consoleCode);
         console.info(º+"By passing in nothing, UGUI will use the default load location of:", consoleNormal);
@@ -2618,7 +2706,7 @@ function loadSettings(customLocation, callback) {
     }
 
     //Attempt to read the file
-    fs.readFile(settingsFile, {encoding: "utf-8"}, function(err, data){
+    fs.readFile(settingsFile, {encoding: "utf-8"}, function(err, data) {
         //Display console warning if unable to read the file
         if (err) {
             console.warn(º+"Could not read settings file from location:", consoleNormal);
@@ -2639,7 +2727,30 @@ function loadSettings(customLocation, callback) {
                 if ( $("[data-argName" + key + "]") && !($("[data-argName" + key + "]").hasClass("do-not-save")) ) {
                     /* console.log(htmltype); */
                     //If `<input type="file">` and it has value
-                    if (htmltype == "file" && settingsObj[key].value !== "") {
+                    if (htmltype == "folder" && settingsObj[key].value !== "") {
+                        //Create an object with the correct file properties
+                        var folder = {
+                            "folderName": settingsObj[key].folderName,
+                            "fullpath": settingsObj[key].fullpath,
+                            "type": settingsObj[key].type,
+                            "path": settingsObj[key].path,
+                            "size": settingsObj[key].size,
+                            "lastModified": settingsObj[key].lastModified,
+                            "lastModifiedDate": settingsObj[key].lastModifiedDate,
+                            "webkitRelativePath": settingsObj[key].webkitRelativePath,
+                            "htmltag": settingsObj[key].htmltag,
+                            "htmltype": settingsObj[key].htmltype
+                        };
+                        //Set the matching UI element in the app with the above properties
+                        $("[data-argName=" + key + "]")[0].files[0] = folder;
+
+                        //Update EZDZ if the element is using it
+                        if ( $("[data-argName=" + key + "]").parent().hasClass("ezdz") ) {
+                            //Run EZDZ to update visuals on the page
+                            ezdz(folder);
+                        }
+                    //If `<input type="file">` and it has value
+                    } else if (htmltype == "file" && settingsObj[key].value !== "") {
                         //Create an object with the correct file properties
                         var file = {
                             "type": settingsObj[key].type,

@@ -14,7 +14,7 @@ Download UGUI to use it for your project:
 
 * [Version 1.0.0](https://github.com/UniversalGUI/UGUI/releases/download/v1.0.0/ugui_1.0.0.zip) (One year in the making!)
 * [Tutorial for Version 1.0.0](http://ugui.io/tutorials/getting-started.htm)
-* [Annotated Source Code](http://ugui.io/docs/1.0.0/) - Easily the best documented source code in existence!
+* [Annotated Source Code](http://ugui.io/docs) - Easily the best documented source code in existence!
 
 * * *
 
@@ -28,32 +28,15 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version of Master Branch:** V1.0.2
+**Current Version of Master Branch:** V1.1.0
 
 **Phase 1: The library and framwork.**
 
-* V1.0 ~~Create ugui.js that will help abstract out connecting switches through the HTML/JS, to make the process as simple as possible for front end designers.~~
-* V1.0 ~~Create UGUI logo.~~
-* V1.0 ~~Remove all browser specific stuff that isn't relevant like -moz, -o, -ms, filter, old -webkit, EOT, etc.~~
-* V1.0 ~~Clean up template to have generic sample content.~~
-* V1.0 ~~Create About/Help modal using dynamic information. Separate user about from UGUI about markup.~~
-* V1.0 ~~Update layout design using Bootstrap.~~
-* V1.0 ~~Have the "About" link in the navbar added via ugui.js~~
-* V1.0 ~~Update [GitHub project](http://github.com/UniversalGUI) to separate repos for UGUI Framework, Templates, Website, CLI, and UGUI Designer.~~
-* V1.0 ~~Clean up UGUI About section to have github credits icons appear dynamically or work offline.~~
-* V1.0 ~~Add in basic form validation to prevent the user from breaking the command line with bad characters~~
-* V1.0 ~~Add a button to the UGUI Dev tools that allows the developer to set their stylesheet without having to edit the index.htm file~~
-* V1.0 ~~Bug found: Redo the UGUI engine to be easier and simpler and have better functionality.~~
-* V1.0 ~~Implement Dan's definition pattern matching engine~~
-* V1.0 ~~UGUI Devtools needs to have an exectuable selector~~
-* V1.0 ~~Save/Load Settings~~
-* V1.0 ~~Test realworld usage of UGUI and prod mode~~
-* V1.0 ~~Test in OSX, Linux, and Windows (again)~~
-* V1.1 Multi-File import
-* V1.1 Create NPM compliant package.json alternative
-* V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
+* V1.2 Multi-File import
+* V1.3 Create NPM compliant package.json alternative
+* V1.4 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.5 Test packaging in different OS environments.
-* V1.5 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
+* V1.6 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
 
 **Phase 2: Site: Templates, Tutorials, & Documentation**
 
@@ -107,7 +90,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 ###Credits
 
-People
+**People**
 
 * [The Jared Wilcurt](http://github.com/TheJaredWilcurt) - Creator/Maintainer
 * [Dan O'Dea](http://github.com/DanOdea) - Definition Pattern Matching Engine Architect - Save/Load Settings features
@@ -116,7 +99,7 @@ People
 * [Grahammer](http://github.com/GWatt) - UGUI Engine Architechture Consultant
 * [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realworld, and OSX testing
 
-Technology
+**Technology**
 
 * [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
  * [IO.JS](http://iojs.org)
