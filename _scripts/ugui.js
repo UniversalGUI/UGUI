@@ -114,7 +114,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.1.0";
+var uguiVersion = "1.1.1";
 
 
 
@@ -886,6 +886,8 @@ function buildUGUIArgObject() {
 
         //Declare variable now to be defined below
         var argType = "";
+        //Get `input` from `<input data-argName="bob" type="checkbox" />`
+        var argTag = $(cmdArgs[index]).prop("tagName").toLowerCase();
 
         //See if the current item is a range slider
         if ( $(cmdArgs[index]).hasClass("slider") ) {
@@ -896,14 +898,15 @@ function buildUGUIArgObject() {
             //Manually set the type to `range` for range slider elements
             argType = "dropdown";
         } else if ( $(cmdArgs[index]).attr("nwdirectory") ) {
+            //Manually set the type if it's a directory browser
             argType = "folder";
+        } else if (argTag == "select") {
+            //Manually set the type if it's a traditional dropdown
+            argType = "select";
         } else {
             //Get `checkbox` from `<input data-argName="bob" type="checkbox" />`
             argType = $(cmdArgs[index]).attr("type");
         }
-
-        //Get `input` from `<input data-argName="bob" type="checkbox" />`
-        var argTag = $(cmdArgs[index]).prop("tagName").toLowerCase();
 
         //Basic info put on every object
         window.ugui.args[argName] = {
@@ -1378,10 +1381,12 @@ function setInputFolderPathName(currentElement, argName) {
         var platform = process.platform;
 
         //Create filename and file path variables to be used below
+        var filename = "";
         var filepath = "";
 
-        // Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`
-        var fullFilepath = fileAttributes.path;
+        //Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`  
+        //Use the first one, unless you are loading settings and it doesn't exist
+        var fullFilepath =  fileAttributes.fullpath || fileAttributes.path;
 
         //If you're on Windows then folders in file paths are separated with `\`, otherwise OS's use `/`
         if ( platform == "win32" ) {
@@ -1389,11 +1394,13 @@ function setInputFolderPathName(currentElement, argName) {
             var lastBackslash = fullFilepath.lastIndexOf("\\");
             //`C:\users\bob\desktop\`
             filepath = fullFilepath.substring(0, lastBackslash+1);
+            filename = fullFilepath.split("\\").pop();
         } else {
             //Get the index of the final backslash so we can split the name from the path
             var lastSlash = fullFilepath.lastIndexOf("/");
             //`/home/bob/desktop/`
             filepath = fullFilepath.substring(0, lastSlash+1);
+            filename = fullFilepath.split("/").pop();
         }
 
         //Create the args object parameters on the UGUI Args Object
@@ -1401,7 +1408,7 @@ function setInputFolderPathName(currentElement, argName) {
             "contents": readAFolder(fullFilepath.replace("\\","/")),
             "fullpath": fullFilepath,
             "path": filepath,
-            "folderName": fileAttributes.name,
+            "folderName": fileAttributes.name || filename,
             "lastModified": fileAttributes.lastModified,
             "lastModifiedDate": fileAttributes.lastModifiedDate,
             "size": fileAttributes.size,
@@ -2028,6 +2035,8 @@ if( $("body").hasClass("dev") ) {
             //Check if it was the drag/drop input box
             if ( $(this).parent().hasClass("ezdz") ) {
                 var file = this.files[0];
+                //pass in the data-argName to EZDZ
+                file.argName = $(this).attr("data-argName");
                 //Run a custom function before updating dev tools
                 ezdz(file);
             }
@@ -2045,6 +2054,8 @@ if( $("body").hasClass("dev") ) {
     //If we're not in `dev` mode, make sure the EZDZ can still run
     $(".ezdz input").change( function() {
         var file = this.files[0];
+        //pass in the data-argName to EZDZ
+        file.argName = $(this).attr("data-argName");
         ezdz(file);
     });
 }
@@ -2059,7 +2070,7 @@ function updateUGUIDevCommandLine() {
     //Get an array of all the commands being sent out
     var devCommandOutput = buildCommandArray(pickedExecutable);
     var devCommandOutputSpaces = [];
-
+console.log("devCommandOutput");
     for (var index = 0; index < devCommandOutput.length; index++) {
         if (devCommandOutput[index] !== "") {
             devCommandOutputSpaces.push(" " + devCommandOutput[index]);
@@ -2320,15 +2331,15 @@ function keyBindings() {
 
 //
 $(".ezdz").on("dragover", function() {
-    $(".ezdz label").removeClass("text-info");    //Static
-    $(".ezdz label").removeClass("text-success"); //Dropped
-    $(".ezdz label").addClass("text-warning");    //Hover
+    $(this).children("label").removeClass("text-info");    //Static
+    $(this).children("label").removeClass("text-success"); //Dropped
+    $(this).children("label").addClass("text-warning");    //Hover
 });
 
 $(".ezdz").on("dragleave", function() {
-    $(".ezdz label").removeClass("text-success"); //Dropped
-    $(".ezdz label").removeClass("text-warning"); //Hover
-    $(".ezdz label").addClass("text-info");       //Static
+    $(this).children("label").removeClass("text-success"); //Dropped
+    $(this).children("label").removeClass("text-warning"); //Hover
+    $(this).children("label").addClass("text-info");       //Static
 });
 
 function ezdz(fileInfo) {
@@ -2337,18 +2348,18 @@ function ezdz(fileInfo) {
         console.info(º+"You must pass in your file information as an object.", consoleNormal);
         return;
     }
-
     var file = fileInfo;
+    var element = '[data-argName="' + file.argName + '"]';
 
-    $(".ezdz label").removeClass("text-info");    //Static
-    $(".ezdz label").removeClass("text-warning"); //Hover
+    $(element).siblings("label").removeClass("text-info");    //Static
+    $(element).siblings("label").removeClass("text-warning"); //Hover
 
     if (this.accept && $.inArray(file.type, this.accept.split(/, ?/)) == -1) {
         return alert("File type not allowed.");
     }
 
-    $(".ezdz label").addClass("text-success");   //Dropped
-    $(".ezdz img").remove();
+    $(element).siblings("label").addClass("text-success");   //Dropped
+    $(element).siblings("span img").remove();
 
     if ((/^image\/(gif|png|jpeg|jpg|webp|bmp|ico)$/i).test(file.type)) {
         /* var reader = new FileReader(file); */
@@ -2360,14 +2371,16 @@ function ezdz(fileInfo) {
             /* var $img = $("<img />").attr("src", data).fadeIn(); */
             var $img = $("<img />").attr("src", file.path).fadeIn();
 
-            $(".ezdz img").attr("alt", "Thumbnail of dropped image.");
-            $(".ezdz span").html($img);
+            $(element).siblings("span img").attr("alt", "Thumbnail of selected image.");
+            $(element).siblings("span").html($img);
         /* }; */
+    } else {
+        $(element).siblings("span").children("img").remove();
     }
 
     //Update the text on screen to display the name of the file that was dropped
     var droppedFilename = file.name + " selected";
-    $(".ezdz label").html(droppedFilename);
+    $(element).siblings("label").html(droppedFilename);
 }
 
 
@@ -2730,6 +2743,7 @@ function loadSettings(customLocation, callback) {
                     if (htmltype == "folder" && settingsObj[key].value !== "") {
                         //Create an object with the correct file properties
                         var folder = {
+                            "argName": key,
                             "folderName": settingsObj[key].folderName,
                             "fullpath": settingsObj[key].fullpath,
                             "type": settingsObj[key].type,
@@ -2753,6 +2767,7 @@ function loadSettings(customLocation, callback) {
                     } else if (htmltype == "file" && settingsObj[key].value !== "") {
                         //Create an object with the correct file properties
                         var file = {
+                            "argName": key,
                             "type": settingsObj[key].type,
                             "path": settingsObj[key].fullpath,
                             "name": settingsObj[key].nameExt,
@@ -2809,12 +2824,10 @@ function loadSettings(customLocation, callback) {
                 }
             }
 
-            //Build the UGUI Arg Object based on our updated UI
+            //You can never sanitize your inputs enough!
             removeTypedQuotes();
-            buildUGUIArgObject();
-            patternMatchingDefinitionEngine();
-
-            //Update the UGUI Developer Toolbar and unlock/lock submit buttons accordingly
+            //Update the UGUI Developer Toolbar and unlock/lock submit buttons accordingly  
+            //`updateUGUIDevCommandLine` will run `buildUGUIArgObject` and `patternMatchingDefinitionEngine`
             updateUGUIDevCommandLine();
             unlockSubmit();
 

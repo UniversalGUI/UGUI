@@ -12,8 +12,8 @@ Create your own cross-platform desktop applications in minutes using UGUI.
 
 Download UGUI to use it for your project:
 
-* [Version 1.1.0](https://github.com/UniversalGUI/UGUI/releases/download/v1.1.0/ugui_1.1.0.zip) (One year in the making!)
-* [Tutorial for Version 1.1.0](http://ugui.io/tutorials/getting-started.htm)
+* [Version 1.1.1](https://github.com/UniversalGUI/UGUI/releases/download/v1.1.1/ugui_1.1.1.zip) (One year in the making!)
+* [Tutorial for Version 1.1.1](http://ugui.io/tutorials/getting-started.htm)
 * [Annotated Source Code](http://ugui.io/docs) - Easily the best documented source code in existence!
 
 * * *
@@ -28,7 +28,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version of Master Branch:** V1.1.0
+**Current Version of Master Branch:** V1.1.1
 
 **Phase 1: The library and framwork.**
 

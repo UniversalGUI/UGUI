@@ -50,7 +50,7 @@
 
     <cmd executable="cli_filename">
 
-      <arg>((folderPicker.folderName))</arg>
+      <arg>"((folderPicker.folderName))"</arg>
 
       <arg>((catSoundsMeow))</arg>
       <arg>((catSoundsPurr))</arg>
@@ -66,6 +66,8 @@
       <arg>((vegCarrot))</arg>
       <arg>((vegCelery))</arg>
       <arg>((vegGinger))</arg>
+
+      <arg>--dogsound=((dogSounds))</arg>
 
       <def name="quality">((min)),((max))</def>
       <arg>((quality.min))-((quality.max))</arg>
@@ -232,12 +234,22 @@
               </div>
             </div>
             <div class="col-xs-6 col-s-3 col-md-3 col-l-3">
-              <label>Color Picker:</label>
-              <input type="color" data-argName="colorful" value="#000000" />
+              <select data-argName="dogSounds" class="form-control" required="required">
+                <option value="">Dog Sounds</option>
+                <option value="woof">Woof</option>
+                <option value="bark">Bark</option>
+                <option value="ruff">Ruff</option>
+              </select>
             </div>
-            <div class="col-xs-6 col-s-3 col-md-3 col-l-3">
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-s-6 col-md-6 col-l-6">
               <label>Browse for Folder:</label>
               <input type="file" nwdirectory="nwdirectory" data-argName="folderPicker" />
+            </div>
+            <div class="col-xs-6 col-s-6 col-md-6 col-l-6">
+              <label>Color Picker:</label>
+              <input type="color" data-argName="colorful" value="#000000" />
             </div>
           </div>
 
