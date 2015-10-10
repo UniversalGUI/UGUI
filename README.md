@@ -18,9 +18,19 @@ Download UGUI to use it for your project:
 
 * * *
 
-###What is UGUI
+###What is UGUI?
 
-UGUI is a library and framework for NW.js (formally Node-Webkit) that is designed to make creating a desktop application as easy as possible. We specifically target the creation of GUI applications for command line programs, however UGUI can also be used as a general purpose starting point for any type of desktop application.
+1. **Framework** for abstracting command line arguments into UI elements.
+ * Designed for power and control with ease of use.
+2. **Library** for NW.js (formally Node-Webkit) that has an API of useful tools.
+ * Simply typing `ugui` into the console gives you a wealth of useful information and helper functions for common tasks.
+3. **Bootstrap**: A pre-setup project with everything you need out of the box.
+ * We supply you with common elements like navigation, "about" info, form elements, and 19 premade themes to pick from.  
+![Animated screenshot of UGUI interface using various themes](https://raw.githubusercontent.com/UniversalGUI/UniversalGUI.github.io/master/_img/ugui-themes.gif "Built-in UGUI Themes")
+4. **Boilerplate**: A general purpose compilation of commonly used tools for NW.js.
+ * UGUI's project structure can be used for any kind of desktop app, or in combination with other common web frameworks, such as Angular or React. Many basic things (such as a detailed package.json for NW.js or code for making a Try app) are already taken care of.
+5. **Educational Platform**: We believe UGUI can be used by anyone, even those with no coding experience. As part of this belief we approach everything from a UX perspective of making it as easy to understand as possible. This is why nearly every line of code in `ugui.js` is [commented](http://ugui.io/docs), and why we put such a focus on documentation and tutorials.
+
 
 Our goal is to allow anyone, even those with no prior coding knowledge, to create a desktop application in just 5 minutes.
 
