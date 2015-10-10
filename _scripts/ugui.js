@@ -2070,7 +2070,7 @@ function updateUGUIDevCommandLine() {
     //Get an array of all the commands being sent out
     var devCommandOutput = buildCommandArray(pickedExecutable);
     var devCommandOutputSpaces = [];
-console.log("devCommandOutput");
+
     for (var index = 0; index < devCommandOutput.length; index++) {
         if (devCommandOutput[index] !== "") {
             devCommandOutputSpaces.push(" " + devCommandOutput[index]);

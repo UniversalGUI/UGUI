@@ -32,11 +32,12 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 **Phase 1: The library and framwork.**
 
-* V1.2 Multi-File import
+* V1.2 Check for Updates
 * V1.3 Create NPM compliant package.json alternative
-* V1.4 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
-* V1.5 Test packaging in different OS environments.
-* V1.6 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
+* V1.4 Multi-File import
+* V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
+* V1.6 Test packaging in different OS environments.
+* V1.7 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
 
 **Phase 2: Site: Templates, Tutorials, & Documentation**
 
