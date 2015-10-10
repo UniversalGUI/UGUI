@@ -9,10 +9,10 @@ cmd arg
     opacity: 0
     color: transparent
 
-body #argsForm
-    margin-bottom: 50px
-
 .modal
+    background-color: rgba(0,0,0,0.6)
+    .glyphicon-remove
+        cursor: pointer
     .versionApp,
     .versionUGUI
         position: relative
@@ -33,13 +33,10 @@ body.dev .devNav
     display: block !important
 
 #aboutModal
-    background-color: rgba(0,0,0,0.6)
     z-index: 1080
     .modal-body
         overflow: auto
         min-height: 115px
-    .glyphicon-remove
-        cursor: pointer
     .versionUGUI:before
         content: "V"
 

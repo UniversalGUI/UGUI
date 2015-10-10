@@ -114,7 +114,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.1.1";
+var uguiVersion = "1.1.2";
 
 
 
