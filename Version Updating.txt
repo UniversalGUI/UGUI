@@ -5,7 +5,4 @@ UGUI\README.md:35                             //Remove items if complete
 UGUI\_markup\ugui-about.htm:3                 //Master Branch Version (not important)
 UGUI\_markup\ugui-devtools.htm:40             //Master Branch Version (not important)
 UGUI\_scripts\ugui.js:117                     //Master Branch Version (important)
-UniversalGUI.github.io\index.dev.html:181     //Release Download (link and text)
-UniversalGUI.github.io\index.html:1           //Release Download (uglified/minified)
 UniversalGUI.github.io\docs\update.bat        //Run Docco, rename generated files
-UniversalGUI.github.io\docs\index.htm:1       //Added newly generated docco file to page
