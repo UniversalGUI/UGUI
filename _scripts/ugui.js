@@ -172,6 +172,9 @@ var authorName = packageJSON.author;
 //Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
+//Full path to the app project folder
+var pathToProject = allArgElements.context.URL.split(indexFile)[0];
+
 //Detect if Bootstrap is loaded
 var bootstrap3_enabled = (typeof $().emulateTransitionEnd == 'function');
 
@@ -2867,6 +2870,7 @@ window.ugui = {
         "description": appDescription,
         "name": appName,
         "packageJSON": packageJSON,
+        "pathToProject": pathToProject,
         "startPage": indexFile,
         "title": appTitle,
         "version": appVersion,
