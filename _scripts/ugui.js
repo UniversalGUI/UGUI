@@ -173,7 +173,7 @@ var authorName = packageJSON.author;
 var indexFile = packageJSON.main;
 
 //Full path to the app project folder
-var pathToProject = allArgElements.context.URL.split(indexFile)[0];
+var pathToProject = window.location.pathname.split(indexFile)[0];
 
 //Detect if Bootstrap is loaded
 var bootstrap3_enabled = (typeof $().emulateTransitionEnd == 'function');
