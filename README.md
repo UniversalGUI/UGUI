@@ -12,9 +12,9 @@ Create your own cross-platform desktop applications in minutes using UGUI.
 
 Download UGUI to use it for your project:
 
-* [Version 1.1.2](https://github.com/UniversalGUI/UGUI/releases/download/v1.1.2/ugui_1.1.2.zip) (One year in the making!)
-* [Tutorial for Version 1.1.2](http://ugui.io/tutorials/getting-started.htm)
-* [Annotated Source Code](http://ugui.io/docs) - Easily the best documented source code in existence!
+* [Version 1.1.3](https://github.com/UniversalGUI/UGUI/releases/download/v1.1.3/ugui_1.1.3.zip)
+* [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
+* [Annotated Source Code](http://ugui.io/dl) - Easily the best documented source code in existence!
 
 * * *
 
@@ -28,8 +28,8 @@ Download UGUI to use it for your project:
  * We supply you with common elements like navigation, "about" info, form elements, and 19 premade themes to pick from.  
 ![Animated screenshot of UGUI interface using various themes](https://raw.githubusercontent.com/UniversalGUI/UniversalGUI.github.io/master/_img/ugui-themes.gif "Built-in UGUI Themes")
 4. **Boilerplate**: A general purpose compilation of commonly used tools for NW.js.
- * UGUI's project structure can be used for any kind of desktop app, or in combination with other common web frameworks, such as Angular or React. Many basic things (such as a detailed package.json for NW.js or code for making a Try app) are already taken care of.
-5. **Educational Platform**: We believe UGUI can be used by anyone, even those with no coding experience. As part of this belief we approach everything from a UX perspective of making it as easy to understand as possible. This is why nearly every line of code in `ugui.js` is [commented](http://ugui.io/docs), and why we put such a focus on documentation and tutorials.
+ * UGUI's project structure can be used for any kind of desktop app, or in combination with other common web frameworks, such as Angular or React. Many basic things (such as a detailed package.json for NW.js or code for making a Tray app) are already taken care of.
+5. **Educational Platform**: We believe UGUI can be used by anyone, even those with no coding experience. As part of this belief we approach everything from a UX perspective of making it as easy to understand as possible. This is why nearly every line of code in `ugui.js` is [commented](http://ugui.io/dl), and why we put such a focus on documentation and tutorials.
 
 
 Our goal is to allow anyone, even those with no prior coding knowledge, to create a desktop application in just 5 minutes.
@@ -38,10 +38,13 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version of Master Branch:** V1.1.2
+**Current Version of Master Branch:** V1.1.3
 
 **Phase 1: The library and framwork.**
 
+* V1.2 Clean up UGUI API
+ * Stop exposing: warnIfDuplicateArgNames
+ * Remove entirely: updateCommandLineOutputPreviewHint
 * V1.2 Check for Updates
 * V1.3 Create NPM compliant package.json alternative
 * V1.4 Multi-File import
@@ -60,7 +63,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
  * Design: In progress
  * Homepage: In progress
  * Documentation Page: In progress
-  * Annotated Source Code: In progress
+  * ~~[Annotated Source Code](http://ugui.io/dl)~~
  * Tutorials Page: Not started
  * Showcase of applications made with UGUI: Not started
  * Templates Page: Not started
