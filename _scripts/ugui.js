@@ -172,6 +172,9 @@ var authorName = packageJSON.author;
 //Name of the starting page for the app, set in package.json
 var indexFile = packageJSON.main;
 
+//Full path to the app project folder
+var pathToProject = window.location.pathname.split(indexFile)[0];
+
 //Detect if in `darwin`, `freebsd`, `linux`, `sunos`, or `win32`
 var platform = process.platform;
 
@@ -2877,6 +2880,7 @@ window.ugui = {
         "description": appDescription,
         "name": appName,
         "packageJSON": packageJSON,
+        "pathToProject": pathToProject,
         "startPage": indexFile,
         "title": appTitle,
         "version": appVersion,
