@@ -45,6 +45,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 * V1.2 Clean up UGUI API
  * Stop exposing: warnIfDuplicateArgNames
  * Remove entirely: updateCommandLineOutputPreviewHint
+ * Change sync for readAFolder
 * V1.2 Check for Updates
 * V1.3 Create NPM compliant package.json alternative
 * V1.4 Multi-File import
