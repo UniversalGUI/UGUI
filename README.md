@@ -44,7 +44,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 **Phase 1: The library and framwork.**
 
 * V1.2 Clean up UGUI API
- * Stop exposing: warnIfDuplicateArgNames
+ * Stop exposing: warnIfDuplicateArgNames and fillExecutableDropdowns
  * Remove entirely: updateCommandLineOutputPreviewHint
  * Change sync for readAFolder
 * V1.2 Check for Updates

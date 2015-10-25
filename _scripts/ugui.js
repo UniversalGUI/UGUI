@@ -613,7 +613,9 @@ function writeToFile(filePathAndName, data, callback) {
 //>You'd need to create the "Taco" folder first, then the
 // "Cheese" folder, like so:
 //
-//>     ugui.helpers.createAFolder("C:/Taco", ugui.helpers.createAFolder("C:/Taco/Cheese"));
+//>     ugui.helpers.createAFolder("C:/Taco", function(){
+//         ugui.helpers.createAFolder("C:/Taco/Cheese");
+//     });
 //
 //>In this example we are using a callback to create a
 // subfolder. This ensures that the "Taco" folder will exist
