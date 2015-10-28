@@ -63,18 +63,18 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
  * [x] [Temp Splash Page](http://ugui.io)
  * [ ] Design: In progress
  * [ ] Homepage: In progress
- * [ ] [API Documentation Page](http://ugui.io/api)
-  * [x] [Annotated Source Code](http://ugui.io/dl)
+ * [x] [API Documentation Page](http://ugui.io/api)
+ * [x] [Annotated Source Code](http://ugui.io/dl)
  * [ ] Tutorials Page: Not started
  * [ ] Showcase of applications made with UGUI: Not started
  * [ ] Templates Page: Not started
 * [ ] Create Explainer and tutorial videos.
  * [ ] UGUI Explainer: In Preproduction, Script and Storyboard complete. Artwork needs made and animated. Naration needs recorded.
  * [ ] Tutorial: Comprehensive and 30 second video covering running your project for development and distribution
- * [ ] Tutorial: Getting Started with UGUI (embedded in V.1 of UGUI)
+ * [x] Tutorial: [Getting Started with UGUI](ugui.io/tutorials/getting-started.htm)
  * [ ] Tutorial: Covering every file in the UGUI project in detail.
  * [ ] Explainer: What is NW.js? In preproduction. Some artwork created, script done.
- * [ ] Demo: Creating a desktop application using UGUI.
+ * [x] Demo: [Creating a desktop application using UGUI.](https://www.youtube.com/watch?v=qHMRroZ7AAw)
  * [ ] Tutorial: Advanced way
 * [ ] Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
  * [ ] Hardware Pack template to be created using D3.JS library to graphically display information about hardware such as CPU and RAM usage.
