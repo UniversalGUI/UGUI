@@ -57,34 +57,34 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.github.io](https://github.com/UniversalGUI/UniversalGUI.github.io/tree/dev)
 
-* ~~Buy domain name: [UGUI.io](http://ugui.io)~~
-* ~~Create a [community forum](http://ugui.reddit.com) for discussions~~
-* Create UGUI site:
- * ~~[Temp Splash Page](http://ugui.io)~~
- * Design: In progress
- * Homepage: In progress
- * Documentation Page: In progress
-  * ~~[Annotated Source Code](http://ugui.io/dl)~~
- * Tutorials Page: Not started
- * Showcase of applications made with UGUI: Not started
- * Templates Page: Not started
-* Create Explainer and tutorial videos.
- * UGUI Explainer: In Preproduction, Script and Storyboard complete. Artwork needs made and animated. Naration needs recorded.
- * Tutorial: Comprehensive and 30 second video covering running your project for development and distribution
- * Tutorial: Getting Started with UGUI (embedded in V.1 of UGUI)
- * Tutorial: Covering every file in the UGUI project in detail.
- * Explainer: What is NW.js? In preproduction. Some artwork created, script done.
- * Demo: Creating a desktop application using UGUI.
- * Tutorial: Advanced way
-* Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
- * Hardware Pack template to be created using D3.JS library to graphically display information about hardware such as CPU and RAM usage.
- * File System Pack template to be created to display information about files in a folder, file sizes, etc.
- * 3D Pack template using OpenGL and three.js to take advantage of 3D.
- * System Tray template for windowless application using native system tray and context-menu.
- * Mega Pack which combines most of the parts from all other official template packs.
- * More general templates that just focus on different visual layouts.
- * Advanced templates for more unique CMD programs.
-* Advertise the existence of this project like crazy!
+* [x] Buy domain name: [UGUI.io](http://ugui.io)
+* [x] Create a [community forum](http://ugui.reddit.com) for discussions
+* [ ] Create UGUI site:
+ * [x] [Temp Splash Page](http://ugui.io)
+ * [ ] Design: In progress
+ * [ ] Homepage: In progress
+ * [ ] [API Documentation Page](http://ugui.io/api)
+  * [x] [Annotated Source Code](http://ugui.io/dl)
+ * [ ] Tutorials Page: Not started
+ * [ ] Showcase of applications made with UGUI: Not started
+ * [ ] Templates Page: Not started
+* [ ] Create Explainer and tutorial videos.
+ * [ ] UGUI Explainer: In Preproduction, Script and Storyboard complete. Artwork needs made and animated. Naration needs recorded.
+ * [ ] Tutorial: Comprehensive and 30 second video covering running your project for development and distribution
+ * [ ] Tutorial: Getting Started with UGUI (embedded in V.1 of UGUI)
+ * [ ] Tutorial: Covering every file in the UGUI project in detail.
+ * [ ] Explainer: What is NW.js? In preproduction. Some artwork created, script done.
+ * [ ] Demo: Creating a desktop application using UGUI.
+ * [ ] Tutorial: Advanced way
+* [ ] Create several templates based on Twitter Bootstrap for different types of applications to give people quick places to start from.
+ * [ ] Hardware Pack template to be created using D3.JS library to graphically display information about hardware such as CPU and RAM usage.
+ * [ ] File System Pack template to be created to display information about files in a folder, file sizes, etc.
+ * [ ] 3D Pack template using OpenGL and three.js to take advantage of 3D.
+ * [ ] System Tray template for windowless application using native system tray and context-menu.
+ * [ ] Mega Pack which combines most of the parts from all other official template packs.
+ * [ ] More general templates that just focus on different visual layouts.
+ * [ ] Advanced templates for more unique CMD programs.
+* [ ] Advertise the existence of this project like crazy!
 
 **Phase 3: UGUI Designer: The wizard and automation studio**
 
