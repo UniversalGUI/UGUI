@@ -14,6 +14,7 @@ Download UGUI to use it for your project:
 
 * [Version 1.1.3](https://github.com/UniversalGUI/UGUI/releases/download/v1.1.3/ugui_1.1.3.zip)
 * [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
+* [API Documentation](http://ugui.io/api)
 * [Annotated Source Code](http://ugui.io/dl) - Easily the best documented source code in existence!
 
 * * *
