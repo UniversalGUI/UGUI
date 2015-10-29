@@ -117,7 +117,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 
 **Technology**
 
-* [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to Roger Wang.
+* [NW.JS](http://nwjs.io) - The foundation of UGUI! Special thanks to [Roger Wang](https://github.com/rogerwang).
  * [IO.JS](http://iojs.org)
  * [Chromium](http://www.chromium.org)
  * [V8](https://code.google.com/p/v8)
