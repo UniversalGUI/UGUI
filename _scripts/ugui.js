@@ -1948,8 +1948,6 @@ if ( $("body").hasClass("prod") ) {
         $("#uguiDevTools section *").addClass("shrink");
         $("#uguiDevTools").show();
 
-        updateCommandLineOutputPreviewHint();
-
         //Hide/Show based on UGUI Dev Tools navigation
         $("#uguiDevTools nav span").click( function() {
             var sectionClicked = $(this).attr("data-nav");
@@ -1968,8 +1966,6 @@ if ( $("body").hasClass("prod") ) {
             }
         });
 
-        $(".uguiCommand .executableName").change( updateCommandLineOutputPreviewHint );
-
         swatchSwapper();
 
         //When the developer clicks "Keep"
@@ -1982,6 +1978,9 @@ if ( $("body").hasClass("prod") ) {
 
         openDefaultBrowser();
 
+        //Update the UGUI Developer Toolbar's "CMD Output" section
+        updateUGUIDevCommandLine();
+        $("#uguiDevTools .uguiCommand .executableName").change(updateUGUIDevCommandLine);
     });
 
     //Get NW.js GUI and WIN
@@ -1995,15 +1994,6 @@ if ( $("body").hasClass("prod") ) {
     //Check for duplicate `data-argName`s
     warnIfDuplicateArgNames();
 
-}
-
-function updateCommandLineOutputPreviewHint() {
-    var commandLineOutputExecutable = $(".uguiCommand .executableName").val();
-    $("#commandLine").html(
-        '<span class="commandLineHint">Click the <em>' +
-        $('#' + commandLineOutputExecutable + ' .sendCmdArgs').html() +
-        '</em> button to see output.</span>'
-    );
 }
 
 
@@ -2911,7 +2901,6 @@ window.ugui = {
         "sliderHandleSolid": sliderHandleSolid,
         "sliderHandleGradient": sliderHandleGradient,
         "sliderHandleColor": sliderHandleColor,
-        "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
         "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
         "writeToFile": writeToFile
     },
