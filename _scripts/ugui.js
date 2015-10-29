@@ -2897,7 +2897,6 @@ window.ugui = {
         "createAFolder": createAFolder,
         "deleteAFile": deleteAFile,
         "deleteAFolder": deleteAFolder,
-        "fillExecutableDropdowns": fillExecutableDropdowns,
         "findKeyValue": findKeyValue,
         "loadSettings": loadSettings,
         "openDefaultBrowser": openDefaultBrowser,
@@ -2914,7 +2913,6 @@ window.ugui = {
         "sliderHandleColor": sliderHandleColor,
         "updateCommandLineOutputPreviewHint": updateCommandLineOutputPreviewHint,
         "updateUGUIDevCommandLine": updateUGUIDevCommandLine,
-        "warnIfDuplicateArgNames": warnIfDuplicateArgNames,
         "writeToFile": writeToFile
     },
     "platform": process.platform,
