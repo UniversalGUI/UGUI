@@ -1,7 +1,6 @@
 UGUI\README.md:15                             //Release Download
-UGUI\README.md:16                             //Release Tutorial
-UGUI\README.md:31                             //Master Branch Version
-UGUI\README.md:35                             //Remove items if complete
+UGUI\README.md:42                             //Master Branch Version
+UGUI\README.md:46                             //Remove items if complete
 UGUI\_markup\ugui-about.htm:3                 //Master Branch Version (not important)
 UGUI\_markup\ugui-devtools.htm:40             //Master Branch Version (not important)
 UGUI\_scripts\ugui.js:117                     //Master Branch Version (important)
