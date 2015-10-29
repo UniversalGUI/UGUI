@@ -1,0 +1,58 @@
+{
+    "name": "your_application_name",                   // "birds_with_arms" Make this URL and Filepath safe
+    "version": "0.1.0",                                // MAJOR.MINOR.PATCH more info: semver.org
+    "author": "Your Name",                             // Put your name or your team's name here, this is dynamically placed in the About section of your app
+    "description": "Short description or tagline",     // "Put human arms on pictures of birds!"
+    "keywords": [ "A collection", "of", "keywords" ],  // "birds", "arms", "novelty", "humor", "serious internet business"
+    "maintainers":[{                                   // This section is optional, but encouraged
+        "name": "Your Name",
+        "email": "username@site.com",
+        "web": "http://yoursite.com"
+    }],
+    "repository": [{                                   // If your project has an online repo
+        "type": "git",
+        "url": "git://github.com/USERNAME/REPO.git"
+    }],
+    "bugs": "https://github.com/USERNAME/REPO/issues", // The URL for users to send in bug reports
+    "main": "index.htm",                               // The default page that is displayed on launch
+    "window": {                                        // The main settings for your app
+        "title": "Your Application Name",              // "Birds with Arms!" This is dynamically used throughout your app.
+        "icon": "_img/icon32.png",                     // Your logo
+        "toolbar": true,                               // Most set this to false for distribution & true when in development
+        "resizable": true,                             // Window can be resized by user
+        "visible": true,                               // False for tray icon apps, this requires setting up and linking to the tray.js file (advanced)
+        "transparent": false,                          // If no background colors are set your app will be transparent, see NW.js wiki for details
+        "width": 900,                                  // Starting width of application
+        "height": 550,                                 // Starting height of application
+        "min_width": 400,
+        "min_height": 200,
+        "max_width": 8000,
+        "max_height": 8000,
+        "position": "center",                          // null or center or mouse, controls where window will be placed on launch
+        "always-on-top": false,                        // Whether the window should always stay on top of other windows
+        "show_in_taskbar": true,                       // Whether the window is shown in taskbar or dock
+        "fullscreen": false,                           // Whether window is fullscreen
+        "frame": true,                                 // false to make the window frameless, however you'll need to add in an exit button and window dragging (advanced)
+        "as_desktop": false                            // Show as desktop background window under X11 environment
+    },
+    "nodejs": true,                                    // UGUI requies Node support in WebKit, so this must stay set to true
+    "single-instance": true,                           // This prevents the user from opening multiple windows of your application
+    "node-main": "_scripts/node.js",                   // This is the first thing loaded. Everything in this file is ran in the Node context
+    "webkit": {                                        // Controls what features of WebKit should be on/off
+        "page-cache": false,                           // Whether to enable page cache
+        "java": false,                                 // Whether to load Java applets
+        "plugin": true                                 // Whether to load external browser plugins like Flash
+    },
+    "dependencies": {                                  // Any NPM installable modules required by your app
+    },
+    "devDependencies": {                               // Any NPM installable modules required to work on your app
+        "nw": "^0.12.3"                                // This will download a copy of NW.js inside your project so you can easily run it
+    },
+    "scripts": {                                       // Any scripts you want to define shortcuts for
+        "start": "nw ."                                // Running "npm start" will launch your app after you've done an "npm install" once
+    },
+    "licenses": [{                                     // There are many software licenses freely available. You should pick on MIT is most common.
+        "type": "GPL3, MIT, Etc.",                     // http://opensource.org/licenses
+        "url": "https://github.com/USERNAME/REPO/blob/master/LICENSE" // Link to where your license is online
+    }]
+}
