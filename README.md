@@ -1,5 +1,7 @@
 #![UGUI Logo](http://i.imgur.com/2jHRUvA.png "Universal Graphical User Interface")
 
+[![Join the chat at https://gitter.im/UniversalGUI/UGUI](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/UniversalGUI/UGUI?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ##Universal Graphical User Interface
 
 **UGUI gives a face to command line programs, and that face is HTML, CSS, & JS.**
