@@ -21,6 +21,23 @@ Download UGUI to use it for your project:
 
 * * *
 
+###Quick Start
+
+If you have Node.JS installed:
+
+1. Download latest release of UGUI
+2. Extract the UGUI folder from the zip file
+3. `npm install`
+4. `npm start`
+
+If you don't have Node.JS installed:
+
+* [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
+
+
+
+* * *
+
 ###What is UGUI?
 
 1. **Framework** for abstracting command line arguments into UI elements.
