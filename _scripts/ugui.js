@@ -4,61 +4,62 @@
 
 //## TABLE OF CONTENTS
 //
-//**A00. [Intro](#a00-intro)**  
-//**A01**. [UGUI Start](#a01-ugui-start)  
-//**A02**. [UGUI variables](#a02-ugui-variables)  
+//**A00. [Intro](#a00-intro)**
+//**A01**. [UGUI Start](#a01-ugui-start)
+//**A02**. [UGUI variables](#a02-ugui-variables)
 //
-//**B00. [Simplified Commands](#b00-simplified-commands)**  
-//**B01**. [Run CMD](#b01-run-cmd)  
-//**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced-)  
-//**B03**. [Read a file](#b03-read-a-file)  
-//**B04**. [Read contents of a folder](#b04-read-contents-of-a-folder)  
-//**B05**. [Write to file](#b05-write-to-file)  
-//**B06**. [Create a folder](#b06-create-a-folder)  
-//**B07**. [Delete a file](#b07-delete-a-file)  
-//**B08**. [Delete a folder](#b08-delete-a-folder)  
+//**B00. [Simplified Commands](#b00-simplified-commands)**
+//**B01**. [Run CMD](#b01-run-cmd)
+//**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced-)
+//**B03**. [Read a file](#b03-read-a-file)
+//**B04**. [Read contents of a folder](#b04-read-contents-of-a-folder)
+//**B05**. [Write to file](#b05-write-to-file)
+//**B06**. [Create a folder](#b06-create-a-folder)
+//**B07**. [Delete a file](#b07-delete-a-file)
+//**B08**. [Delete a folder](#b08-delete-a-folder)
+//**B09**. [Get file size](#b08-get-file-size)
 //
-//**C00. [CLI Command Processing](#c00-cli-command-processing)**  
-//**C01**. [Clicking Submit](#c01-clicking-submit)  
-//**C02**. [Building the command array](#c02-building-the-command-array)  
-//**C03**. [Build UGUI Args object](#c03-build-ugui-arg-object)  
-//**C04**. [Find key value](#c04-find-key-value)  
-//**C05**. [Parse argument](#c05-parse-argument)  
-//**C06**. [Process all <cmd> definitions](#c06-process-all-cmd-definitions)  
-//**C07**. [Convert command array to string](#c07-convert-command-array-to-string)  
-//**C08**. [Set input file path, file name, and extension](#c08-set-input-file-path-file-name-and-extension)  
-//**C09**. [Set input folder path and folder name](#c09-set-input-folder-path-and-folder-name)  
-//**c10**. [Prevent user from entering quotes in forms](#c10-prevent-user-from-entering-quotes-in-forms)  
-//**C11**. [Color processor](#c11-color-processor)  
+//**C00. [CLI Command Processing](#c00-cli-command-processing)**
+//**C01**. [Clicking Submit](#c01-clicking-submit)
+//**C02**. [Building the command array](#c02-building-the-command-array)
+//**C03**. [Build UGUI Args object](#c03-build-ugui-arg-object)
+//**C04**. [Find key value](#c04-find-key-value)
+//**C05**. [Parse argument](#c05-parse-argument)
+//**C06**. [Process all <cmd> definitions](#c06-process-all-cmd-definitions)
+//**C07**. [Convert command array to string](#c07-convert-command-array-to-string)
+//**C08**. [Set input file path, file name, and extension](#c08-set-input-file-path-file-name-and-extension)
+//**C09**. [Set input folder path and folder name](#c09-set-input-folder-path-and-folder-name)
+//**c10**. [Prevent user from entering quotes in forms](#c10-prevent-user-from-entering-quotes-in-forms)
+//**C11**. [Color processor](#c11-color-processor)
 //
-//**D00. [UI Elements](#d00-ui-elements)**  
-//**D01**. [Submit is locked until required is fulfilled](#d01-submit-locked-until-required-fulfilled)  
-//**D02**. [Replace HTML text with text from package.json](#d02-replace-html-text-with-text-from-package-json)  
-//**D03**. [Update about modal](#d03-update-about-modal)  
-//**D04**. [Navigation bar functionality](#d04-navigation-bar-functionality)  
-//**D05**. [Launch links in default browser](#d05-launch-links-in-default-browser)  
+//**D00. [UI Elements](#d00-ui-elements)**
+//**D01**. [Submit is locked until required is fulfilled](#d01-submit-locked-until-required-fulfilled)
+//**D02**. [Replace HTML text with text from package.json](#d02-replace-html-text-with-text-from-package-json)
+//**D03**. [Update about modal](#d03-update-about-modal)
+//**D04**. [Navigation bar functionality](#d04-navigation-bar-functionality)
+//**D05**. [Launch links in default browser](#d05-launch-links-in-default-browser)
 //
-//**E00. [Warnings](#e00-warnings)**  
-//**E01**. [Warn if identical data-argNames](#e01-warn-if-identical-data-argnames)  
+//**E00. [Warnings](#e00-warnings)**
+//**E01**. [Warn if identical data-argNames](#e01-warn-if-identical-data-argnames)
 //
-//**F00. [UGUI Developer Toolbar](#f00-ugui-developer-toolbar)**  
-//**F01**. [Detect if in developer environment](#f01-detect-if-in-developer-environment)  
-//**F02**. [Put all executables in dropdowns](#f02-put-all-executables-in-dropdowns)  
-//**F03**. [Real-time updating of command output in UGUI Dev Tools](#f03-real-time-updating-dev-tool-command-output)  
-//**F04**. [Put CLI help info in UGUI dev tools](#f04-put-cli-help-info-in-ugui-dev-tools)  
-//**F05**. [Swap Bootswatches](#f05-swap-bootswatches)  
-//**F06**. [Save chosen Bootswatch](#f06-save-chosen-bootswatch)  
-//**F07**. [Custom keyboard shortcuts](#f07-custom-keyboard-shortcuts)  
+//**F00. [UGUI Developer Toolbar](#f00-ugui-developer-toolbar)**
+//**F01**. [Detect if in developer environment](#f01-detect-if-in-developer-environment)
+//**F02**. [Put all executables in dropdowns](#f02-put-all-executables-in-dropdowns)
+//**F03**. [Real-time updating of command output in UGUI Dev Tools](#f03-real-time-updating-dev-tool-command-output)
+//**F04**. [Put CLI help info in UGUI dev tools](#f04-put-cli-help-info-in-ugui-dev-tools)
+//**F05**. [Swap Bootswatches](#f05-swap-bootswatches)
+//**F06**. [Save chosen Bootswatch](#f06-save-chosen-bootswatch)
+//**F07**. [Custom keyboard shortcuts](#f07-custom-keyboard-shortcuts)
 //
-//**G00. [Plugins](#g00-plugins)**  
-//**G01**. [EZDZ: Drag and drop file browse box](#g01-ezdz-drag-and-drop)  
-//**G02**. [Range slider](#g02-range-slider)  
-//**G03**. [Cut/copy/paste context menu](#g03-cut-copy-paste-context-menu)  
+//**G00. [Plugins](#g00-plugins)**
+//**G01**. [EZDZ: Drag and drop file browse box](#g01-ezdz-drag-and-drop)
+//**G02**. [Range slider](#g02-range-slider)
+//**G03**. [Cut/copy/paste context menu](#g03-cut-copy-paste-context-menu)
 //
-//**H00. [Settings](#h00-settings)**  
-//**H01**. [Save Settings](#h01-save-settings)  
-//**H02**. [Load Settings](#h02-load-settings)  
-//**H03**. [The UGUI Object](#h03-the-ugui-object)  
+//**H00. [Settings](#h00-settings)**
+//**H01**. [Save Settings](#h01-save-settings)
+//**H02**. [Load Settings](#h02-load-settings)
+//**H03**. [The UGUI Object](#h03-the-ugui-object)
 
 
 
@@ -211,7 +212,7 @@ var consoleError  = "background: #F6EEEE;" +
                     "line-height: 22px;" +
                     "box-shadow: 0px 0px 1px 1px rgba(193,176,178,0.3)";
 
-//Placing this at the start of a console output will let you style it.  
+//Placing this at the start of a console output will let you style it.
 //**Example**: `console.info(º+"Some bold text.", consoleBold);`
 var º = "%c";
 
@@ -746,10 +747,54 @@ function deleteAFolder(filePath, callback) {
 
 
 
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B09. Get a file's size
+//
+//>Though UGUI doesn't currently use this functionality anywhere
+// within itself, we thought it would be nice to offer a quick
+// and easy way to file size of a file.
+//
+//>     ugui.helpers.getFileSize("C:/path/to/folder");
 
+//
+function getFileSize(filePath, userCallback) {
+    //Validate that required argument is passed and is the correct types
+    if (!filePath || typeof(filePath) !== "string") {
+        console.info(º+"Supply a path to the file you want the size of as " +
+            "the first argument to this function.", consoleNormal);
+        console.info(º+"File path must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.getFileSize("C:/folder/pizza.jpg");', consoleCode);
+        return;
+    //If a userCallback was passed in and it isn't a function
+    } else if (userCallback && typeof(userCallback) !== "function") {
+        console.info(º+"Your userCallback must be passed as a function.", consoleNormal);
+        return;
+    };
 
+    fs.stat(filePath, function(err, stats) {
+        //If there was a problem getting the file's metadata
+        if (err) {
+            console.info(º+"There was an error attempting to retrieve file size.", consoleNormal);
+            console.warn(º+err.message, consoleError);
+            return;
+        }
+            //Create an object with common file size conversions
+        var fileSize = {
+            "bytes": stats.size,
+            "kilobytes": stats.size / 1024.0,
+            "megabytes": stats.size / 1024000.0
+        };
 
+        //If a userCallback was passed in, run it with the fileSize object as an argument
+        if (userCallback) {
+            userCallback(fileSize);
+            return;
+        }
 
+        console.log(fileSize);
+    });
+}
 
 
 
@@ -1193,8 +1238,8 @@ function patternMatchingDefinitionEngine() {
 
         //Loop through the arguments defined by this `<def>`, parse the value using the separators, and assign the correct value
         for (var i = 0; i < args.length; i++) {
-            //The separators around the current argument  
-            //`firstSeparator = ""`  
+            //The separators around the current argument
+            //`firstSeparator = ""`
             //`secondSeparator = ","`
             firstSeparator = separators[i];
             secondSeparator = separators[i + 1];
@@ -1400,7 +1445,7 @@ function setInputFolderPathName(currentElement, argName) {
         var folderName = "";
         var filePath = "";
 
-        //Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`  
+        //Either `C:\users\bob\desktop\cows.new.png` or `/home/bob/desktop/cows.new.png`
         //Use the first one, unless you are loading settings and it doesn't exist
         var fullFilePath =  fileAttributes.fullpath || fileAttributes.path;
 
@@ -2598,7 +2643,7 @@ function saveSettings(customLocation, callback) {
     //If a custom location isn't passed into the function, use the default location for the settings file
     var settingsFile = defaultLocation;
 
-    //Validate types  
+    //Validate types
     //Check if only one argument was passed into `saveSettings` and if it was a string or function.
     //Check if two arguments were passed into `saveSettings` and if the first one is a string.
     //Check if two arguments were passed into `saveSettings` and if the second one is a function
@@ -2693,7 +2738,7 @@ function loadSettings(customLocation, callback) {
     //If a custom location isn't passed into the function, use the default location for the settings file
     var settingsFile = defaultLocation;
 
-    //Validate types  
+    //Validate types
     //Check if only one argument was passed into `loadSettings` and if it was a string or function.
     //Check if two arguments were passed into `loadSettings` and if the first one is a string.
     //Check if two arguments were passed into `loadSettings` and if the second one is a function.
@@ -2831,7 +2876,7 @@ function loadSettings(customLocation, callback) {
 
             //You can never sanitize your inputs enough!
             removeTypedQuotes();
-            //Update the UGUI Developer Toolbar and unlock/lock submit buttons accordingly  
+            //Update the UGUI Developer Toolbar and unlock/lock submit buttons accordingly
             //`updateUGUIDevCommandLine` will run `buildUGUIArgObject` and `patternMatchingDefinitionEngine`
             updateUGUIDevCommandLine();
             unlockSubmit();
@@ -2888,6 +2933,7 @@ window.ugui = {
         "deleteAFile": deleteAFile,
         "deleteAFolder": deleteAFolder,
         "findKeyValue": findKeyValue,
+        "getFileSize": getFileSize,
         "loadSettings": loadSettings,
         "openDefaultBrowser": openDefaultBrowser,
         "parseArgument": parseArgument,
