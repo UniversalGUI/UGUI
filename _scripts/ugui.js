@@ -17,7 +17,7 @@
 //**B06**. [Create a folder](#b06-create-a-folder)  
 //**B07**. [Delete a file](#b07-delete-a-file)  
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
-//**B09**. [Get file size](#b08-get-file-size)  
+//**B09**. [Get file size](#b09-get-file-size)  
 //
 //**C00. [CLI Command Processing](#c00-cli-command-processing)**  
 //**C01**. [Clicking Submit](#c01-clicking-submit)  
@@ -499,7 +499,7 @@ function readAFolder(filePath, callback) {
     }
 
     //Read the directory passed in
-    fs.readdir(filePath, function (err, files) {
+    fs.readdir(filePath, function(err, files) {
         //If there were problems reading the contents of a folder, stop and report them
         if (err)  {
             console.info(º+"Unable to read contents of the folder:", consoleNormal);
@@ -507,7 +507,7 @@ function readAFolder(filePath, callback) {
             return;
         }
 
-        files.forEach( function (file) {
+        files.forEach( function(file) {
             fs.lstat(filePath + correctSlash + file, function(err, stats) {
                 //Retain an array of all files and folders
                 contentsList.push(file);
@@ -752,12 +752,22 @@ function deleteAFolder(filePath, callback) {
 //
 //>Though UGUI doesn't currently use this functionality anywhere
 // within itself, we thought it would be nice to offer a quick
-// and easy way to file size of a file.
+// and easy way to get the file size for a file.
 //
-//>     ugui.helpers.getFileSize("C:/path/to/folder");
+//>This will return an object containing the size stored as
+// bytes, kilobytes, and megabytes. You can also pass in a
+// callback that takes the file size object as an argument.
+//
+//>     ugui.helpers.getFileSize("C:/folder/pizza.jpg");
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg").bytes;
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg").kilobytes;
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg").megabytes;
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg", function(fileSize) {
+//         console.log(fileSize);
+//     });
 
 //
-function getFileSize(filePath, userCallback) {
+function getFileSize(filePath, callback) {
     //Validate that required argument is passed and is the correct types
     if (!filePath || typeof(filePath) !== "string") {
         console.info(º+"Supply a path to the file you want the size of as " +
@@ -766,35 +776,41 @@ function getFileSize(filePath, userCallback) {
         console.info(º+"Example:", consoleBold);
         console.info(º+'ugui.helpers.getFileSize("C:/folder/pizza.jpg");', consoleCode);
         return;
-    //If a userCallback was passed in and it isn't a function
-    } else if (userCallback && typeof(userCallback) !== "function") {
-        console.info(º+"Your userCallback must be passed as a function.", consoleNormal);
+    //If a callback was passed in and it isn't a function
+    } else if (callback && typeof(callback) !== "function") {
+        console.info(º+"Your callback must be passed as a function.", consoleNormal);
         return;
     };
-
-    fs.stat(filePath, function(err, stats) {
+    //Output an error if we can't access the file
+    fs.stat(filePath, function(err) {
         //If there was a problem getting the file's metadata
         if (err) {
             console.info(º+"There was an error attempting to retrieve file size.", consoleNormal);
             console.warn(º+err.message, consoleError);
             return;
         }
-            //Create an object with common file size conversions
-        var fileSize = {
-            "bytes": stats.size,
-            "kilobytes": stats.size / 1024.0,
-            "megabytes": stats.size / 1024000.0
-        };
-
-        //If a userCallback was passed in, run it with the fileSize object as an argument
-        if (userCallback) {
-            userCallback(fileSize);
-            return;
-        }
-
-        console.log(fileSize);
     });
+
+    //Get all metadata from the file
+    var stats = fs.statSync(filePath);
+
+    //Create an object with common file size conversions
+    fileSize = {
+        "bytes": stats.size,
+        "kilobytes": stats.size / 1024.0,
+        "megabytes": stats.size / 1048576.0
+    };
+
+    //If a callback was passed in, run it with the fileSize object as an argument
+    if (callback) {
+        callback(fileSize);
+        return;
+    }
+
+    return fileSize;
 }
+
+
 
 
 
@@ -2680,7 +2696,7 @@ function saveSettings(customLocation, callback) {
     var settingsJSON = JSON.stringify(ugui.args);
 
     //Save the `ugui.args` object to the `uguisettings.json` file
-    fs.writeFile(settingsFile, settingsJSON, function (err) {
+    fs.writeFile(settingsFile, settingsJSON, function(err) {
         if (err) {
             console.warn(º+"There was an error in attempting to save to the location:", consoleNormal);
             console.warn(º+settingsFile, consoleCode);
