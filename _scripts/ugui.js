@@ -762,8 +762,20 @@ function deleteAFolder(filePath, callback) {
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").bytes;
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").kilobytes;
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").megabytes;
-//     ugui.helpers.getFileSize("C:/folder/pizza.jpg", function(fileSize) {
-//         console.log(fileSize);
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg", function(fileSize,err) {
+//         if (err) {
+//             $("body").prepend(
+//               '<div class="alert alert-danger alert-dismissible" role="alert">' +
+//                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+//                     '<span aria-hidden="true">&times;</span>' +
+//                 '</button>' +
+//                 '<h4>Error Accessing File</h4>' +
+//                 '<p>There was an error when trying to get the file size of your file.</p>' +
+//               '</div>'
+//             );
+//         } else {
+//             $("#output").html("Input file is " + fileSize.kilobytes + "KB");
+//         }
 //     });
 
 //
@@ -790,12 +802,14 @@ function getFileSize(filePath, callback) {
     //If a callback was passed in
     if (callback) {
 
-        //Output an error if we can't access the file
+        //Get the metadata for the file
         fs.stat(filePath, function(err, stats) {
             //If there was a problem getting the file's metadata
             if (err) {
+                //output an error to the console, but keep running
                 console.info(º+infoMessage, consoleNormal);
                 console.warn(º+err.message, consoleError);
+            //If there wasn't an error
             } else {
                 //Create an object with common file size conversions
                 fileSize = {
@@ -804,15 +818,17 @@ function getFileSize(filePath, callback) {
                     "megabytes": stats.size / 1048576.0
                 };
             }
-
+            //Run the callback with the filesizes if it worked, or an error if it didn't
             callback(fileSize,err);
             return;
         });
+    //If a callback wasn't passed in
     } else {
-        //Output an error if we can't access the file
+        //Check if we can access the file
         fs.stat(filePath, function(err) {
             //If there was a problem getting the file's metadata
             if (err) {
+                //console log an error and quit
                 console.info(º+infoMessage, consoleNormal);
                 console.warn(º+err.message, consoleError);
                 return;
@@ -829,6 +845,7 @@ function getFileSize(filePath, callback) {
             "megabytes": stats.size / 1048576.0
         };
 
+        //Return the fileSize object
         return fileSize;
     }
 
