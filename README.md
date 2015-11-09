@@ -63,7 +63,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 **Phase 1: The library and framwork.**
 
-* V1.3 Clean up UGUI API
+* V1.3
  * Change sync for readAFolder
  * Check for Updates
 * V1.4 Multi-File import
