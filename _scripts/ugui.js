@@ -759,8 +759,20 @@ function deleteAFolder(filePath, callback) {
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").bytes;
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").kilobytes;
 //     ugui.helpers.getFileSize("C:/folder/pizza.jpg").megabytes;
-//     ugui.helpers.getFileSize("C:/folder/pizza.jpg", function(fileSize) {
-//         console.log(fileSize);
+//     ugui.helpers.getFileSize("C:/folder/pizza.jpg", function(fileSize,err) {
+//         if (err) {
+//             $("body").prepend(
+//               '<div class="alert alert-danger alert-dismissible" role="alert">' +
+//                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+//                     '<span aria-hidden="true">&times;</span>' +
+//                 '</button>' +
+//                 '<h4>Error Accessing File</h4>' +
+//                 '<p>There was an error when trying to get the file size of your file.</p>' +
+//               '</div>'
+//             );
+//         } else {
+//             $("#output").html("Input file is " + fileSize.kilobytes + "KB");
+//         }
 //     });
 
 //
@@ -778,34 +790,70 @@ function getFileSize(filePath, callback) {
         console.info(º+"Your callback must be passed as a function.", consoleNormal);
         return;
     };
-    //Output an error if we can't access the file
-    fs.stat(filePath, function(err) {
-        //If there was a problem getting the file's metadata
-        if (err) {
-            console.info(º+"There was an error attempting to retrieve file size.", consoleNormal);
-            console.warn(º+err.message, consoleError);
-            return;
-        }
-    });
 
-    //Get all metadata from the file
-    var stats = fs.statSync(filePath);
+    //Set up the info message for both possibilities below
+    var infoMessage = "There was an error attempting to retrieve file size.";
+    //Declare the fileSize object (to be set later)
+    var fileSize = {};
 
-    //Create an object with common file size conversions
-    fileSize = {
-        "bytes": stats.size,
-        "kilobytes": stats.size / 1024.0,
-        "megabytes": stats.size / 1048576.0
-    };
-
-    //If a callback was passed in, run it with the fileSize object as an argument
+    //If a callback was passed in
     if (callback) {
-        callback(fileSize);
-        return;
+
+        //Get the metadata for the file
+        fs.stat(filePath, function(err, stats) {
+            //If there was a problem getting the file's metadata
+            if (err) {
+                //output an error to the console, but keep running
+                console.info(º+infoMessage, consoleNormal);
+                console.warn(º+err.message, consoleError);
+            //If there wasn't an error
+            } else {
+                //Create an object with common file size conversions
+                fileSize = {
+                    "bytes": stats.size,
+                    "kilobytes": stats.size / 1024.0,
+                    "megabytes": stats.size / 1048576.0
+                };
+            }
+            //Run the callback with the filesizes if it worked, or an error if it didn't
+            callback(fileSize,err);
+            return;
+        });
+    //If a callback wasn't passed in
+    } else {
+        //Check if we can access the file
+        fs.stat(filePath, function(err) {
+            //If there was a problem getting the file's metadata
+            if (err) {
+                //console log an error and quit
+                console.info(º+infoMessage, consoleNormal);
+                console.warn(º+err.message, consoleError);
+                return;
+            }
+        });
+
+        //Get all metadata from the file
+        var stats = fs.statSync(filePath);
+
+        //Create an object with common file size conversions
+        fileSize = {
+            "bytes": stats.size,
+            "kilobytes": stats.size / 1024.0,
+            "megabytes": stats.size / 1048576.0
+        };
+
+        //Return the fileSize object
+        return fileSize;
     }
 
-    return fileSize;
 }
+
+
+
+
+
+
+
 
 
 

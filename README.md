@@ -1,6 +1,7 @@
 #![UGUI Logo](http://i.imgur.com/2jHRUvA.png "Universal Graphical User Interface")
 
-[![Join the chat at https://gitter.im/UniversalGUI/UGUI](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/UniversalGUI/UGUI?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/UniversalGUI/UGUI](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/UniversalGUI/UGUI?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Community forums at ugui.reddit.com](http://ugui.io/_img/badge-reddit.svg)](http://reddit.com/r/UGUI)
+
 
 ##Universal Graphical User Interface
 
@@ -62,7 +63,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 **Phase 1: The library and framwork.**
 
-* V1.3 Clean up UGUI API
+* V1.3
  * Change sync for readAFolder
  * Check for Updates
 * V1.4 Multi-File import
