@@ -1,5 +1,6 @@
 {
     "name": "your_application_name",                   // "birds_with_arms" Make this URL and Filepath safe
+    "homepage": "https://USERNAME.github.io/REPO",     // Website for your application. Google "GitHub Pages" for free hosting.
     "version": "0.1.0",                                // MAJOR.MINOR.PATCH more info: semver.org
     "author": "Your Name",                             // Put your name or your team's name here, this is dynamically placed in the About section of your app
     "description": "Short description or tagline",     // "Put human arms on pictures of birds!"

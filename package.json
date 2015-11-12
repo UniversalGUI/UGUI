@@ -1,5 +1,6 @@
 {
     "name": "your_application_name",
+    "homepage": "https://USERNAME.github.io/REPO",
     "version": "0.1.0",
     "author": "Your Name",
     "description": "Short description or tagline",
