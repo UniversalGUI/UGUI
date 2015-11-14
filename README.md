@@ -65,7 +65,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 * V1.3
  * ~~Change sync for readAFolder~~
- * Check for Updates
+ * Check for Updates (started)
 * V1.4 Multi-File import
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.6 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
