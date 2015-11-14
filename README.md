@@ -64,7 +64,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 **Phase 1: The library and framwork.**
 
 * V1.3
- * Change sync for readAFolder
+ * ~~Change sync for readAFolder~~
  * Check for Updates
 * V1.4 Multi-File import
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
