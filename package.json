@@ -7,7 +7,7 @@
     "keywords": [ "A collection", "of", "keywords" ],
     "maintainers":[{
         "name": "Your Name",
-        "email": "username@site.com",
+        "email": "username@users.noreply.github.com",
         "web": "http://yoursite.com"
     }],
     "repository": [{
@@ -15,6 +15,7 @@
         "url": "git://github.com/USERNAME/REPO.git"
     }],
     "bugs": "https://github.com/USERNAME/REPO/issues",
+    "license": "MIT",
     "main": "index.htm",
     "window": {
         "title": "Your Application Name",
@@ -51,9 +52,5 @@
     },
     "scripts": {
         "start": "nw ."
-    },
-    "licenses": [{
-        "type": "GPL3, MIT, Etc.",
-        "url": "https://github.com/USERNAME/REPO/blob/master/LICENSE"
-    }]
+    }
 }

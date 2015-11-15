@@ -1,4 +1,5 @@
 {
+    //PROJECT AND AUTHOR INFORMATION
     "name": "your_application_name",                   // "birds_with_arms" Make this URL and Filepath safe
     "homepage": "https://USERNAME.github.io/REPO",     // Website for your application. Google "GitHub Pages" for free hosting.
     "version": "0.1.0",                                // MAJOR.MINOR.PATCH more info: semver.org
@@ -7,7 +8,7 @@
     "keywords": [ "A collection", "of", "keywords" ],  // "birds", "arms", "novelty", "humor", "serious internet business"
     "maintainers":[{                                   // This section is optional, but encouraged
         "name": "Your Name",
-        "email": "username@site.com",
+        "email": "USERNAME@users.noreply.github.com",  // You can use any email address you want, or this anonymized one based on your GitHub username
         "web": "http://yoursite.com"
     }],
     "repository": [{                                   // If your project has an online repo
@@ -15,6 +16,9 @@
         "url": "git://github.com/USERNAME/REPO.git"
     }],
     "bugs": "https://github.com/USERNAME/REPO/issues", // The URL for users to send in bug reports
+    "license": "MIT",                                  // There are many software licenses freely available. MIT is the most common. opensource.org/licenses
+
+    //YOUR APP SETTINGS
     "main": "index.htm",                               // The default page that is displayed on launch
     "window": {                                        // The main settings for your app
         "title": "Your Application Name",              // "Birds with Arms!" This is dynamically used throughout your app.
@@ -44,6 +48,8 @@
         "java": false,                                 // Whether to load Java applets
         "plugin": true                                 // Whether to load external browser plugins like Flash
     },
+
+    //NODE.JS SETTINGS
     "dependencies": {                                  // Any NPM installable modules required by your app
     },
     "devDependencies": {                               // Any NPM installable modules required to work on your app
@@ -51,9 +57,5 @@
     },
     "scripts": {                                       // Any scripts you want to define shortcuts for
         "start": "nw ."                                // Running "npm start" will launch your app after you've done an "npm install" once
-    },
-    "licenses": [{                                     // There are many software licenses freely available. You should pick on MIT is most common.
-        "type": "GPL3, MIT, Etc.",                     // http://opensource.org/licenses
-        "url": "https://github.com/USERNAME/REPO/blob/master/LICENSE" // Link to where your license is online
-    }]
+    }
 }
