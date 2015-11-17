@@ -18,7 +18,7 @@ Download UGUI to use it for your project:
 * [Version 1.2.0](https://github.com/UniversalGUI/UGUI/releases/download/v1.2.0/ugui_1.2.0.zip)
 * [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
 * [API Documentation](http://ugui.io/api)
-* [Annotated Source Code](http://ugui.io/dl) - Easily the best documented source code in existence!
+* [Annotated Source Code](http://ugui.io/docs/latest) - Easily the best documented source code in existence!
 
 * * *
 
@@ -59,7 +59,7 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version of Master Branch:** V1.2.0
+**Current Version of Master Branch:** V1.2.0.a
 
 **Phase 1: The library and framwork.**
 
