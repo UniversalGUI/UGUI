@@ -15,7 +15,7 @@ Create your own cross-platform desktop applications in minutes using UGUI.
 
 Download UGUI to use it for your project:
 
-* [Version 1.2.0](https://github.com/UniversalGUI/UGUI/releases/download/v1.2.0/ugui_1.2.0.zip)
+* [Version 1.3.0](https://github.com/UniversalGUI/UGUI/releases/download/v1.3.0/ugui_1.3.0.zip)
 * [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
 * [API Documentation](http://ugui.io/api)
 * [Annotated Source Code](http://ugui.io/docs/latest) - Easily the best documented source code in existence!
@@ -59,13 +59,10 @@ Our goal is to allow anyone, even those with no prior coding knowledge, to creat
 
 ###Project Roadmap
 
-**Current Version of Master Branch:** V1.2.0.a
+**Current Version of Master Branch:** V1.3.0.a
 
 **Phase 1: The library and framwork.**
 
-* V1.3
- * ~~Change sync for readAFolder~~
- * Check for Updates (started)
 * V1.4 Multi-File import
 * V1.5 Add some type of JSHint-like library to UGUI Dev Tools to inform developers about syntax errors.
 * V1.6 NW.js plans to implement a native spellchecker in version 13, if that doesn't occur, implement one into UGUI.
