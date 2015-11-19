@@ -17,7 +17,7 @@
 //**B06**. [Create a folder](#b06-create-a-folder)  
 //**B07**. [Delete a file](#b07-delete-a-file)  
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
-//**B09**. [Get file size](#b09-get-file-size)  
+//**B09**. [Get file size](#b09-get-a-file-s-size)  
 //
 //**C00. [CLI Command Processing](#c00-cli-command-processing)**  
 //**C01**. [Clicking Submit](#c01-clicking-submit)  
