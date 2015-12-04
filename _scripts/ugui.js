@@ -2926,7 +2926,8 @@ function loadSettings(customLocation, callback) {
         console.info(º+'ugui.helpers.loadSettings();', consoleCode);
         console.info(º+"By passing in nothing, UGUI will use the default load location of:", consoleNormal);
         console.info(º+'"' + defaultLocation + '"', consoleCode);
-        console.info(º+"And upon completion of saving the settings, nothing will be triggered.", consoleNormal);
+        console.info(º+"And upon completion of loading the settings, UI elements on the " +
+            "page will be updated, as will the UGUI Args Object.", consoleNormal);
         return;
     //Check if `customLocation` is exists and is a string
     } else if ( customLocation && typeof(customLocation) === "string") {
