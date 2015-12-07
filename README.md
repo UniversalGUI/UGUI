@@ -78,6 +78,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
  * [ ] Design: In progress
  * [ ] Homepage: In progress
  * [x] [API Documentation Page](http://ugui.io/api)
+ * [ ] Change API documentation to use [tocify](https://github.com/gfranko/jquery.tocify.js) instead of toc
  * [x] [Annotated Source Code](http://ugui.io/dl)
  * [ ] Tutorials Page: Not started
  * [ ] Showcase of applications made with UGUI: Not started
