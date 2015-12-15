@@ -127,14 +127,15 @@ var uguiVersion = "1.3.0";
 //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 //### A02. UGUI Variables
 //
-//>Listing of Variables used throughout this library.
+//>Listing of variables used throughout this library.
 
 //All arguments sent in the command
 var allArgElements = $("cmd arg");
 
+//This is used by for loops throughout this file
 var index = 0;
 
-//All executables
+//All executables gathered from the `<cmd>` blocks
 var executable = [];
 for (index = 0; index < $("cmd").length; index++) {
     var currentCommandBlock = $("cmd")[index];
@@ -147,7 +148,7 @@ for (index = 0; index < executable.length; index++) {
     argsForm.push( $("#" + executable[index] + " *[data-argName]" ) );
 }
 
-//Get all text fields where a quote could be entered
+//Get all text fields where a single or double quoatation mark could be entered
 var textFields = $( "textarea[data-argName], input[data-argName][type=text]" ).toArray();
 
 //Allow access to the filesystem
