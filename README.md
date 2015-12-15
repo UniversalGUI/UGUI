@@ -19,6 +19,7 @@ Download UGUI to use it for your project:
 * [Tutorial - Getting Started with UGUI](http://ugui.io/tutorials/getting-started.htm)
 * [API Documentation](http://ugui.io/api)
 * [Annotated Source Code](http://ugui.io/docs/latest) - Easily the best documented source code in existence!
+* [Annotated package.json Sample File](http://ugui.io/package)
 
 * * *
 
