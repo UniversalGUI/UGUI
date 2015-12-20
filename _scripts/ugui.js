@@ -18,6 +18,7 @@
 //**B07**. [Delete a file](#b07-delete-a-file)  
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
 //**B09**. [Get file size](#b09-get-a-file-s-size)  
+//**B10**. [Set zoom percent](#b10-set-zoom-percent)  
 //
 //**C00. [CLI Command Processing](#c00-cli-command-processing)**  
 //**C01**. [Clicking Submit](#c01-clicking-submit)  
@@ -848,6 +849,71 @@ function getFileSize(filePath, callback) {
         return fileSize;
     }
 
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B10. Set zoom percent
+//
+//>Since setting the zoom level is a common and expected task of
+// browsers, and it isn't very intuitive or easy in NW.js, we
+// provide a simple helper function.
+//
+//>     ugui.helpers.setZoomPercent(100); //default size
+//     ugui.helpers.setZoomPercent(200); //double default size
+//     ugui.helpers.setZoomPercent(50);  //half of default size
+//
+//>If you'd like to display the newly set zoom level percent on
+// the page, you can pass in `true` as the second argument.
+//
+//>     ugui.helpers.setZoomPercent(110, true);
+
+//
+function setZoomPercent(percent, visible) {
+    //Validate that required argument is passed and is the correct types
+    if (percent && typeof(percent) !== "number") {
+        console.info(º+"You must pass in a positive interger to represent" +
+            "the zoom level percent.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.setZoomPercent(200); //200% of default size', consoleCode);
+        console.info(º+"Or leave it blank to reset back to 100% (default size)", consoleNormal)
+        return;
+    } else if (visible && typeof(visible) !== "boolean") {
+        console.info(º+"You must pass in true or false to set the visibility" +
+            "of the zoom level percent on the page.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.setZoomPercent(110, true);', consoleCode);
+        return;
+    }
+
+    //Set the zoom percent to the number that was passed in or default to 100%
+    var zoomPercent = percent || 100;
+    var displayPercentOnPage = visible || false;
+
+    //Allow access to the window settings
+    var win = require("nw.gui").Window.get();
+
+    //zoom level expects 0 for default (100%) and ~2.224 for 200%
+    //Negative numbers reduce the size. This isn't very intuitive
+    //though so we do some math to allow easier numbers.
+    win.zoomLevel = Math.log(zoomPercent/100) / Math.log(1.2);
+
+    //If `true` was passed in
+    if (displayPercentOnPage) {
+        //Define a function to hide the Zoom Level percent that appears on screen
+        function hideZoomLevel() {
+            $('.ugui-zoom-level').remove();
+        }
+        //Create a div on the page to display the current zoom percent
+        $("body").append('<div class="ugui-zoom-level">' + zoomPercent + '%</div>');
+        //After one second remove it from the page
+        setTimeout(hideZoomLevel, 1000);
+    }
 }
 
 
@@ -3112,6 +3178,7 @@ window.ugui = {
         "runcmd": runcmd,
         "runcmdAdvanced": runcmdAdvanced,
         "saveSettings": saveSettings,
+        "setZoomPercent": setZoomPercent,
         "sliderHandleSolid": sliderHandleSolid,
         "sliderHandleGradient": sliderHandleGradient,
         "sliderHandleColor": sliderHandleColor,
