@@ -1071,7 +1071,7 @@ function buildUGUIArgObject() {
     //Make an array containing every element on the page with an attribute of `data-argName`
     var cmdArgs = $("*[data-argName]");
 
-    //Cycle through all elements with a `data-argName` in `<form id="currentexecutable">`
+    //Cycle through all elements with a `data-argName`
     for (index = 0; index < cmdArgs.length; index++) {
 
         //Get `bob` from `<input data-argName="bob" value="--kitten" />`
@@ -1091,16 +1091,22 @@ function buildUGUIArgObject() {
             argType = "range";
         //See if the element is an item in one of Bootstrap's fake dropdowns
         } else if ( $(cmdArgs[index]).parent().parent().hasClass("dropdown-menu") ) {
-            //Manually set the type to `range` for range slider elements
+            //Manually set the type to `dropdown`
             argType = "dropdown";
+        //Check to see if input is a folder browser
         } else if ( $(cmdArgs[index]).attr("nwdirectory") ) {
-            //Manually set the type if it's a directory browser
+            //Manually set the type if it's a folder browser
             argType = "folder";
+        //If a select tag was used (traditional dropdown)
         } else if (argTag == "select") {
-            //Manually set the type if it's a traditional dropdown
+            //Manually set the type to match the tag
             argType = "select";
+        //Unlike input tags, textareas don't have a type attribute
+        } else if (argTag === "textarea") {
+            //Manually set the type to match the tag
+            argType = "textarea";
         } else {
-            //Get `checkbox` from `<input data-argName="bob" type="checkbox" />`
+            //Catch-all. Get `checkbox` from `<input data-argName="bob" type="checkbox" />`
             argType = $(cmdArgs[index]).attr("type");
         }
 
@@ -1139,14 +1145,6 @@ function buildUGUIArgObject() {
             } else {
                 window.ugui.args[argName].htmlticked = false;
             }
-        }
-
-        if (argTag === "textarea") {
-            window.ugui.args[argName] = {
-                "value": argValue,
-                "htmltag": argTag,
-                "htmltype": "textarea"
-            };
         }
 
     }
