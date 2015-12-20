@@ -1431,7 +1431,7 @@ function convertCommandArraytoString( cmdArray ) {
     //Create and empty variable
     var cmdString = "";
 
-    //`cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\Users\jwilcurt\Desktop\IICL Stuff.new.png""]`
+    //     cmdArray = ["cli_filename", "", "", "-nyan", "--speed 1mph", "", "", "-pear", "--potato", "", "", "", "-m "Text"", ""C:\kittens.new.png""]
     for (index = 0; index < cmdArray.length; index++) {
         //Make sure the executable isn't preceded with a space
         if (index === 0) {
