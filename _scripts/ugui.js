@@ -57,6 +57,7 @@
 //**G01**. [EZDZ: Drag and drop file browse box](#g01-ezdz-drag-and-drop)  
 //**G02**. [Range slider](#g02-range-slider)  
 //**G03**. [Cut/copy/paste context menu](#g03-cut-copy-paste-context-menu)  
+//**G04**. [Open New Window](#g04-open-new-window)  
 //
 //**H00. [Settings](#h00-settings)**  
 //**H01**. [Save Settings](#h01-save-settings)  
@@ -117,7 +118,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.3.0";
+var uguiVersion = "1.3.0a";
 
 
 
@@ -2813,6 +2814,145 @@ cutCopyPasteMenu();
 
 
 
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### G04. Open New Window
+//
+//>Simple means of opening a new Window. It defaults to the
+// settings you've placed in the package.json `window` object.
+
+//
+function openNewWindow(url, parameters) {
+    //Validate that required argument is passed
+    if (!url) {
+        console.info(º+"Supply a path to the file you want to load as " +
+            "the url for the new Window.", consoleNormal);
+        return;
+    //Validate types
+    } else if (typeof(url) !== "string") {
+        console.info(º+"URL must be passed as a string.", consoleNormal);
+        return;
+    }
+
+    //Check if the user is using custom parameters
+    if (parameters) {
+        //Validate types
+        if (Object.prototype.toString.call(parameters) !== "[object Object]") {
+            console.info(º+"Your parameters must be passed as an object.", consoleNormal);
+            return;
+        } else if (parameters.title && typeof(parameters.title) !== "string") {
+            console.info(º+"Title for your window must be passed as a string. Example:", consoleNormal);
+            console.info(º+'"My App"', consoleCode);
+            return;
+        } else if (parameters.icon && typeof(parameters.icon) !== "string") {
+            console.info(º+"Icon for your window must be passed as a string. Example:", consoleNormal);
+            console.info(º+'"_img/icon32.png"', consoleCode);
+            return;
+        } else if (parameters.toolbar && typeof(parameters.toolbar) !== "boolean") {
+            console.info(º+"Toolbar visibility for your window must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'true', consoleCode);
+            return;
+        } else if (parameters.resizable && typeof(parameters.resizable) !== "boolean") {
+            console.info(º+"Window resizability must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'true', consoleCode);
+            return;
+        } else if (parameters.visible && typeof(parameters.visible) !== "boolean") {
+            console.info(º+"Window visibility must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'true', consoleCode);
+            return;
+        } else if (parameters.transparent && typeof(parameters.transparent) !== "boolean") {
+            console.info(º+"Window transparency must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'false', consoleCode);
+            return;
+        } else if (parameters.width && typeof(parameters.width) !== "number") {
+            console.info(º+"Width for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'900', consoleCode);
+            return;
+        } else if (parameters.height && typeof(parameters.height) !== "number") {
+            console.info(º+"Height for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'500', consoleCode);
+            return;
+        } else if (parameters.min_width && typeof(parameters.min_width) !== "number") {
+            console.info(º+"Minimum width for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'400', consoleCode);
+            return;
+        } else if (parameters.min_height && typeof(parameters.min_height) !== "number") {
+            console.info(º+"Minimum height for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'200', consoleCode);
+            return;
+        } else if (parameters.max_width && typeof(parameters.max_width) !== "number") {
+            console.info(º+"Maximum width for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'8000', consoleCode);
+            return;
+        } else if (parameters.max_height && typeof(parameters.max_height) !== "number") {
+            console.info(º+"Maximum height for your window must be passed as a number. Example:", consoleNormal);
+            console.info(º+'8000', consoleCode);
+            return;
+        } else if (parameters.position && typeof(parameters.position) !== "string") {
+            console.info(º+"Position of your window must be passed as a string. Example:", consoleNormal);
+            console.info(º+'"center"', consoleCode);
+            return;
+        } else if (parameters.always-on-top && typeof(parameters["always-on-top"]) !== "boolean") {
+            console.info(º+"Setting your window to Always On Top must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'false', consoleCode);
+            return;
+        } else if (parameters.show_in_taskbar && typeof(parameters.show_in_taskbar) !== "boolean") {
+            console.info(º+"Show window in taskbar must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'true', consoleCode);
+            return;
+        } else if (parameters.fullscreen && typeof(parameters.fullscreen) !== "boolean") {
+            console.info(º+"Fullscreen for your window must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'false', consoleCode);
+            return;
+        } else if (parameters.frame && typeof(parameters.frame) !== "boolean") {
+            console.info(º+"Window frame must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'true', consoleCode);
+            return;
+        } else if (parameters.as_desktop && typeof(parameters.as_desktop) !== "boolean") {
+            console.info(º+"Show window as desktop must be passed as a boolean. Example:", consoleNormal);
+            console.info(º+'false', consoleCode);
+            return;
+        }
+    //If parameters were not passed in
+    } else {
+        //create an empty object
+        var parameters = {};
+    }
+
+    var gui = require("nw.gui");
+    var defaults = gui.App.manifest.window;
+
+    //Use the parameters passed in, fallback to the options in package.json, and if those don't exist use UGUI defaults
+    var newWindowOptions = {
+        "title"           : parameters.title            || defaults.title            || "New Window",
+        "icon"            : parameters.icon             || defaults.icon             || "_img/icon32.png",
+        "toolbar"         : parameters.toolbar          || defaults.toolbar          || true,
+        "resizable"       : parameters.resizable        || defaults.resizable        || true,
+        "visible"         : parameters.visible          || defaults.visible          || true,
+        "transparent"     : parameters.transparent      || defaults.transparent      || false,
+        "width"           : parameters.width            || defaults.width            || 900,
+        "height"          : parameters.height           || defaults.height           || 550,
+        "min_width"       : parameters.min_width        || defaults.min_width        || 400,
+        "min_height"      : parameters.min_height       || defaults.min_height       || 200,
+        "max_width"       : parameters.max_width        || defaults.max_width        || 8000,
+        "max_height"      : parameters.max_height       || defaults.max_height       || 8000,
+        "position"        : parameters.position         || defaults.position         || "center",
+        "always-on-top"   : parameters["always-on-top"] || defaults["always-on-top"] || false,
+        "show_in_taskbar" : parameters.show_in_taskbar  || defaults.show_in_taskbar  || true,
+        "fullscreen"      : parameters.fullscreen       || defaults.fullscreen       || false,
+        "frame"           : parameters.frame            || defaults.frame            || true,
+        "as_desktop"      : parameters.as_desktop       || defaults.as_desktop       || false
+    };
+
+    //Launch the new window
+    gui.Window.open(url, newWindowOptions);
+}
+
+
+
+
+
+
+
 
 
 
@@ -3168,6 +3308,7 @@ window.ugui = {
         "getFileSize": getFileSize,
         "loadSettings": loadSettings,
         "openDefaultBrowser": openDefaultBrowser,
+        "openNewWindow": openNewWindow,
         "parseArgument": parseArgument,
         "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine,
         "readAFile": readAFile,
