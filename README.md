@@ -129,6 +129,7 @@ The repo for the Phase 2 website is here: [github.com/UniversalGUI/UniversalGUI.
 * [Stephan Raab](http://github.com/StephanRaab) - UGUI Website Designer
 * [Grahammer](http://github.com/GWatt) - UGUI Engine Architecture Consultant
 * [Boyma Fahnbulleh](http://github.com/boymanjor) - Beta, Realworld, and OSX testing
+* [Shannon McKinney](https://github.com/smckinney1) - UGUI Homepage Developer
 
 **Technology**
 
