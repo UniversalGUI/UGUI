@@ -2891,7 +2891,7 @@ function openNewWindow(url, parameters) {
             console.info(º+"Position of your window must be passed as a string. Example:", consoleNormal);
             console.info(º+'"center"', consoleCode);
             return;
-        } else if (parameters.always-on-top && typeof(parameters["always-on-top"]) !== "boolean") {
+        } else if (parameters["always-on-top"] && typeof(parameters["always-on-top"]) !== "boolean") {
             console.info(º+"Setting your window to Always On Top must be passed as a boolean. Example:", consoleNormal);
             console.info(º+'false', consoleCode);
             return;
