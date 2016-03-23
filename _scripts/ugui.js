@@ -459,23 +459,24 @@ function readAFile(filePathAndName) {
 //### B04. Read contents of a folder
 //
 //>Supply a path to a folder as a string and UGUI will return an
-// object with each file and folder as a sub-object. Each item
-// returned will have an "isFolder" property to tell if it's a
-// file or a folder, and with the exception of some system
-// files, they should all have a file size as well.
+// array with each file and folder as an object. Each item
+// returned will have a "name" and "isFolder" property to tell
+// if it's a file or a folder, and with the exception of some
+// system files, they should all have a file size as well.
 //
-//>To make things easier, we also return an array that lists all
-// items returned.
+//>     var markupContents = ugui.helpers.readAFolder("_markup");
 //
-//>     var mediaContents = ugui.helpers.readAFolder("_media");
+//>You can access the content like so:
 //
-//>Since you can't use spaces or dots in dot notation, folders
-// and files like "Hello World" and "file.txt" can't be
-// accessed by doing `mediaContents.Hello World.size` or
-// `mediaContents.file.txt.isFolder`. So to access those use:
+//>     markupContents[0].name;     // returns string
+//     markupContents[0].size;     // retunrs number
+//     markupContents[0].isFolder; // returns boolean
 //
-//>     mediaContents["Hello World"].size
-//     mediaContents["file.txt"].isFolder
+//>You can also use a callback:
+//
+//>     ugui.helpers.readAFolder("_markup", function (contents) {
+//         console.log(contents)
+//     })
 
 //
 function readAFolder(filePath, callback) {
