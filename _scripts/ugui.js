@@ -119,7 +119,7 @@ function waitUGUI() {
 function runUGUI() {
 
 //This is the one place where the UGUI version is declared
-var uguiVersion = "1.3.0a";
+var uguiVersion = "2.0.0a";
 
 
 
