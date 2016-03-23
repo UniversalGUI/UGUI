@@ -19,6 +19,7 @@
 //**B08**. [Delete a folder](#b08-delete-a-folder)  
 //**B09**. [Get file size](#b09-get-a-file-s-size)  
 //**B10**. [Set zoom percent](#b10-set-zoom-percent)  
+//**B11**. [Open Folder](#b11-open-folder)  
 //
 //**C00. [CLI Command Processing](#c00-cli-command-processing)**  
 //**C01**. [Clicking Submit](#c01-clicking-submit)  
@@ -915,6 +916,53 @@ function setZoomPercent(percent, visible) {
         $("body").append('<div class="ugui-zoom-level">' + zoomPercent + '%</div>');
         //After one second remove it from the page
         setTimeout(hideZoomLevel, 1000);
+    }
+}
+
+
+
+
+
+
+
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//### B11. Open Folder
+//
+//>This will oepn the passed in folder in Explorer, Nautilus, or
+// Finder depending on your OS.
+//
+//>     ugui.helpers.openFolder('C:\path\to\folder');
+//     ugui.helpers.openFolder('..\folder');
+//     ugui.helpers.openFolder('/path/to/folder');
+
+//
+function openFolder(folderPath) {
+    //Validate that required argument is passed and is the correct types
+    if (!folderPath || typeof(folderPath) !== "string") {
+        console.info(º+"Supply a path to the folder you want to open as " +
+            "the first argument to this function.", consoleNormal);
+        console.info(º+"Folder path must be passed as a string.", consoleNormal);
+        console.info(º+"Example:", consoleBold);
+        console.info(º+'ugui.helpers.open("C:\\folder");', consoleCode);
+        return;
+    }
+
+    var os = process.platform;
+    var winPath = folderPath.replace('/','\\');
+    var nonWinPath = folderPath.replace('\\','/');
+
+    //If you're on Windows
+    if (os == "win32") {
+        //Open Explorer
+        runcmd('explorer ' + winPath);
+    //If on OSX
+    } else if (os == "darwin") {
+        //Open Finder
+        runcmd('open ' + nonWinPath);
+    //If on Ubuntu
+    } else {
+        //Open Nautilus
+        runcmd('xdg-open ' + nonWinPath);
     }
 }
 
@@ -3309,6 +3357,7 @@ window.ugui = {
         "getFileSize": getFileSize,
         "loadSettings": loadSettings,
         "openDefaultBrowser": openDefaultBrowser,
+        "openFolder": openFolder,
         "openNewWindow": openNewWindow,
         "parseArgument": parseArgument,
         "patternMatchingDefinitionEngine": patternMatchingDefinitionEngine,
