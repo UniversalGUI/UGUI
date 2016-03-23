@@ -12,7 +12,7 @@
 //**B01**. [Run CMD](#b01-run-cmd)  
 //**B02**. [Run CMD (Advanced)](#b02-run-cmd-advanced-)  
 //**B03**. [Read a file](#b03-read-a-file)  
-//**B04**. [Read contents of a folder](#b04-read-contents-of-a-folder)  
+//**B04**. [Read a folder](#b04-read-contents-of-a-folder)  
 //**B05**. [Write to file](#b05-write-to-file)  
 //**B06**. [Create a folder](#b06-create-a-folder)  
 //**B07**. [Delete a file](#b07-delete-a-file)  
@@ -509,7 +509,7 @@ function readAFolder(filePath, callback) {
     });
 
     //Create an object with an array in it
-    var contents = {};
+    var contents = [];
     //Store the contents of the passed in directory as an array
     var contentsList = fs.readdirSync(filePath);
 
@@ -518,32 +518,34 @@ function readAFolder(filePath, callback) {
 
         //Check if it's a folder
         if (stats.isDirectory()) {
-            contents[file] = {
+            contents.push({
+                "name": file,
                 "isFolder": true,
                 "size": 0
-            }
+            });
         //Check if it has a file size
         } else if (file !== "undefined") {
-            contents[file] = {
+            contents.push({
+                "name": file,
                 "isFolder": false,
                 "size": stats.size
-            }
+            });
         //Catch-all
         } else {
-            contents[file] = {
+            contents.push({
+                "name": file,
                 "isFolder": false
-            }
+            });
         }
     });
 
     //If a callback was passed in, run it
     if (callback) {
-        callback(contents, contentsList);
+        callback(contents);
     //Otherwise just return the contents of the folder
     } else {
-        return [contents, contentsList];
+        return contents;
     }
-
 }
 
 
@@ -849,7 +851,6 @@ function getFileSize(filePath, callback) {
         //Return the fileSize object
         return fileSize;
     }
-
 }
 
 
