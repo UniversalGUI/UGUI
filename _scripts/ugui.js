@@ -2010,6 +2010,9 @@ function openDefaultBrowser() {
     //Load native UI library.
     var gui = require("nw.gui");
 
+    //Remove all click events before rebinding to prevent opening a link multiple times per click.
+    $(".external-link").unbind("click");
+
     //Open URL with default browser.
     $(".external-link").click( function( event ) {
         //Prevent the link from loading in NW.js
