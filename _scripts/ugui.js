@@ -3333,6 +3333,8 @@ $(".load-ugui-settings").click( function() {
 //>We expose parts of UGUI to developers via the UGUI object.
 // To quickly access what is available type "ugui" into the
 // NW.js (Webkit) Developer Tools console.
+//
+//>All aspects of this are documented at http://ugui.io/api
 
 //
 window.ugui = {
@@ -3436,3 +3438,4 @@ window.ugui = {
 /*  /////////////////////////////////////////////////////////////////  */
 /*                                                                     */
 /***********************************************************************/
+
