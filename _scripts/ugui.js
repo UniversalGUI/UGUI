@@ -3212,7 +3212,7 @@ function loadSettings(customLocation, callback) {
 
                 //Check if the key has a corresponding UI element
                 //and that it isn't set to 'do not save'
-                if ( $("[data-argName" + key + "]") && !($("[data-argName" + key + "]").hasClass("do-not-save")) ) {
+                if ( $("[data-argName=" + key + "]") && !($("[data-argName=" + key + "]").hasClass("do-not-save")) ) {
                     /* console.log(htmltype); */
                     //If `<input type="file">` and it has value
                     if (htmltype == "folder" && settingsObj[key].value !== "") {
