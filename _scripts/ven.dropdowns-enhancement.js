@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /* ========================================================================
  * Bootstrap Dropdowns Enhancement: dropdowns-enhancement.js v3.1.1 (Beta 1)
  * http://behigh.github.io/bootstrap_dropdowns_enhancement/
