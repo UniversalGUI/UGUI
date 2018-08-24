@@ -1046,9 +1046,10 @@ $('.sendCmdArgs').click(function (event) {
 
     // Check if the form has an element with a class of `returnedCmdText`
     if ($('#' + thisExecutable + ' .returnedCmdText').length > 0) {
-        // If so, run a command and put its returned text on the page
-        runcmd(builtCommandString, function (data) {
-            $('#' + thisExecutable + ' .returnedCmdText').html(data);
+        $("#" + thisExecutable + " .returnedCmdText").html('');
+        //If so, run a command and put its returned text on the page
+        runcmd( builtCommandString, function (data) {
+            $("#" + thisExecutable + " .returnedCmdText").append(data);
         });
     } else {
         // Run the command!
